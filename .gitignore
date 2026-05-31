@@ -55,3 +55,59 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# --- Node.js / React / TypeScript ---
+# https://github.com/github/gitignore/blob/main/Node.gitignore
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+out/
+.next/
+.nuxt/
+storybook-static/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime / env (keep .env.example in repo if you use one)
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Test / coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# TypeScript
+*.tsbuildinfo
+
+# Tool caches (lint/format: Biome — no project-level cache files)
+.cache/
+.parcel-cache/
+.turbo/
+.vite/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cursor — personal skills (local only, do not push)
+.cursor/skills/
+
+# IDE (optional — remove if you commit shared editor settings)
+.idea/
+*.swp
+*.swo

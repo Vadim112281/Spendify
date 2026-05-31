@@ -1,0 +1,139 @@
+/**
+ * Design tokens → Tailwind utilities.
+ * Neutral zinc palette for a finance app — no strong accent colors.
+ */
+:root {
+	--token-fg: #52525b;
+	--token-heading: #18181b;
+	--token-surface: #fafafa;
+	--token-border: #e4e4e7;
+	--token-accent: #18181b;
+	--token-on-accent: #fafafa;
+	--token-surface-elevated: #ffffff;
+	--token-shadow-card:
+		0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px -4px rgba(0, 0, 0, 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--token-fg: #a1a1aa;
+		--token-heading: #fafafa;
+		--token-surface: #09090b;
+		--token-border: #27272a;
+		--token-accent: #fafafa;
+		--token-on-accent: #09090b;
+		--token-surface-elevated: #18181b;
+		--token-shadow-card:
+			0 1px 2px rgba(0, 0, 0, 0.2), 0 12px 32px -8px rgba(0, 0, 0, 0.45);
+	}
+}
+
+@theme {
+	/* Colors → text-fg, bg-surface, border-border, … */
+	--color-fg: var(--token-fg);
+	--color-heading: var(--token-heading);
+	--color-surface: var(--token-surface);
+	--color-surface-elevated: var(--token-surface-elevated);
+	--color-border: var(--token-border);
+	--color-accent: var(--token-accent);
+	--color-on-accent: var(--token-on-accent);
+
+	/* Font sizes → text-10, text-14, text-28 (Tailwind v4: --text-* namespace) */
+	--text-10: 10px;
+	--text-11: 11px;
+	--text-12: 12px;
+	--text-13: 13px;
+	--text-14: 14px;
+	--text-15: 15px;
+	--text-16: 16px;
+	--text-17: 17px;
+	--text-18: 18px;
+	--text-21: 21px;
+	--text-24: 24px;
+	--text-26: 26px;
+	--text-28: 28px;
+	--text-32: 32px;
+
+	/* Line height → leading-115, leading-120, … */
+	--leading-110: 1.1;
+	--leading-115: 1.15;
+	--leading-120: 1.2;
+	--leading-140: 1.4;
+	--leading-145: 1.45;
+	--leading-150: 1.5;
+	--leading-155: 1.55;
+
+	/* Spacing → p-24, gap-12, size-38, … */
+	--spacing-2: 2px;
+	--spacing-3: 3px;
+	--spacing-4: 4px;
+	--spacing-5: 5px;
+	--spacing-6: 6px;
+	--spacing-8: 8px;
+	--spacing-9: 9px;
+	--spacing-10: 10px;
+	--spacing-11: 11px;
+	--spacing-12: 12px;
+	--spacing-14: 14px;
+	--spacing-15: 15px;
+	--spacing-16: 16px;
+	--spacing-18: 18px;
+	--spacing-20: 20px;
+	--spacing-22: 22px;
+	--spacing-24: 24px;
+	--spacing-28: 28px;
+	--spacing-32: 32px;
+	--spacing-34: 34px;
+	--spacing-36: 36px;
+	--spacing-38: 38px;
+	--spacing-44: 44px;
+	--spacing-54: 54px;
+
+	/* Max width → max-w-card */
+	--max-width-card: 400px;
+	--max-width-card-lg: 440px;
+
+	/* Radius → rounded-9, rounded-11, … */
+	--radius-9: 9px;
+	--radius-10: 10px;
+	--radius-11: 11px;
+	--radius-12: 12px;
+	--radius-14: 14px;
+	--radius-16: 16px;
+	--radius-18: 18px;
+	--radius-24: 24px;
+
+	/* Breakpoints */
+	--breakpoint-entry-sm: 380px;
+
+	/* Typography */
+	--font-sans: system-ui, "Segoe UI", Roboto, sans-serif;
+	--tracking-wide: 0.04em;
+	--tracking-tight-03: -0.03em;
+	--tracking-caps: 0.06em;
+	--tracking-label: 0.07em;
+
+	/* Shadow → shadow-card */
+	--shadow-card: var(--token-shadow-card);
+
+	/* Entry landing (fixed dark card; not tied to app light/dark tokens) */
+	--color-e-bg: #16161a;
+	--color-e-surface: #1e1e24;
+	--color-e-surface-solid: #25252c;
+	--color-e-heading: #f4f4f5;
+	--color-e-text: #a1a1aa;
+	--color-e-muted: #71717a;
+	--color-e-border: #2e2e36;
+	--color-e-subtle: #25252c;
+	--color-e-dash-from: #35353d;
+	--color-e-dash-to: #2a2a32;
+	--color-e-positive: #4ade80;
+	--color-e-btn-bg: #f4f4f5;
+	--color-e-btn-fg: #18181b;
+	--color-e-btn-hover: #e4e4e7;
+	--shadow-e-card: 0 16px 40px -12px rgb(0 0 0 / 0.45);
+	--shadow-e-btn: 0 4px 14px -4px rgb(0 0 0 / 0.25);
+	--shadow-e-dash: 0 4px 16px -6px rgb(0 0 0 / 0.2);
+	--drop-shadow-app-icon: 0 4px 14px rgb(0 0 0 / 0.35);
+	--drop-shadow-app-icon-sm: 0 3px 10px rgb(0 0 0 / 0.3);
+}

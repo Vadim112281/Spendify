@@ -1,0 +1,29 @@
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./entry.css";
+
+@layer base {
+	html {
+		overflow-x: hidden;
+	}
+
+	body {
+		@apply m-0 min-h-svh bg-surface font-sans text-18 leading-150 text-fg antialiased;
+		overflow-x: hidden;
+		overscroll-behavior: none;
+		color-scheme: light dark;
+		font-synthesis: none;
+		text-rendering: optimizeLegibility;
+	}
+
+	#root {
+		@apply min-h-svh;
+		overflow-x: hidden;
+		max-width: 100%;
+	}
+
+	h1,
+	h2 {
+		@apply font-medium text-heading;
+	}
+}
