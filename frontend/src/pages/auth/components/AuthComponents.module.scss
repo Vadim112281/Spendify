@@ -1,0 +1,17 @@
+.tabsIndicator {
+	transition:
+		left 0.44s cubic-bezier(0.76, 0, 0.24, 1),
+		width 0.44s cubic-bezier(0.76, 0, 0.24, 1);
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+}
+
+.panelsViewport {
+	position: relative;
+}
+
+.panelsViewportPage {
+	isolation: isolate;
+}

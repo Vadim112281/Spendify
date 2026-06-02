@@ -1,11 +1,15 @@
 import {twx} from "@/shared/lib/twx";
 
-type SpendifyAppIconProps = {
-	size?: "sm" | "md";
+import styles from "./AppIcon.module.scss";
+
+type AppIconSize = "sm" | "md";
+
+type AppIconProps = {
+	size?: AppIconSize;
 };
 
 // Same asset as tab favicon — `/favicon.svg`
-export const SpendifyAppIcon = ({size = "md"}: SpendifyAppIconProps) => {
+export const AppIcon = ({size = "md"}: AppIconProps) => {
 	const dim = size === "sm" ? 36 : 44;
 
 	return (
@@ -18,7 +22,7 @@ export const SpendifyAppIcon = ({size = "md"}: SpendifyAppIconProps) => {
 			aria-hidden="true"
 		>
 			<img
-				className="block h-full w-full motion-safe:animate-app-icon-breathe"
+				className={twx(styles.icon, "block h-full w-full origin-center")}
 				src="/favicon.svg"
 				width={dim}
 				height={dim}

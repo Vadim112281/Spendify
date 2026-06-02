@@ -1,0 +1,9 @@
+@use "../../shared/ui/EntryLayout/entry-motion" as motion;
+
+.sectionTabs {
+	@include motion.rise-in(0.12s);
+}
+
+.sectionPanels {
+	@include motion.rise-in(0.18s);
+}

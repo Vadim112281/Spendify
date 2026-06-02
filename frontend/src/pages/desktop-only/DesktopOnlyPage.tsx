@@ -1,15 +1,17 @@
-import {EntryDashboard} from "@/shared/ui/entry/EntryDashboard";
-import {IconLink, IconQr} from "@/shared/ui/entry/EntryIcons";
-import {EntryBrand, EntryLayout} from "@/shared/ui/entry/EntryLayout";
+import {AppHeading} from "@/shared/ui/AppHeading/AppHeading";
+import {AppIconLink} from "@/shared/ui/AppIconLink/AppIconLink";
+import {AppIconQr} from "@/shared/ui/AppIconQr/AppIconQr";
+import {EntryDashboard} from "@/shared/ui/EntryDashboard/EntryDashboard";
+import {EntryBrand, EntryLayout} from "@/shared/ui/EntryLayout/EntryLayout";
 
 const tips = [
 	{
-		icon: <IconQr />,
+		icon: <AppIconQr />,
 		label: "QR-код",
 		description: "відскануйте камерою",
 	},
 	{
-		icon: <IconLink />,
+		icon: <AppIconLink />,
 		label: "Посилання",
 		description: "надішліть собі в месенджер",
 	},
@@ -18,9 +20,7 @@ const tips = [
 export const DesktopOnlyPage = () => (
 	<EntryLayout wide hero={<EntryDashboard variant="phone" />}>
 		<EntryBrand />
-		<h1 className="text-entry-title mb-10 text-center leading-120 font-semibold tracking-tight-03 text-e-heading">
-			Облік на смартфоні
-		</h1>
+		<AppHeading className="mb-10 text-center">Облік на смартфоні</AppHeading>
 		<p className="mb-22 text-center text-15 leading-155 text-e-text">
 			Витрати, доходи та баланс — у кишені. Відкрийте Spendify на телефоні, щоб
 			встановити застосунок.

@@ -1,0 +1,18 @@
+@keyframes breathe {
+	0%,
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	50% {
+		opacity: 0.92;
+		transform: scale(1.035);
+	}
+}
+
+.icon {
+	@media (prefers-reduced-motion: no-preference) {
+		animation: breathe 4.5s ease-in-out infinite;
+	}
+}

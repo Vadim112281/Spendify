@@ -1,4 +1,4 @@
-import {EntryPage} from "@/pages/entry/ui/EntryPage";
+import {EntryPage} from "@/pages/entry/EntryPage";
 
 import "./styles/global.css";
 

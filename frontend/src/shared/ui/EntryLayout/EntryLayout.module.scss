@@ -1,0 +1,17 @@
+@use "./entry-motion" as motion;
+
+.card {
+	@include motion.card-in;
+}
+
+.content {
+	padding: clamp(20px, 5vw, 26px);
+}
+
+.brandName {
+	@include motion.rise-in(0.08s);
+}
+
+.brandTag {
+	@include motion.rise-in(0.14s);
+}

@@ -8,7 +8,7 @@ React + TypeScript + Vite + [Tailwind CSS v4](https://tailwindcss.com/) + [Biome
 src/
 ├── main.tsx          # entry
 ├── app/              # init, global styles, providers (PWA, state)
-├── pages/            # screens (`pages/<name>/ui/<Page>.tsx`, no barrel index)
+├── pages/            # screens (`pages/<name>/<Page>.tsx`, no barrel index)
 ├── features/         # business features (one folder per feature)
 └── shared/
     ├── ui/           # buttons, inputs, UI kit
@@ -16,7 +16,7 @@ src/
     └── api/          # API client
 ```
 
-Imports use the `@/` alias and point at files directly (no `index.ts` barrels), e.g. `@/app/App`, `@/pages/entry/ui/EntryPage`, `@/shared/lib/twx`.
+Imports use the `@/` alias and point at files directly (no `index.ts` barrels), e.g. `@/app/App`, `@/pages/entry/EntryPage`, `@/shared/lib/twx`.
 
 ## Design tokens (Tailwind)
 

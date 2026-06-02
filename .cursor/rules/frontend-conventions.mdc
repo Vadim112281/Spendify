@@ -1,0 +1,94 @@
+---
+description: Spendify frontend — code style (React, TS, Tailwind, Biome)
+alwaysApply: true
+---
+
+# Frontend conventions
+
+Apply on any work in `frontend/` (and on new code in this repo when the context is UI).
+
+## Functions and components
+
+- **Always arrow functions** for components, hooks, and utilities in `frontend/src`.
+- Export as: `export const Component = () => …`, `export const useFoo = () => …`, `export const helper = () => …`.
+- Do not use `export function Name() { … }` unless unavoidable (e.g. type overloads — rare).
+
+```tsx
+// ✅
+export const EntryPage = () => <div />;
+export const usePwaInstall = () => { /* hooks */ };
+
+// ❌
+export function EntryPage() { return <div />; }
+```
+
+Keep types as `export type` / `interface` — not arrow-style.
+
+## Comments
+
+- In **`.ts` / `.tsx`** — line comments `//` only, not `/** … */` / `/* … */`.
+- Single line: `// explanation`
+- Multiple lines — each with `//`, not a block JSDoc.
+- In **`.css`** keep `/* … */` (different syntax).
+
+```ts
+// ✅
+// Phone or tablet — not desktop.
+export const isMobileBrowser = (): boolean => { … };
+
+// ❌
+/** Phone or tablet */
+export const isMobileBrowser = (): boolean => { … };
+```
+
+Comments are for non-obvious logic only; do not repeat what the code already shows.
+
+## Imports and structure
+
+- **No barrel `index.ts`** — import files directly: `@/pages/entry/EntryPage`, `@/shared/lib/twx`.
+- Alias: `@/` → `frontend/src/`.
+- Pages: `pages/<name>/<Page>.tsx`, logic in `pages/<name>/model/`, page-local pieces in `pages/<name>/components/`, `config/`, `hooks/` as needed.
+- **`shared/ui/`** — **PascalCase** folder = component name, same for the file inside: `AppButton/AppButton.tsx`, `EntryLayout/EntryLayout.tsx`. Import: `@/shared/ui/AppButton/AppButton`.
+- **`App` prefix** — shared design-system components: `AppButton`, `AppField`, `AppHeading`… Exception: `Entry*` (entry funnel shell) — no `App`.
+
+## Reusing `shared`
+
+Before writing new UI or a utility in `pages/`, check whether something suitable already exists in `shared/`.
+
+- **UI** — `shared/ui/` (`AppButton`, `AppField`, `AppHeading`, `AppTextButton`, `AppIcon`, `EntryLayout`…). If you need the same styles, markup, or behavior — import the existing piece; do not copy classes or markup into the page.
+- **Utilities** — `shared/lib/` (`twx`, `isMobileBrowser`…). Do not duplicate helpers locally in `pages/`.
+- **New shared component** — when the same UI exists (or will exist) on **2+** screens, or it is a design-system primitive (button, field, heading). One-off UI unique to a single page — keep it in `pages/<name>/`.
+- **Extend instead of copy** — if a shared component is close enough, add a prop (`size`, `className`) in `shared/ui` instead of forking a copy in the page.
+- **Do not extract to shared for its own sake** — do not move a one-off decorative block or logic tied to a single flow into `shared/`.
+
+```tsx
+// ✅
+import {AppButton} from "@/shared/ui/AppButton/AppButton";
+import {AppField} from "@/shared/ui/AppField/AppField";
+
+// ❌ custom button with the same classes in LoginForm
+const LoginButton = () => (
+  <button className="rounded-14 bg-e-btn-bg …">…</button>
+);
+```
+
+## Styles (Tailwind)
+
+- Classes in JSX; **tokens from `app/styles/tokens.css`** (`text-15`, `size-38`, `rounded-11`) — avoid `text-[0.9375rem]` unless necessary.
+- Conditional classes: `twx` from `@/shared/lib/twx`.
+- Minimize arbitrary `[]` — only `env()`, rare selectors (`[&_strong]:…`).
+- Formatter: Biome, `bracketSpacing: false` → `{EntryPage}`, not `{ EntryPage }`.
+
+## React
+
+- Static values from device detection — plain constants, not `useState`, if they do not update:
+  `const isIos = isIosBrowser();` instead of `useState(isIosBrowser)`.
+- `useEffect(..., [])` — only for subscriptions/side effects, not for one-time UA reads.
+
+## Import example
+
+```ts
+import {EntryPage} from "@/pages/entry/EntryPage";
+import {twx} from "@/shared/lib/twx";
+import {isMobileBrowser} from "@/shared/lib/device/isMobileBrowser";
+```

@@ -1,8 +1,9 @@
+import {usePwaInstall} from "@/pages/mobile-install/model/usePwaInstall";
 import {twx} from "@/shared/lib/twx";
-import {EntryDashboard} from "@/shared/ui/entry/EntryDashboard";
-import {EntryBrand, EntryLayout} from "@/shared/ui/entry/EntryLayout";
-
-import {usePwaInstall} from "../model/usePwaInstall";
+import {AppButton} from "@/shared/ui/AppButton/AppButton";
+import {AppHeading} from "@/shared/ui/AppHeading/AppHeading";
+import {EntryDashboard} from "@/shared/ui/EntryDashboard/EntryDashboard";
+import {EntryBrand, EntryLayout} from "@/shared/ui/EntryLayout/EntryLayout";
 
 // TODO: Rework it in normal way
 const iosSteps = [
@@ -33,53 +34,21 @@ const iosSteps = [
 ];
 
 export const MobileInstallPage = () => {
-	const {canInstall, install, isIos, isStandalone} = usePwaInstall();
-
-	if (isStandalone) {
-		return (
-			<EntryLayout hero={<EntryDashboard variant="success" />}>
-				<EntryBrand />
-				<h1 className="text-entry-title mb-10 text-center leading-120 font-semibold tracking-tight-03 text-e-heading">
-					Готово
-				</h1>
-				<p className="text-center text-15 leading-155 text-e-text">
-					Spendify на головному екрані. Скоро тут буде ваш фінансовий дашборд.
-				</p>
-			</EntryLayout>
-		);
-	}
+	const {canInstall, install, isIos} = usePwaInstall();
 
 	return (
 		<EntryLayout hero={<EntryDashboard />}>
 			<EntryBrand />
-			<h1 className="text-entry-title mb-10 leading-120 font-semibold tracking-tight-03 text-e-heading">
-				Встановіть Spendify
-			</h1>
+			<AppHeading className="mb-10">Встановіть Spendify</AppHeading>
 			<p className="mb-22 text-15 leading-155 text-e-text">
 				Контроль витрат і заощаджень у зручному мобільному застосунку — без
 				адресного рядка браузера.
 			</p>
 
 			{canInstall && (
-				<button
-					type="button"
-					className={twx(
-						"group mb-18 flex w-full cursor-pointer items-center justify-center gap-8",
-						"rounded-14 border-none bg-e-btn-bg px-20 py-15 text-15 font-semibold text-e-btn-fg",
-						"shadow-e-btn transition-(transform,background) duration-150",
-						"hover:-translate-y-px hover:bg-e-btn-hover active:translate-y-0",
-						"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-e-heading",
-					)}
-					onClick={install}
-				>
+				<AppButton className="mb-18" showArrow onClick={install}>
 					Встановити
-					<span
-						className="opacity-65 transition-transform duration-150 group-hover:translate-x-3"
-						aria-hidden="true"
-					>
-						→
-					</span>
-				</button>
+				</AppButton>
 			)}
 
 			{isIos && (
@@ -94,7 +63,7 @@ export const MobileInstallPage = () => {
 							)}
 						>
 							<span
-								className="bg-e-step-num grid size-28 shrink-0 place-items-center rounded-9 text-12 font-bold text-e-heading"
+								className="grid size-28 shrink-0 place-items-center rounded-9 bg-linear-[145deg] from-e-dash-from to-e-dash-to text-12 font-bold text-e-heading"
 								aria-hidden="true"
 							>
 								{index + 1}
