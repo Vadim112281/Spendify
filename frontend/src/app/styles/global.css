@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "./tokens.css";
-@import "./entry.css";
 
 @layer base {
 	html {

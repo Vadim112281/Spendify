@@ -1,0 +1,129 @@
+@use "../EntryLayout/entry-motion" as motion;
+
+@keyframes draw {
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+
+@keyframes fill-in {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes tag-in {
+	from {
+		opacity: 0;
+		filter: blur(3px);
+		transform: translateY(10px) scale(0.94);
+	}
+}
+
+@keyframes dot-pulse {
+	0%,
+	100% {
+		opacity: 0.35;
+		transform: scale(1);
+	}
+
+	50% {
+		opacity: 0.85;
+		transform: scale(1.08);
+	}
+}
+
+.root {
+	@include motion.rise-in(0.05s);
+
+	background: linear-gradient(
+		155deg,
+		var(--color-e-dash-from) 0%,
+		var(--color-e-dash-to) 100%
+	);
+}
+
+.dot {
+	@include motion.when-motion {
+		animation: dot-pulse 2.4s ease-in-out infinite;
+	}
+
+	@include motion.when-reduced-motion {
+		animation: none;
+	}
+}
+
+.grid {
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+}
+
+.rise {
+	@include motion.rise-in();
+}
+
+.riseDelaySm {
+	@include motion.rise-in(0.2s);
+}
+
+.riseDelayMd {
+	@include motion.rise-in(0.28s);
+}
+
+.riseDelayLg {
+	@include motion.rise-in(0.32s);
+}
+
+.riseDelayXl {
+	@include motion.rise-in(0.36s);
+}
+
+.chart {
+	@include motion.rise-in(0.32s);
+}
+
+.sparklineFill {
+	fill: color-mix(in srgb, var(--color-e-positive) 28%, transparent);
+
+	@include motion.when-motion {
+		opacity: 0;
+		animation: fill-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.1s forwards;
+	}
+
+	@include motion.when-reduced-motion {
+		opacity: 1;
+		animation: none;
+	}
+}
+
+.sparklineLine {
+	fill: none;
+	stroke: var(--color-e-positive);
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	stroke-dasharray: 200;
+	stroke-dashoffset: 200;
+
+	@include motion.when-motion {
+		animation: draw 1.9s cubic-bezier(0.37, 0, 0.63, 1) forwards;
+	}
+
+	@include motion.when-reduced-motion {
+		stroke-dashoffset: 0;
+		animation: none;
+	}
+}
+
+.tag {
+	@include motion.when-motion {
+		animation: tag-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+	}
+
+	@include motion.when-reduced-motion {
+		animation: none;
+	}
+}
+
+.badge {
+	@include motion.rise-in(0.7s);
+}

@@ -1,0 +1,37 @@
+@mixin when-motion {
+	@media (prefers-reduced-motion: no-preference) {
+		@content;
+	}
+}
+
+@mixin when-reduced-motion {
+	@media (prefers-reduced-motion: reduce) {
+		@content;
+	}
+}
+
+@keyframes rise-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+}
+
+@keyframes card-in {
+	from {
+		opacity: 0;
+		transform: translateY(18px) scale(0.975);
+	}
+}
+
+@mixin rise-in($delay: 0s) {
+	@include when-motion {
+		animation: rise-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) $delay backwards;
+	}
+}
+
+@mixin card-in {
+	@include when-motion {
+		animation: card-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+	}
+}

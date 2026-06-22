@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
 
-import {isIosBrowser, isPwaStandalone} from "@/shared/lib/device/isMobileBrowser";
+import {isIosBrowser} from "@/shared/lib/device/isMobileBrowser";
 
 interface BeforeInstallPromptEvent extends Event {
 	prompt: () => Promise<void>;
@@ -10,7 +10,6 @@ interface BeforeInstallPromptEvent extends Event {
 export const usePwaInstall = () => {
 	const [installPrompt, setInstallPrompt] =
 		useState<BeforeInstallPromptEvent | null>(null);
-	const [isStandalone] = useState(isPwaStandalone);
 	const [isIos] = useState(isIosBrowser);
 
 	useEffect(() => {
@@ -38,6 +37,5 @@ export const usePwaInstall = () => {
 		canInstall: installPrompt !== null,
 		install,
 		isIos,
-		isStandalone,
 	};
 };
