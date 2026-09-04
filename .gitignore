@@ -47,6 +47,18 @@ CodeCoverage/
 # MSBuild Binary and Structured Log
 *.binlog
 
+# Visual Studio / Rider
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.DotSettings.user
+
+# ASP.NET local overrides (secrets, machine-specific config)
+**/appsettings.*.local.json
+**/appsettings.Local.json
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
@@ -79,7 +91,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Runtime / env (keep .env.example in repo if you use one)
+# Runtime / env (keep .env.template in repo if you use one)
 .env.local
 .env.*.local
 .env.development.local

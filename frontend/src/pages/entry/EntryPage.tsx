@@ -13,7 +13,6 @@ export const EntryPage = () => {
 	if (!isMobile) {
 		return <DesktopOnlyPage />;
 	}
-
 	if (isStandalone) {
 		return <AuthPage />;
 	}
