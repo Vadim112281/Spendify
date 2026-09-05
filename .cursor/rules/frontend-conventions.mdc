@@ -22,7 +22,30 @@ export const usePwaInstall = () => { /* hooks */ };
 export function EntryPage() { return <div />; }
 ```
 
-Keep types as `export type` / `interface` — not arrow-style.
+Keep types as `type` / `interface` — not arrow-style.
+
+## Exports
+
+- **Export only what other files import** — functions, components, hooks, types, constants.
+- **File-local** — no `export` if used only inside the same file (`type AuthSession`, helper parsers, private constants).
+- **Before adding `export`** — check call sites (`Grep`); don't export "for later" or mirror every internal type in the public API.
+- **`export type`** — only when another file imports that type; otherwise plain `type`.
+
+```ts
+// ✅ authApi.ts — types stay local; only callers are exported
+type AuthSession = { token: string };
+export const loginUser = (): Promise<AuthSession> => …;
+
+// ✅ authTypes.ts — form types imported by hook + validator
+export type LoginFormValues = { email: string; password: string };
+
+// ✅ authScreen.ts — screen ids in types/, not config/
+export const AUTH_SCREEN = { LOGIN: "login", REGISTER: "register" } as const;
+export type AuthScreen = (typeof AUTH_SCREEN)[keyof typeof AUTH_SCREEN];
+
+// ❌ export type AuthSession when nothing outside authApi.ts imports it
+export type AuthSession = { … };
+```
 
 ## Comments
 
@@ -43,11 +66,26 @@ export const isMobileBrowser = (): boolean => { … };
 
 Comments are for non-obvious logic only; do not repeat what the code already shows.
 
+## Keep it simple
+
+- **Do not over-engineer** — pick the simplest solution that works for the current scope.
+- **No speculative code** — no providers, listeners, abstractions, or desktop-only UX until they are actually needed.
+- **Mobile-first** — skip click-outside, Escape handlers, hover-only flows, etc. unless explicitly requested.
+- **Minimal diff** — do not add unrelated code when fixing or extending something.
+
 ## Imports and structure
 
-- **No barrel `index.ts`** — import files directly: `@/pages/entry/EntryPage`, `@/shared/lib/twx`.
+- **No barrel `index.ts`** — import files directly: `@/pages/entry/EntryPage`, `@/shared/lib/twx`, `@/shared/services/storage/storageService`.
 - Alias: `@/` → `frontend/src/`.
-- Pages: `pages/<name>/<Page>.tsx`, logic in `pages/<name>/model/`, page-local pieces in `pages/<name>/components/`, `config/`, `hooks/` as needed.
+- Pages: `pages/<name>/<Page>.tsx`, page-local pieces in subfolders as needed:
+  - `components/` — page UI (forms, panels, tabs); flat files (`LoginForm.tsx`), not nested `LoginForm/LoginForm.tsx`
+  - `hooks/` — page and form hooks
+  - `api/` — page-scoped HTTP calls (e.g. `pages/auth/api/authApi.ts`)
+  - `services/` — mappers, messages, page-scoped helpers
+  - `types/` — form shapes, error codes, screen ids (`const` + derived `type`, e.g. `authScreen.ts`, `authErrorCodes.ts`)
+  - `validation/` — client-side validators
+  - `config/` — UI behavior constants only (motion variants, a11y ids) — not `const`+`type` enums; those go in `types/`
+- **`features/`** — optional; extract domain here only when reused on **2+ screens**. Until then, keep logic in `pages/<name>/`.
 - **`shared/ui/`** — **PascalCase** folder = component name, same for the file inside: `AppButton/AppButton.tsx`, `EntryLayout/EntryLayout.tsx`. Import: `@/shared/ui/AppButton/AppButton`.
 - **`App` prefix** — shared design-system components: `AppButton`, `AppField`, `AppHeading`… Exception: `Entry*` (entry funnel shell) — no `App`.
 
@@ -56,7 +94,8 @@ Comments are for non-obvious logic only; do not repeat what the code already sho
 Before writing new UI or a utility in `pages/`, check whether something suitable already exists in `shared/`.
 
 - **UI** — `shared/ui/` (`AppButton`, `AppField`, `AppHeading`, `AppTextButton`, `AppIcon`, `EntryLayout`…). If you need the same styles, markup, or behavior — import the existing piece; do not copy classes or markup into the page.
-- **Utilities** — `shared/lib/` (`twx`, `isMobileBrowser`…). Do not duplicate helpers locally in `pages/`.
+- **Utilities** — `shared/lib/` (`twx`, `isMobileBrowser`…). Pure helpers without side effects. Do not duplicate locally in `pages/`.
+- **Services** — `shared/services/` (`storageService`, `appStorage`…). `storageService` — low-level `localStorage` access; `appStorage` — named getters/setters (`getWebsiteTesting`…).
 - **New shared component** — when the same UI exists (or will exist) on **2+** screens, or it is a design-system primitive (button, field, heading). One-off UI unique to a single page — keep it in `pages/<name>/`.
 - **Extend instead of copy** — if a shared component is close enough, add a prop (`size`, `className`) in `shared/ui` instead of forking a copy in the page.
 - **Do not extract to shared for its own sake** — do not move a one-off decorative block or logic tied to a single flow into `shared/`.
@@ -89,6 +128,8 @@ const LoginButton = () => (
 
 ```ts
 import {EntryPage} from "@/pages/entry/EntryPage";
+import {getWebsiteTesting} from "@/shared/services/storage/appStorage";
 import {twx} from "@/shared/lib/twx";
-import {isMobileBrowser} from "@/shared/lib/device/isMobileBrowser";
+import {isMobileBrowser} from "@/shared/lib/isMobileBrowser";
+import {storageService} from "@/shared/services/storage/storageService";
 ```

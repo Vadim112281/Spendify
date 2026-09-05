@@ -2,9 +2,9 @@ import {useCallback, useState} from "react";
 
 import {AuthScreenPanels} from "@/pages/auth/components/AuthScreenPanels";
 import {AuthScreenTabs} from "@/pages/auth/components/AuthScreenTabs";
+import {useAuthNavigation} from "@/pages/auth/hooks/useAuthNavigation";
 import type {AuthPanelMeasure} from "@/pages/auth/hooks/useAuthPanelHeight";
 import {useAuthPanelHeight} from "@/pages/auth/hooks/useAuthPanelHeight";
-import {useAuthNavigation} from "@/pages/auth/hooks/useAuthNavigation";
 import {EntryBrand, EntryLayout} from "@/shared/ui/EntryLayout/EntryLayout";
 import {ENTRY_LAYOUT_SIZE} from "@/shared/ui/EntryLayout/entryLayoutSize";
 

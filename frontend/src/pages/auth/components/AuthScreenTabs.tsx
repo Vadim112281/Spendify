@@ -1,6 +1,6 @@
 import type {Navigation} from "@/app/navigation/navigation";
-import {AUTH_SCREEN, type AuthScreen} from "@/pages/auth/config/authScreen";
 import {AUTH_TAB_A11Y} from "@/pages/auth/config/authTabA11y";
+import {AUTH_SCREEN, type AuthScreen} from "@/pages/auth/types/authScreen";
 import {twx} from "@/shared/lib/twx";
 
 import styles from "./AuthComponents.module.scss";

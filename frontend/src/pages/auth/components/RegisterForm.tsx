@@ -1,5 +1,5 @@
-import {type FormEvent, useState} from "react";
-
+import {AuthFormError} from "@/pages/auth/components/AuthFormError";
+import {useRegisterForm} from "@/pages/auth/hooks/useRegisterForm";
 import {AppButton} from "@/shared/ui/AppButton/AppButton";
 import {AppField} from "@/shared/ui/AppField/AppField";
 import {AppHeading} from "@/shared/ui/AppHeading/AppHeading";
@@ -14,14 +14,7 @@ export const RegisterForm = ({
 	onLogin,
 	interactionsDisabled = false,
 }: RegisterFormProps) => {
-	const [isSubmitting, setIsSubmitting] = useState(false);
-
-	const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		setIsSubmitting(true);
-		// TODO: wire auth API
-		setIsSubmitting(false);
-	};
+	const {fieldErrors, formError, isSubmitting, onSubmit} = useRegisterForm();
 
 	return (
 		<>
@@ -30,13 +23,34 @@ export const RegisterForm = ({
 				Створіть обліковий запис за хвилину.
 			</p>
 
-			{/* TODO: remove noValidate and add client-side validation in onSubmit once auth API is wired (required, email format, password match, minLength, server errors). */}
 			<form
 				className="flex flex-col gap-10"
 				data-auth-form
 				onSubmit={onSubmit}
 				noValidate
 			>
+				<div className="grid grid-cols-2 gap-10">
+					<AppField
+						id="register-first-name"
+						label="Ім'я"
+						size="sm"
+						type="text"
+						name="firstName"
+						autoComplete="given-name"
+						placeholder="Іван"
+						error={fieldErrors.firstName}
+					/>
+					<AppField
+						id="register-last-name"
+						label="Прізвище"
+						size="sm"
+						type="text"
+						name="lastName"
+						autoComplete="family-name"
+						placeholder="Іваненко"
+						error={fieldErrors.lastName}
+					/>
+				</div>
 				<AppField
 					id="register-email"
 					label="Email"
@@ -46,7 +60,7 @@ export const RegisterForm = ({
 					autoComplete="email"
 					inputMode="email"
 					placeholder="you@example.com"
-					required
+					error={fieldErrors.email}
 				/>
 				<AppField
 					id="register-password"
@@ -56,8 +70,7 @@ export const RegisterForm = ({
 					name="password"
 					autoComplete="new-password"
 					placeholder="••••••••"
-					minLength={8}
-					required
+					error={fieldErrors.password}
 				/>
 				<AppField
 					id="register-password-confirm"
@@ -67,9 +80,10 @@ export const RegisterForm = ({
 					name="passwordConfirm"
 					autoComplete="new-password"
 					placeholder="••••••••"
-					minLength={8}
-					required
+					error={fieldErrors.passwordConfirm}
 				/>
+
+				{formError && <AuthFormError message={formError} />}
 
 				<AppButton
 					type="submit"

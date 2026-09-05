@@ -3,7 +3,7 @@
 //   auth  — in-page screens (useScreenTransition on AuthPage)
 //   route — URL paths (react-router navigate, when connected)
 
-import {AUTH_SCREEN, type AuthScreen} from "@/pages/auth/config/authScreen";
+import {AUTH_SCREEN, type AuthScreen} from "@/pages/auth/types/authScreen";
 
 import {APP_ROUTES, type AppRoute} from "./routes";
 
@@ -21,7 +21,7 @@ export const createNavigation = ({auth, route}: NavigationHandlers) => ({
 
 	// App — URL routes (need handlers.route)
 	goToEntryPage: () => route?.(APP_ROUTES.ENTRY),
-	goToDashboardPage: () => route?.(APP_ROUTES.DASHBOARD),
+	goToDevToolsPage: () => route?.(APP_ROUTES.DEV_TOOLS),
 });
 
 export type Navigation = ReturnType<typeof createNavigation>;

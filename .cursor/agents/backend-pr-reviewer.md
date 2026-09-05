@@ -40,6 +40,7 @@ Do **not** stop at the diff. For each meaningful change, read enough surrounding
 | Change type | Also read |
 |-------------|-----------|
 | Controller / endpoint | Handler, command, validator, `AppResultExtensions`, related errors |
+| New / modified command | Matching `*Validator.cs`, `ValidationBehavior`, target handler |
 | MediatR command/handler | Validator, interfaces, infrastructure service, DTOs/results |
 | `IAuthService` / Identity | `AuthService`, `UserManager`, JWT setup, error mappers |
 | EF entity / migration | `AppDbContext`, snapshot, related domain model |
