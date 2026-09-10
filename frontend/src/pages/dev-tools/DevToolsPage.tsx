@@ -22,7 +22,7 @@ export const DevToolsPage = () => {
 					className="mb-16"
 					onClick={() => navigate(APP_ROUTES.ENTRY)}
 				>
-					← Назад
+					← Back
 				</AppTextButton>
 				<AppHeading className="mb-6">Dev tools</AppHeading>
 				<p className="text-13 text-e-muted">v{APP_VERSION}</p>

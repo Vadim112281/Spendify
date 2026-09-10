@@ -13,7 +13,7 @@ import type {
 	RegisterFormValues,
 } from "@/pages/auth/types/authTypes";
 
-const UNKNOWN_ERROR_MESSAGE = "Щось пішло не так. Спробуйте ще раз";
+const UNKNOWN_ERROR_MESSAGE = "Something went wrong. Please try again";
 
 const LOGIN_FORM_FIELDS: (keyof LoginFormValues)[] = ["email", "password"];
 
@@ -26,37 +26,36 @@ const REGISTER_FORM_FIELDS: (keyof RegisterFormValues)[] = [
 ];
 
 const LOGIN_MESSAGES: Record<LoginErrorCode, string> = {
-	[LOGIN_ERROR_CODE.EMAIL_REQUIRED]: "Введіть email",
-	[LOGIN_ERROR_CODE.INVALID_EMAIL]: "Невірний формат email",
-	[LOGIN_ERROR_CODE.EMAIL_TOO_LONG]: "Занадто довгий email",
-	[LOGIN_ERROR_CODE.PASSWORD_REQUIRED]: "Введіть пароль",
-	[LOGIN_ERROR_CODE.PASSWORD_TOO_LONG]: "Максимум 128 символів",
-	[LOGIN_ERROR_CODE.INVALID_CREDENTIALS]: "Невірний email або пароль",
+	[LOGIN_ERROR_CODE.EMAIL_REQUIRED]: "Enter email",
+	[LOGIN_ERROR_CODE.INVALID_EMAIL]: "Invalid email format",
+	[LOGIN_ERROR_CODE.EMAIL_TOO_LONG]: "Email is too long",
+	[LOGIN_ERROR_CODE.PASSWORD_REQUIRED]: "Enter password",
+	[LOGIN_ERROR_CODE.PASSWORD_TOO_LONG]: "Maximum 128 characters",
+	[LOGIN_ERROR_CODE.INVALID_CREDENTIALS]: "Invalid email or password",
 };
 
 const REGISTER_MESSAGES: Record<RegisterErrorCode, string> = {
-	[REGISTER_ERROR_CODE.EMAIL_REQUIRED]: "Введіть email",
-	[REGISTER_ERROR_CODE.INVALID_EMAIL]: "Невірний формат email",
-	[REGISTER_ERROR_CODE.EMAIL_TOO_LONG]: "Занадто довгий email",
-	[REGISTER_ERROR_CODE.EMAIL_ALREADY_EXISTS]: "Цей email вже зареєстрований",
-	[REGISTER_ERROR_CODE.PASSWORD_REQUIRED]: "Введіть пароль",
-	[REGISTER_ERROR_CODE.PASSWORD_TOO_SHORT]: "Мінімум 8 символів",
-	[REGISTER_ERROR_CODE.PASSWORD_TOO_LONG]: "Максимум 128 символів",
-	[REGISTER_ERROR_CODE.PASSWORD_REQUIRES_DIGIT]: "Додайте хоча б одну цифру",
+	[REGISTER_ERROR_CODE.EMAIL_REQUIRED]: "Enter email",
+	[REGISTER_ERROR_CODE.INVALID_EMAIL]: "Invalid email format",
+	[REGISTER_ERROR_CODE.EMAIL_TOO_LONG]: "Email is too long",
+	[REGISTER_ERROR_CODE.EMAIL_ALREADY_EXISTS]: "This email is already registered",
+	[REGISTER_ERROR_CODE.PASSWORD_REQUIRED]: "Enter password",
+	[REGISTER_ERROR_CODE.PASSWORD_TOO_SHORT]: "Minimum 8 characters",
+	[REGISTER_ERROR_CODE.PASSWORD_TOO_LONG]: "Maximum 128 characters",
+	[REGISTER_ERROR_CODE.PASSWORD_REQUIRES_DIGIT]: "Add at least one digit",
 	[REGISTER_ERROR_CODE.PASSWORD_REQUIRES_LOWERCASE]:
-		"Додайте хоча б одну малу літеру",
+		"Add at least one lowercase letter",
 	[REGISTER_ERROR_CODE.PASSWORD_REQUIRES_UPPERCASE]:
-		"Додайте хоча б одну велику літеру",
-	[REGISTER_ERROR_CODE.FIRST_NAME_REQUIRED]: "Введіть ім'я",
-	[REGISTER_ERROR_CODE.FIRST_NAME_TOO_SHORT]: "Мінімум 2 символи",
-	[REGISTER_ERROR_CODE.FIRST_NAME_TOO_LONG]: "Максимум 50 символів",
-	[REGISTER_ERROR_CODE.LAST_NAME_REQUIRED]: "Введіть прізвище",
-	[REGISTER_ERROR_CODE.LAST_NAME_TOO_SHORT]: "Мінімум 2 символи",
-	[REGISTER_ERROR_CODE.LAST_NAME_TOO_LONG]: "Максимум 50 символів",
-	[REGISTER_ERROR_CODE.PASSWORD_CONFIRM_REQUIRED]: "Підтвердіть пароль",
-	[REGISTER_ERROR_CODE.PASSWORD_CONFIRM_MISMATCH]: "Паролі не збігаються",
-	[REGISTER_ERROR_CODE.REGISTRATION_FAILED]:
-		"Не вдалося створити обліковий запис",
+		"Add at least one uppercase letter",
+	[REGISTER_ERROR_CODE.FIRST_NAME_REQUIRED]: "Enter first name",
+	[REGISTER_ERROR_CODE.FIRST_NAME_TOO_SHORT]: "Minimum 2 characters",
+	[REGISTER_ERROR_CODE.FIRST_NAME_TOO_LONG]: "Maximum 50 characters",
+	[REGISTER_ERROR_CODE.LAST_NAME_REQUIRED]: "Enter last name",
+	[REGISTER_ERROR_CODE.LAST_NAME_TOO_SHORT]: "Minimum 2 characters",
+	[REGISTER_ERROR_CODE.LAST_NAME_TOO_LONG]: "Maximum 50 characters",
+	[REGISTER_ERROR_CODE.PASSWORD_CONFIRM_REQUIRED]: "Confirm password",
+	[REGISTER_ERROR_CODE.PASSWORD_CONFIRM_MISMATCH]: "Passwords do not match",
+	[REGISTER_ERROR_CODE.REGISTRATION_FAILED]: "Could not create account",
 };
 
 export const getLoginMessage = (code: string): string =>

@@ -1,4 +1,4 @@
-import {httpClient} from "@/shared/api/httpClient";
+import {httpClient} from "@/app/api/httpClient";
 
 type AuthSession = {
 	userId: string;

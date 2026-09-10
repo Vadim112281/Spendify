@@ -1,4 +1,7 @@
-import type {LoginErrorCode, RegisterErrorCode} from "@/pages/auth/types/authErrorCodes";
+import type {
+	LoginErrorCode,
+	RegisterErrorCode,
+} from "@/pages/auth/types/authErrorCodes";
 
 export type LoginFormValues = {
 	email: string;

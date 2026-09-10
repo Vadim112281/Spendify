@@ -18,9 +18,9 @@ export const RegisterForm = ({
 
 	return (
 		<>
-			<AppHeading className="mb-6">Реєстрація</AppHeading>
+			<AppHeading className="mb-6">Sign up</AppHeading>
 			<p className="mb-16 text-14 leading-145 text-e-text">
-				Створіть обліковий запис за хвилину.
+				Create an account in a minute.
 			</p>
 
 			<form
@@ -32,22 +32,22 @@ export const RegisterForm = ({
 				<div className="grid grid-cols-2 gap-10">
 					<AppField
 						id="register-first-name"
-						label="Ім'я"
+						label="First name"
 						size="sm"
 						type="text"
 						name="firstName"
 						autoComplete="given-name"
-						placeholder="Іван"
+						placeholder="John"
 						error={fieldErrors.firstName}
 					/>
 					<AppField
 						id="register-last-name"
-						label="Прізвище"
+						label="Last name"
 						size="sm"
 						type="text"
 						name="lastName"
 						autoComplete="family-name"
-						placeholder="Іваненко"
+						placeholder="Doe"
 						error={fieldErrors.lastName}
 					/>
 				</div>
@@ -64,7 +64,7 @@ export const RegisterForm = ({
 				/>
 				<AppField
 					id="register-password"
-					label="Пароль"
+					label="Password"
 					size="sm"
 					type="password"
 					name="password"
@@ -74,7 +74,7 @@ export const RegisterForm = ({
 				/>
 				<AppField
 					id="register-password-confirm"
-					label="Повтор пароля"
+					label="Confirm password"
 					size="sm"
 					type="password"
 					name="passwordConfirm"
@@ -91,18 +91,18 @@ export const RegisterForm = ({
 					className="mt-2"
 					disabled={isSubmitting}
 				>
-					{isSubmitting ? "Створення…" : "Зареєструватися"}
+					{isSubmitting ? "Creating…" : "Sign up"}
 				</AppButton>
 			</form>
 
 			<p className="mt-14 border-t border-dashed border-e-border pt-14 text-center text-13 leading-normal text-e-muted">
-				Вже є обліковий запис?{" "}
+				Already have an account?{" "}
 				<AppTextButton
 					emphasis
 					disabled={interactionsDisabled}
 					onClick={onLogin}
 				>
-					Увійти
+					Log in
 				</AppTextButton>
 			</p>
 		</>

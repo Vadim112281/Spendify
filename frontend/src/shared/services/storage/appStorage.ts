@@ -16,11 +16,11 @@ export const setAuthToken = (token: string): void => {
 	storageService.setString(KEYS.authToken, token);
 };
 
-// TODO: export when httpClient sends Authorization from the stored token.
-const getAuthToken = (): string | null =>
+export const getAuthToken = (): string | null =>
 	storageService.getString(KEYS.authToken);
 
-// TODO: export when logout clears the session (sign-out, 401, etc.).
-const clearAuthToken = (): void => {
+export const clearAuthToken = (): void => {
 	storageService.remove(KEYS.authToken);
 };
+
+export const hasAuthSession = (): boolean => getAuthToken() !== null;

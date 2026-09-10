@@ -11,7 +11,7 @@ const iosSteps = [
 		id: "share",
 		text: (
 			<>
-				Натисніть <strong>Поділитися</strong> у Safari
+				Tap <strong>Share</strong> in Safari
 			</>
 		),
 	},
@@ -19,7 +19,7 @@ const iosSteps = [
 		id: "add-home",
 		text: (
 			<>
-				Оберіть <strong>На екран «Додому»</strong>
+				Select <strong>Add to Home Screen</strong>
 			</>
 		),
 	},
@@ -27,7 +27,7 @@ const iosSteps = [
 		id: "confirm",
 		text: (
 			<>
-				Натисніть <strong>Додати</strong>
+				Tap <strong>Add</strong>
 			</>
 		),
 	},
@@ -39,15 +39,15 @@ export const MobileInstallPage = () => {
 	return (
 		<EntryLayout hero={<EntryDashboard />}>
 			<EntryBrand />
-			<AppHeading className="mb-10">Встановіть Spendify</AppHeading>
+			<AppHeading className="mb-10">Install Spendify</AppHeading>
 			<p className="mb-22 text-15 leading-155 text-e-text">
-				Контроль витрат і заощаджень у зручному мобільному застосунку — без
-				адресного рядка браузера.
+				Track spending and savings in a convenient mobile app — no browser
+				address bar.
 			</p>
 
 			{canInstall && (
 				<AppButton className="mb-18" showArrow onClick={install}>
-					Встановити
+					Install
 				</AppButton>
 			)}
 
@@ -78,8 +78,8 @@ export const MobileInstallPage = () => {
 
 			{!isIos && !canInstall && (
 				<p className="mt-18 border-t border-dashed border-e-border pt-18 text-13 leading-normal text-e-muted">
-					Відкрийте в Chrome на Android — з’явиться кнопка встановлення. Або
-					через меню: «Встановити застосунок».
+					Open in Chrome on Android — an install button will appear. Or via the
+					menu: &quot;Install app&quot;.
 				</p>
 			)}
 		</EntryLayout>

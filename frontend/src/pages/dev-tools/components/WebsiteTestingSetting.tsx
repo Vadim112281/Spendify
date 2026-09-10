@@ -1,7 +1,9 @@
 import {useState} from "react";
-
-import {getWebsiteTesting, setWebsiteTesting} from "@/shared/services/storage/appStorage";
 import {twx} from "@/shared/lib/twx";
+import {
+	getWebsiteTesting,
+	setWebsiteTesting,
+} from "@/shared/services/storage/appStorage";
 
 export const WebsiteTestingSetting = () => {
 	const [enabled, setEnabled] = useState(getWebsiteTesting);
@@ -14,14 +16,13 @@ export const WebsiteTestingSetting = () => {
 	return (
 		<section className="rounded-14 border border-e-border bg-e-surface-solid p-14">
 			<p className="mb-4 text-14 font-semibold text-e-heading">
-				Тестування з вебсайту
+				Website testing
 			</p>
 			<p className="mb-14 text-13 leading-140 text-e-muted">
-				Дозволяє відкрити застосунок у браузері на комп’ютері, без встановлення
-				PWA.
+				Lets you open the app in a desktop browser without installing the PWA.
 			</p>
 			<label className="flex cursor-pointer items-center justify-between gap-12">
-				<span className="text-13 text-e-text">Увімкнено</span>
+				<span className="text-13 text-e-text">Enabled</span>
 				<span className="relative inline-flex shrink-0">
 					<input
 						type="checkbox"

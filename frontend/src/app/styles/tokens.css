@@ -88,6 +88,8 @@
 	--spacing-38: 38px;
 	--spacing-44: 44px;
 	--spacing-54: 54px;
+	/* App shell — tab bar pill (58px) + nav bottom offset (12px) + safe area → pb-tab-bar-layout */
+	--spacing-tab-bar-layout: calc(70px + env(safe-area-inset-bottom));
 
 	/* Max width → max-w-card */
 	--max-width-card: 400px;

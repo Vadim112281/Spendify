@@ -12,8 +12,8 @@ type AuthScreenTabsProps = {
 };
 
 const tabs: {id: AuthScreen; label: string}[] = [
-	{id: AUTH_SCREEN.LOGIN, label: "Увійти"},
-	{id: AUTH_SCREEN.REGISTER, label: "Реєстрація"},
+	{id: AUTH_SCREEN.LOGIN, label: "Log in"},
+	{id: AUTH_SCREEN.REGISTER, label: "Sign up"},
 ];
 
 export const AuthScreenTabs = ({
@@ -24,7 +24,7 @@ export const AuthScreenTabs = ({
 	<div
 		className="relative mb-14 grid grid-cols-2 rounded-12 border border-e-border bg-e-subtle p-3"
 		role="tablist"
-		aria-label="Вхід або реєстрація"
+		aria-label="Log in or sign up"
 	>
 		<span
 			className={twx(
