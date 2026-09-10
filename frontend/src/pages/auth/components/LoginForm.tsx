@@ -1,5 +1,5 @@
-import {type FormEvent, useState} from "react";
-
+import {AuthFormError} from "@/pages/auth/components/AuthFormError";
+import {useLoginForm} from "@/pages/auth/hooks/useLoginForm";
 import {AppButton} from "@/shared/ui/AppButton/AppButton";
 import {AppField} from "@/shared/ui/AppField/AppField";
 import {AppHeading} from "@/shared/ui/AppHeading/AppHeading";
@@ -14,14 +14,7 @@ export const LoginForm = ({
 	onRegister,
 	interactionsDisabled = false,
 }: LoginFormProps) => {
-	const [isSubmitting, setIsSubmitting] = useState(false);
-
-	const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		setIsSubmitting(true);
-		// TODO: wire auth API
-		setIsSubmitting(false);
-	};
+	const {fieldErrors, formError, isSubmitting, onSubmit} = useLoginForm();
 
 	return (
 		<>
@@ -30,7 +23,6 @@ export const LoginForm = ({
 				Баланс і витрати в одному застосунку.
 			</p>
 
-			{/* TODO: remove noValidate and add client-side validation in onSubmit once auth API is wired (required, email format, server errors). */}
 			<form
 				className="flex flex-col gap-12"
 				data-auth-form
@@ -46,7 +38,7 @@ export const LoginForm = ({
 					autoComplete="email"
 					inputMode="email"
 					placeholder="you@example.com"
-					required
+					error={fieldErrors.email}
 				/>
 				<AppField
 					id="login-password"
@@ -56,8 +48,10 @@ export const LoginForm = ({
 					name="password"
 					autoComplete="current-password"
 					placeholder="••••••••"
-					required
+					error={fieldErrors.password}
 				/>
+
+				{formError && <AuthFormError message={formError} />}
 
 				<AppButton
 					type="submit"

@@ -1,6 +1,6 @@
 import {useMemo, useRef} from "react";
 
-import type {AuthScreen} from "@/pages/auth/config/authScreen";
+import type {AuthScreen} from "@/pages/auth/types/authScreen";
 
 export type AuthPanelMeasure = Record<AuthScreen, number>;
 

@@ -1,7 +1,4 @@
-import {
-	AUTH_SCREEN,
-	type AuthScreen,
-} from "@/pages/auth/config/authScreen";
+import {AUTH_SCREEN, type AuthScreen} from "@/pages/auth/types/authScreen";
 
 export const AUTH_TAB_A11Y: Record<
 	AuthScreen,

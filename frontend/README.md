@@ -7,12 +7,13 @@ React + TypeScript + Vite + [Tailwind CSS v4](https://tailwindcss.com/) + [Biome
 ```
 src/
 ├── main.tsx          # entry
-├── app/              # init, global styles, providers (PWA, state)
-├── pages/            # screens (`pages/<name>/<Page>.tsx`, no barrel index)
-├── features/         # business features (one folder per feature)
+├── app/              # init, global styles, app config
+├── pages/            # screens + page-local domain (`pages/<name>/api`, `hooks`, `types`, …)
+├── features/         # optional — extract here when reused on 2+ screens
 └── shared/
     ├── ui/           # buttons, inputs, UI kit
-    ├── lib/          # utilities, helpers
+    ├── lib/          # pure utilities and helpers (no I/O)
+    ├── services/     # localStorage (storageService, appStorage), auth, analytics
     └── api/          # API client
 ```
 

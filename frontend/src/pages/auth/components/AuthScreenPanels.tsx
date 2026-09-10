@@ -1,8 +1,8 @@
 import {motion, useReducedMotion} from "motion/react";
 import type {RefObject} from "react";
 import type {Navigation} from "@/app/navigation/navigation";
-import {LoginForm} from "@/features/auth/ui/LoginForm/LoginForm";
-import {RegisterForm} from "@/features/auth/ui/RegisterForm/RegisterForm";
+import {LoginForm} from "@/pages/auth/components/LoginForm";
+import {RegisterForm} from "@/pages/auth/components/RegisterForm";
 import {
 	authPanelCenter,
 	authPanelFadeHidden,
@@ -13,10 +13,10 @@ import {
 	authPanelOffRight,
 	authPanelPageTransition,
 } from "@/pages/auth/config/authPanelVariants";
-import {AUTH_SCREEN, type AuthScreen} from "@/pages/auth/config/authScreen";
 import {AUTH_TAB_A11Y} from "@/pages/auth/config/authTabA11y";
 import type {AuthPanelMeasure} from "@/pages/auth/hooks/useAuthPanelHeight";
 import {useAuthPanelMeasure} from "@/pages/auth/hooks/useAuthPanelMeasure";
+import {AUTH_SCREEN, type AuthScreen} from "@/pages/auth/types/authScreen";
 import {twx} from "@/shared/lib/twx";
 
 import styles from "./AuthComponents.module.scss";
