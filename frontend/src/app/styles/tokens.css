@@ -90,6 +90,10 @@
 	--spacing-54: 54px;
 	/* App shell — tab bar pill (58px) + nav bottom offset (12px) + safe area → pb-tab-bar-layout */
 	--spacing-tab-bar-layout: calc(70px + env(safe-area-inset-bottom));
+	/* Scroll area between top safe area and tab bar → min-h-app-page */
+	--min-height-app-page: calc(
+		100dvh - max(20px, env(safe-area-inset-top)) - var(--spacing-tab-bar-layout)
+	);
 
 	/* Max width → max-w-card */
 	--max-width-card: 400px;
@@ -129,6 +133,12 @@
 	--color-e-subtle: #25252c;
 	--color-e-dash-from: #35353d;
 	--color-e-dash-to: #2a2a32;
+	/* Dashboard tile gradient → bg-e-dash */
+	--background-image-e-dash: linear-gradient(
+		145deg,
+		var(--color-e-dash-from),
+		var(--color-e-dash-to)
+	);
 	--color-e-positive: #4ade80;
 	--color-e-error: #f87171;
 	--color-e-btn-bg: #f4f4f5;
