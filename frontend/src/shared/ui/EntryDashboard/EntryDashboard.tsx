@@ -37,7 +37,7 @@ export const EntryDashboard = ({variant = "default"}: EntryDashboardProps) => (
 						"text-10 font-medium tracking-label text-e-text uppercase",
 					)}
 				>
-					Баланс
+					Balance
 				</span>
 				<span
 					className={twx(
@@ -53,7 +53,7 @@ export const EntryDashboard = ({variant = "default"}: EntryDashboardProps) => (
 						"text-11 font-medium text-e-positive",
 					)}
 				>
-					+₴ 3 200 за місяць
+					+₴3,200 this month
 				</span>
 			</div>
 
@@ -83,7 +83,7 @@ export const EntryDashboard = ({variant = "default"}: EntryDashboardProps) => (
 		</div>
 
 		<div className="relative z-1 mt-14 flex flex-wrap gap-6">
-			{["Кафе", "Транспорт", "Зарплата"].map((label, i) => (
+			{["Cafe", "Transport", "Salary"].map((label, i) => (
 				<span
 					key={label}
 					className={twx(

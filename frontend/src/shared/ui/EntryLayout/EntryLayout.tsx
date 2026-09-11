@@ -83,7 +83,7 @@ export const EntryBrand = ({
 				"ml-auto rounded-full border border-e-border bg-e-subtle px-10 py-4 text-10 font-semibold tracking-caps text-e-muted uppercase",
 			)}
 		>
-			Фінанси
+			Finance
 		</span>
 	</div>
 );

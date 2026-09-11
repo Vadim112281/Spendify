@@ -1,5 +1,6 @@
 import {type FormEvent, useState} from "react";
 
+import {useRouteNavigation} from "@/app/navigation/useRouteNavigation";
 import {loginUser} from "@/pages/auth/api/authApi";
 import {
 	getLoginUnknownError,
@@ -11,7 +12,7 @@ import type {
 	LoginFormValues,
 } from "@/pages/auth/types/authTypes";
 import {validateLoginForm} from "@/pages/auth/validation/validateAuthForms";
-import {isApiError} from "@/shared/api/httpClient";
+import {isApiError} from "@/app/api/httpClient";
 import {setAuthToken} from "@/shared/services/storage/appStorage";
 
 const parseLoginFormValues = (formData: FormData): LoginFormValues => ({
@@ -20,6 +21,7 @@ const parseLoginFormValues = (formData: FormData): LoginFormValues => ({
 });
 
 export const useLoginForm = () => {
+	const navigation = useRouteNavigation();
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [fieldErrors, setFieldErrors] = useState<LoginFieldErrors>({});
 	const [formError, setFormError] = useState<string | undefined>();
@@ -45,13 +47,13 @@ export const useLoginForm = () => {
 				password: values.password.trim(),
 			});
 			setAuthToken(session.token);
+			navigation.goToHomePage({replace: true});
 		} catch (error) {
 			const apiErrors = isApiError(error)
 				? mapLoginApiError(error)
 				: getLoginUnknownError();
 			setFieldErrors(apiErrors.fieldErrors);
 			setFormError(apiErrors.formError);
-		} finally {
 			setIsSubmitting(false);
 		}
 	};

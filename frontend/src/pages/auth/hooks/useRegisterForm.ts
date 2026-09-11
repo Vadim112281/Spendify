@@ -1,5 +1,6 @@
 import {type FormEvent, useState} from "react";
 
+import {useRouteNavigation} from "@/app/navigation/useRouteNavigation";
 import {registerUser} from "@/pages/auth/api/authApi";
 import {
 	getRegisterUnknownError,
@@ -11,7 +12,7 @@ import type {
 	RegisterFormValues,
 } from "@/pages/auth/types/authTypes";
 import {validateRegisterForm} from "@/pages/auth/validation/validateAuthForms";
-import {isApiError} from "@/shared/api/httpClient";
+import {isApiError} from "@/app/api/httpClient";
 import {setAuthToken} from "@/shared/services/storage/appStorage";
 
 const parseRegisterFormValues = (formData: FormData): RegisterFormValues => ({
@@ -23,6 +24,7 @@ const parseRegisterFormValues = (formData: FormData): RegisterFormValues => ({
 });
 
 export const useRegisterForm = () => {
+	const navigation = useRouteNavigation();
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [fieldErrors, setFieldErrors] = useState<RegisterFieldErrors>({});
 	const [formError, setFormError] = useState<string | undefined>();
@@ -50,13 +52,13 @@ export const useRegisterForm = () => {
 				password: values.password.trim(),
 			});
 			setAuthToken(session.token);
+			navigation.goToHomePage({replace: true});
 		} catch (error) {
 			const apiErrors = isApiError(error)
 				? mapRegisterApiError(error)
 				: getRegisterUnknownError();
 			setFieldErrors(apiErrors.fieldErrors);
 			setFormError(apiErrors.formError);
-		} finally {
 			setIsSubmitting(false);
 		}
 	};

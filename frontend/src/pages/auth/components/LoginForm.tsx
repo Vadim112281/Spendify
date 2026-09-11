@@ -18,9 +18,9 @@ export const LoginForm = ({
 
 	return (
 		<>
-			<AppHeading className="mb-6">Увійдіть</AppHeading>
+			<AppHeading className="mb-6">Log in</AppHeading>
 			<p className="mb-16 text-14 leading-145 text-e-text">
-				Баланс і витрати в одному застосунку.
+				Balance and expenses in one app.
 			</p>
 
 			<form
@@ -42,7 +42,7 @@ export const LoginForm = ({
 				/>
 				<AppField
 					id="login-password"
-					label="Пароль"
+					label="Password"
 					size="sm"
 					type="password"
 					name="password"
@@ -59,23 +59,23 @@ export const LoginForm = ({
 					className="mt-4"
 					disabled={isSubmitting}
 				>
-					{isSubmitting ? "Вхід…" : "Увійти"}
+					{isSubmitting ? "Signing in…" : "Log in"}
 				</AppButton>
 			</form>
 
 			<div className="mt-14 space-y-8 border-t border-dashed border-e-border pt-14 text-center">
 				{/* TODO: Do it in the future */}
 				<AppTextButton disabled={interactionsDisabled}>
-					Забули пароль?
+					Forgot password?
 				</AppTextButton>
 				<p className="m-0 text-13 leading-normal text-e-muted">
-					Немає облікового запису?{" "}
+					Don&apos;t have an account?{" "}
 					<AppTextButton
 						emphasis
 						disabled={interactionsDisabled}
 						onClick={onRegister}
 					>
-						Зареєструватися
+						Sign up
 					</AppTextButton>
 				</p>
 			</div>

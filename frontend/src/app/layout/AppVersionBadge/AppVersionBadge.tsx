@@ -7,9 +7,13 @@ import {getWebsiteTesting} from "@/shared/services/storage/appStorage";
 
 export const AppVersionBadge = () => {
 	const navigate = useNavigate();
-	// Re-read after route change (badge lives outside <Routes>).
-	useLocation();
+	const location = useLocation();
 	const isWebsiteTesting = getWebsiteTesting();
+	const isAppRoute = location.pathname.startsWith(APP_ROUTES.APP);
+
+	if (isAppRoute) {
+		return null;
+	}
 
 	return (
 		<button

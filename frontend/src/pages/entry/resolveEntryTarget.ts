@@ -1,7 +1,4 @@
-import {
-	isMobileBrowser,
-	isPwaStandalone,
-} from "@/shared/lib/isMobileBrowser";
+import {isMobileBrowser, isPwaStandalone} from "@/shared/lib/isMobileBrowser";
 import {getWebsiteTesting} from "@/shared/services/storage/appStorage";
 
 export const ENTRY_TARGET = {

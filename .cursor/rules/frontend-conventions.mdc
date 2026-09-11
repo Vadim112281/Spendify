@@ -66,6 +66,22 @@ export const isMobileBrowser = (): boolean => { … };
 
 Comments are for non-obvious logic only; do not repeat what the code already shows.
 
+## Language
+
+- **English only** for all user-facing copy in `frontend/`: UI labels, headings, placeholders, buttons, validation/error messages, `aria-label` / `title`, empty states, and `index.html` `lang`.
+- Code identifiers, comments, and commit messages stay in English too.
+- No Ukrainian (or other locale strings) in source until i18n is explicitly added.
+
+```tsx
+// ✅
+<AppHeading>Home</AppHeading>
+aria-label="Main menu"
+
+// ❌
+<AppHeading>Головна</AppHeading>
+aria-label="Головне меню"
+```
+
 ## Keep it simple
 
 - **Do not over-engineer** — pick the simplest solution that works for the current scope.
@@ -77,6 +93,12 @@ Comments are for non-obvious logic only; do not repeat what the code already sho
 
 - **No barrel `index.ts`** — import files directly: `@/pages/entry/EntryPage`, `@/shared/lib/twx`, `@/shared/services/storage/storageService`.
 - Alias: `@/` → `frontend/src/`.
+- **`app/`** — shell, routing, layout, navigation, global styles (not routable screens):
+  - `App.tsx` — router root
+  - `routing/` — route guards (`ProtectedAppRoute`); auth check + render layout or redirect
+  - `layout/` — logged-in app chrome (`AppShell`: `<Outlet />`, tab bar, safe area); no own URL
+  - `navigation/` — `routes.ts`, `navigation.ts`, `useRouteNavigation`
+  - `styles/` — `global.css`, `tokens.css`
 - Pages: `pages/<name>/<Page>.tsx`, page-local pieces in subfolders as needed:
   - `components/` — page UI (forms, panels, tabs); flat files (`LoginForm.tsx`), not nested `LoginForm/LoginForm.tsx`
   - `hooks/` — page and form hooks
@@ -88,6 +110,12 @@ Comments are for non-obvious logic only; do not repeat what the code already sho
 - **`features/`** — optional; extract domain here only when reused on **2+ screens**. Until then, keep logic in `pages/<name>/`.
 - **`shared/ui/`** — **PascalCase** folder = component name, same for the file inside: `AppButton/AppButton.tsx`, `EntryLayout/EntryLayout.tsx`. Import: `@/shared/ui/AppButton/AppButton`.
 - **`App` prefix** — shared design-system components: `AppButton`, `AppField`, `AppHeading`… Exception: `Entry*` (entry funnel shell) — no `App`.
+- **Larger `shared/ui` pieces** — same split as pages, but scoped to the component folder:
+  - `ComponentName/ComponentName.tsx` — shell only: layout, wiring, composition; not every sub-piece inline
+  - `components/` — subcomponents used only inside this UI piece; flat files (`TabLink.tsx`), group related sets in a subfolder (`components/icons/HomeTabIcon.tsx`)
+  - `config/` — labels, maps, motion ids, other UI constants (`.ts` when possible; pass component refs, not inline JSX)
+  - colocated helpers — `appTabBarMotion.ts`, small non-React utils next to the component when they belong to it only
+- **Do not grow one file** — if a component file picks up distinct UI blocks (icons, buttons, config maps, helpers), extract them instead of stacking at the bottom of the main file. Split when pieces are separable, not only when the file is huge.
 
 ## Reusing `shared`
 
@@ -99,6 +127,16 @@ Before writing new UI or a utility in `pages/`, check whether something suitable
 - **New shared component** — when the same UI exists (or will exist) on **2+** screens, or it is a design-system primitive (button, field, heading). One-off UI unique to a single page — keep it in `pages/<name>/`.
 - **Extend instead of copy** — if a shared component is close enough, add a prop (`size`, `className`) in `shared/ui` instead of forking a copy in the page.
 - **Do not extract to shared for its own sake** — do not move a one-off decorative block or logic tied to a single flow into `shared/`.
+
+```tsx
+// ✅ app layer — guards and layout stay in app/, not pages/
+import {ProtectedAppRoute} from "@/app/routing/ProtectedAppRoute";
+import {AppShell} from "@/app/layout/AppShell";
+import {HomePage} from "@/pages/home/HomePage";
+
+// ❌ pages/app-shell/, pages/*Route*, layout shells mixed with screen pages
+import {AppShell} from "@/pages/app-shell/AppShell";
+```
 
 ```tsx
 // ✅
@@ -123,10 +161,46 @@ const LoginButton = () => (
 - Static values from device detection — plain constants, not `useState`, if they do not update:
   `const isIos = isIosBrowser();` instead of `useState(isIosBrowser)`.
 - `useEffect(..., [])` — only for subscriptions/side effects, not for one-time UA reads.
+- **No state updates during render** — render must be pure. Never call `setState`, `setTransition`, `dispatch`, etc. in the component/hook body. Update state in event handlers or effects instead. Mutating refs during render is fine.
+- **React to prop/context changes** (pathname, outlet, flags) with `useLayoutEffect` when the UI must update before paint (animations), otherwise `useEffect`. Keep previous values in refs inside the effect.
+
+```tsx
+// ❌ setState while rendering
+export const usePageSlideTransition = () => {
+  const location = useLocation();
+  const [transition, setTransition] = useState(null);
+  const previousRef = useRef({pathname: location.pathname});
+
+  if (location.pathname !== previousRef.current.pathname) {
+    setTransition({from: previousRef.current.pathname, to: location.pathname});
+    previousRef.current.pathname = location.pathname;
+  }
+};
+
+// ✅ refs during render; setState in useLayoutEffect
+export const usePageSlideTransition = () => {
+  const location = useLocation();
+  const outlet = useOutlet();
+  const [transition, setTransition] = useState(null);
+  const previousRef = useRef({pathname: location.pathname, outlet: null});
+
+  if (outlet && location.pathname === previousRef.current.pathname) {
+    previousRef.current.outlet = outlet;
+  }
+
+  useLayoutEffect(() => {
+    if (location.pathname === previousRef.current.pathname) return;
+    const from = previousRef.current;
+    previousRef.current = {pathname: location.pathname, outlet};
+    setTransition({from: from.pathname, to: location.pathname});
+  }, [location.pathname, outlet]);
+};
+```
 
 ## Import example
 
 ```ts
+import {AppShell} from "@/app/layout/AppShell";
 import {EntryPage} from "@/pages/entry/EntryPage";
 import {getWebsiteTesting} from "@/shared/services/storage/appStorage";
 import {twx} from "@/shared/lib/twx";

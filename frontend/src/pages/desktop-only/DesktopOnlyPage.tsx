@@ -7,23 +7,23 @@ import {EntryBrand, EntryLayout} from "@/shared/ui/EntryLayout/EntryLayout";
 const tips = [
 	{
 		icon: <AppIconQr />,
-		label: "QR-код",
-		description: "відскануйте камерою",
+		label: "QR code",
+		description: "scan with your camera",
 	},
 	{
 		icon: <AppIconLink />,
-		label: "Посилання",
-		description: "надішліть собі в месенджер",
+		label: "Link",
+		description: "send it to yourself in a messenger",
 	},
 ];
 
 export const DesktopOnlyPage = () => (
 	<EntryLayout wide hero={<EntryDashboard variant="phone" />}>
 		<EntryBrand />
-		<AppHeading className="mb-10 text-center">Облік на смартфоні</AppHeading>
+		<AppHeading className="mb-10 text-center">Finance on your phone</AppHeading>
 		<p className="mb-22 text-center text-15 leading-155 text-e-text">
-			Витрати, доходи та баланс — у кишені. Відкрийте Spendify на телефоні, щоб
-			встановити застосунок.
+			Expenses, income, and balance — in your pocket. Open Spendify on your
+			phone to install the app.
 		</p>
 		<div className="grid grid-cols-2 gap-10 max-entry-sm:grid-cols-1">
 			{tips.map((tip) => (
@@ -46,7 +46,7 @@ export const DesktopOnlyPage = () => (
 			))}
 		</div>
 		<p className="mt-18 border-t border-dashed border-e-border pt-18 text-center text-13 leading-normal text-e-muted">
-			На телефоні з’явиться кнопка встановлення
+			An install button will appear on your phone
 		</p>
 	</EntryLayout>
 );
