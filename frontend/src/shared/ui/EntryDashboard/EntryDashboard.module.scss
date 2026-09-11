@@ -36,11 +36,7 @@
 .root {
 	@include motion.rise-in(0.05s);
 
-	background: linear-gradient(
-		155deg,
-		var(--color-e-dash-from) 0%,
-		var(--color-e-dash-to) 100%
-	);
+	background: var(--background-image-e-dash);
 }
 
 .dot {
