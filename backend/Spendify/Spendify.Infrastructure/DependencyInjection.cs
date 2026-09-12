@@ -4,10 +4,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Spendify.Application.Auth.Interfaces;
 using Spendify.Application.Common.Interfaces;
+using Spendify.Application.Wallets.Interfaces;
 using Spendify.Application.Common.Options;
 using Spendify.Infrastructure.Authentication;
 using Spendify.Infrastructure.Authentication.DependencyInjection;
 using Spendify.Infrastructure.Data;
+using Spendify.Infrastructure.Wallets;
 
 namespace Spendify.Infrastructure;
 
@@ -49,8 +51,11 @@ public static class DependencyInjection
         
         services.AddSpendifyJwtAuthentication(configuration);
         
+        services.AddHttpContextAccessor();
         services.AddScoped<ITokenService, JwtTokenService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<IWalletService, WalletService>();
         services.AddSpendifyIdentity();
 
         return services;

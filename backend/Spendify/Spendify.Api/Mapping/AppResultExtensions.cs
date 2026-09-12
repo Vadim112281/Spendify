@@ -10,6 +10,32 @@ public static class AppResultExtensions
         if (result.IsSuccess)
             return new OkObjectResult(result.Value);
 
+        return ToErrorObjectResult(result);
+    }
+
+    public static ActionResult<T> ToCreatedResult<T>(this AppResult<T> result)
+    {
+        if (result.IsSuccess)
+        {
+            return new ObjectResult(result.Value)
+            {
+                StatusCode = StatusCodes.Status201Created,
+            };
+        }
+
+        return ToErrorObjectResult(result);
+    }
+
+    public static IActionResult ToNoContentResult<T>(this AppResult<T> result)
+    {
+        if (result.IsSuccess)
+            return new NoContentResult();
+
+        return ToErrorObjectResult(result);
+    }
+
+    private static ObjectResult ToErrorObjectResult<T>(AppResult<T> result)
+    {
         var error = result.Error!;
 
         if (error.FieldErrors is { Count: > 0 })

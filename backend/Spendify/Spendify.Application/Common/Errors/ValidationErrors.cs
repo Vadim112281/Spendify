@@ -25,6 +25,18 @@ public static class ValidationErrors
     public const string LastNameTooShort = "LAST_NAME_TOO_SHORT";
     public const string LastNameTooLong = "LAST_NAME_TOO_LONG";
 
+    public const string WalletIdRequired = "WALLET_ID_REQUIRED";
+
+    public const string WalletNameTooLong = "WALLET_NAME_TOO_LONG";
+
+    public const string WalletTypeRequired = "WALLET_TYPE_REQUIRED";
+    public const string InvalidWalletType = "INVALID_WALLET_TYPE";
+
+    public const string CurrencyTypeRequired = "CURRENCY_TYPE_REQUIRED";
+    public const string InvalidCurrencyType = "INVALID_CURRENCY_TYPE";
+
+    public const string WalletUpdateFieldsRequired = "WALLET_UPDATE_FIELDS_REQUIRED";
+
     public static AppError FromFieldErrors(IReadOnlyDictionary<string, string> fieldErrors) =>
         new(Failed, StatusCode, fieldErrors);
 }
