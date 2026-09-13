@@ -1,0 +1,66 @@
+---
+description: Spendify backend — Clean Architecture, Application layer conventions
+globs: backend/**
+alwaysApply: false
+---
+
+# Backend conventions
+
+Apply on any work in `backend/`.
+
+## Layer boundaries
+
+- **Domain** — entities, enums, domain rules. No Application/Infrastructure references.
+- **Application** — commands, queries, handlers, validators, interfaces, DTOs/read models (`WalletResult`, `AuthSessionResult`), policies, error codes.
+- **Infrastructure** — EF, Identity, service implementations, entity ↔ DTO mapping.
+- **Api** — controllers, HTTP mapping (`AppResultExtensions`), DI wiring.
+
+## Application services must not expose domain entities
+
+Interfaces in `Spendify.Application/**/Interfaces/` return **DTOs, tuples, or primitives** — not `Domain.Models` types.
+
+Map `Entity → DTO` inside **Infrastructure** (private helper on the service impl). Handlers should not call `SomeResult.From(entity)`.
+
+```csharp
+// ✅ IAuthService — minimal data, no User entity
+Task<AppResult<(Guid UserId, string Email)>> LoginAsync(...);
+
+// ✅ IWalletService — read model, not Wallet
+Task<WalletResult> CreateAsync(...);
+Task<List<WalletResult>> GetByUserIdAsync(...);
+Task<AppResult<WalletResult>> UpdateAsync(...);
+Task<AppResult<bool>> DeleteAsync(...);
+
+// ❌ Application interface leaking persistence shape
+Task<Wallet> CreateAsync(...);
+Task<AppResult<Wallet>> UpdateAsync(...);
+```
+
+```csharp
+// ✅ Infrastructure — mapping stays here
+private static WalletResult MapToResult(Wallet wallet) =>
+    new(wallet.WalletId, wallet.WalletName, wallet.WalletType, wallet.CurrencyType, wallet.CreatedAtUtc);
+
+// ❌ Handler mapping domain entity
+return AppResult<WalletResult>.Success(WalletResult.From(wallet));
+```
+
+Handlers orchestrate auth + service calls; they do not know EF entities.
+
+## Validation and policies
+
+- FluentValidation in `Commands/**/**Validator.cs`; error codes from `ValidationErrors` / domain error static classes.
+- Shared limits and normalization — `Application/**/Policies/` (`EmailPolicy`, `WalletPolicy`). Do not duplicate `const int MaxLength` across validators.
+
+## Results and API mapping
+
+- Handlers return `AppResult<T>`.
+- Controllers map via `AppResultExtensions`: `ToActionResult()`, `ToCreatedResult()`, `ToNoContentResult()`.
+- JSON enums as strings — `JsonStringEnumConverter` in `Program.cs`.
+
+## New feature checklist
+
+1. Command/query + handler + validator in Application.
+2. Service interface returns DTOs only; implementation in Infrastructure.
+3. Controller action uses shared result mappers.
+4. New validation codes — **additive only**; do not rename existing error codes used by clients.
