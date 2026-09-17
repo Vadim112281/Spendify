@@ -35,17 +35,17 @@ export const AppField = ({
 			aria-invalid={error ? true : undefined}
 			aria-describedby={error ? `${id}-error` : undefined}
 			className={twx(
-				"w-full border bg-e-subtle text-e-heading",
+				"w-full border bg-e-subtle text-e-zinc",
 				error
 					? "border-e-error bg-e-error/8 focus:border-e-error"
-					: "border-e-border focus:border-e-heading/20",
+					: "border-e-border focus:border-e-zinc/20",
 				size === "sm"
 					? "rounded-12 px-12 py-10 text-14"
 					: "rounded-14 px-14 py-13 text-15",
 				"placeholder:text-e-muted",
 				"transition-colors duration-150",
 				"focus:outline-none",
-				"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-e-heading",
+				"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-e-zinc",
 				className,
 			)}
 			{...props}

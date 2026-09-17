@@ -1,12 +1,14 @@
 import {useReducedMotion} from "motion/react";
 import {useLocation} from "react-router-dom";
-
-import {getTabBarActiveSlotIndex, TAB_BAR_SLOTS} from "@/app/navigation/appTabs";
-import {twx} from "@/shared/lib/twx";
 import {AddButton} from "@/app/layout/AppTabBar/components/AddButton";
 import {SlidingIndicator} from "@/app/layout/AppTabBar/components/SlidingIndicator";
 import {TabLink} from "@/app/layout/AppTabBar/components/TabLink";
 import {TAB_BAR_UI} from "@/app/layout/AppTabBar/tabBarUi";
+import {
+	getTabBarActiveSlotIndex,
+	TAB_BAR_SLOTS,
+} from "@/app/navigation/appTabs";
+import {twx} from "@/shared/lib/twx";
 
 export const AppTabBar = () => {
 	const {pathname} = useLocation();

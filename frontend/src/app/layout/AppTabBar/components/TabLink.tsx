@@ -1,9 +1,8 @@
 import type {ComponentType} from "react";
 import {NavLink} from "react-router-dom";
-
+import type {TabIconActiveProps} from "@/app/layout/AppTabBar/components/icons/TabIcon";
 import {type AppTabRoute, getTabSlideIntent} from "@/app/navigation/appTabs";
 import {twx} from "@/shared/lib/twx";
-import type {TabIconActiveProps} from "@/app/layout/AppTabBar/components/icons/TabIcon";
 
 type TabLinkProps = {
 	route: AppTabRoute;
@@ -14,7 +13,7 @@ type TabLinkProps = {
 };
 
 const iconTone = (active: boolean) =>
-	active ? "text-e-heading" : "text-e-heading/42";
+	active ? "text-e-zinc" : "text-e-zinc/42";
 
 export const TabLink = ({
 	route,

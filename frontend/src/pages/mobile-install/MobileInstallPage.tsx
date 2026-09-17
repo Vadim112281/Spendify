@@ -63,12 +63,12 @@ export const MobileInstallPage = () => {
 							)}
 						>
 							<span
-								className="grid size-28 shrink-0 place-items-center rounded-9 bg-e-dash text-12 font-bold text-e-heading"
+								className="grid size-28 shrink-0 place-items-center rounded-9 bg-e-dash text-12 font-bold text-e-zinc"
 								aria-hidden="true"
 							>
 								{index + 1}
 							</span>
-							<p className="m-0 pt-3 text-14 leading-145 text-e-text [&_strong]:font-semibold [&_strong]:text-e-heading">
+							<p className="m-0 pt-3 text-14 leading-145 text-e-text [&_strong]:font-semibold [&_strong]:text-e-zinc">
 								{step.text}
 							</p>
 						</li>

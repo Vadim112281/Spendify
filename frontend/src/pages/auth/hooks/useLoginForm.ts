@@ -1,5 +1,7 @@
-import {type FormEvent, useState} from "react";
-
+import type {SubmitEventHandler} from "react";
+import {useState} from "react";
+import {isApiError} from "@/app/api/httpClient";
+import {beginAuthSession} from "@/app/auth/authSession";
 import {useRouteNavigation} from "@/app/navigation/useRouteNavigation";
 import {loginUser} from "@/pages/auth/api/authApi";
 import {
@@ -12,8 +14,6 @@ import type {
 	LoginFormValues,
 } from "@/pages/auth/types/authTypes";
 import {validateLoginForm} from "@/pages/auth/validation/validateAuthForms";
-import {isApiError} from "@/app/api/httpClient";
-import {setAuthToken} from "@/shared/services/storage/appStorage";
 
 const parseLoginFormValues = (formData: FormData): LoginFormValues => ({
 	email: String(formData.get("email") ?? ""),
@@ -26,7 +26,7 @@ export const useLoginForm = () => {
 	const [fieldErrors, setFieldErrors] = useState<LoginFieldErrors>({});
 	const [formError, setFormError] = useState<string | undefined>();
 
-	const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+	const onSubmit: SubmitEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
 		setFieldErrors({});
 		setFormError(undefined);
@@ -46,7 +46,7 @@ export const useLoginForm = () => {
 				email: values.email.trim(),
 				password: values.password.trim(),
 			});
-			setAuthToken(session.token);
+			beginAuthSession(session.token);
 			navigation.goToHomePage({replace: true});
 		} catch (error) {
 			const apiErrors = isApiError(error)

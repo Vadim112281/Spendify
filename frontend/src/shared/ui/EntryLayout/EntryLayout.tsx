@@ -72,7 +72,7 @@ export const EntryBrand = ({
 		<span
 			className={twx(
 				styles.brandName,
-				"text-17 font-semibold tracking-tight-03 text-e-heading",
+				"text-17 font-semibold tracking-tight-03 text-e-zinc",
 			)}
 		>
 			Spendify

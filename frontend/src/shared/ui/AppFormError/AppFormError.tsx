@@ -1,8 +1,8 @@
-type AuthFormErrorProps = {
+type AppFormErrorProps = {
 	message: string;
 };
 
-export const AuthFormError = ({message}: AuthFormErrorProps) => (
+export const AppFormError = ({message}: AppFormErrorProps) => (
 	<div
 		className="rounded-12 border border-e-error/35 bg-e-error/10 px-12 py-10"
 		role="alert"

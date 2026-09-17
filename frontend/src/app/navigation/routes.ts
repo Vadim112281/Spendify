@@ -3,6 +3,7 @@ export const APP_ROUTE_SEGMENTS = {
 	OPERATIONS: "operations",
 	ANALYTICS: "analytics",
 	PROFILE: "profile",
+	WALLETS_NEW: "wallets/new",
 } as const;
 
 export const APP_ROUTES = {
@@ -13,6 +14,7 @@ export const APP_ROUTES = {
 	APP_OPERATIONS: `/app/${APP_ROUTE_SEGMENTS.OPERATIONS}`,
 	APP_ANALYTICS: `/app/${APP_ROUTE_SEGMENTS.ANALYTICS}`,
 	APP_PROFILE: `/app/${APP_ROUTE_SEGMENTS.PROFILE}`,
+	APP_CREATE_WALLET: `/app/${APP_ROUTE_SEGMENTS.WALLETS_NEW}`,
 } as const;
 
 export type AppRoute = (typeof APP_ROUTES)[keyof typeof APP_ROUTES];

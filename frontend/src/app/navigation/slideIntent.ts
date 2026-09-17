@@ -1,6 +1,6 @@
 import {
-	SLIDE_INTENT,
 	type RouteLocationState,
+	SLIDE_INTENT,
 	type SlideIntent,
 } from "@/app/navigation/types/slideIntentTypes";
 
