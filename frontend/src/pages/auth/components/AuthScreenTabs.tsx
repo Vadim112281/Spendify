@@ -51,9 +51,9 @@ export const AuthScreenTabs = ({
 					disabled={disabled}
 					className={twx(
 						"relative z-1 cursor-pointer rounded-9 border-none bg-transparent py-8 text-13 font-semibold transition-colors duration-200",
-						"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-e-heading",
+						"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-e-zinc",
 						"disabled:cursor-default disabled:opacity-70",
-						isActive ? "text-e-heading" : "text-e-muted hover:text-e-text",
+						isActive ? "text-e-zinc" : "text-e-muted hover:text-e-text",
 					)}
 					onClick={() => navigation.goToAuthScreen(tab.id)}
 				>

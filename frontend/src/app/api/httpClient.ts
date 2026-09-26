@@ -1,12 +1,7 @@
-import {
-	type ApiErrorBody,
-	parseErrorBody,
-} from "@/app/api/parseApiErrorBody";
+import {type ApiErrorBody, parseErrorBody} from "@/app/api/parseApiErrorBody";
+import {endAuthSession} from "@/app/auth/authSession";
 import {APP_ROUTES} from "@/app/navigation/routes";
-import {
-	clearAuthToken,
-	getAuthToken,
-} from "@/shared/services/storage/appStorage";
+import {getAuthToken} from "@/shared/services/storage/appStorage";
 
 export type {ApiErrorBody};
 
@@ -22,7 +17,7 @@ const getAuthHeaders = (): Record<string, string> => {
 };
 
 const handleUnauthorized = (): void => {
-	clearAuthToken();
+	endAuthSession();
 
 	if (window.location.pathname.startsWith(APP_ROUTES.APP)) {
 		window.location.assign(APP_ROUTES.ENTRY);

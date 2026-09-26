@@ -1,7 +1,7 @@
-import {AuthFormError} from "@/pages/auth/components/AuthFormError";
 import {useLoginForm} from "@/pages/auth/hooks/useLoginForm";
 import {AppButton} from "@/shared/ui/AppButton/AppButton";
 import {AppField} from "@/shared/ui/AppField/AppField";
+import {AppFormError} from "@/shared/ui/AppFormError/AppFormError";
 import {AppHeading} from "@/shared/ui/AppHeading/AppHeading";
 import {AppTextButton} from "@/shared/ui/AppTextButton/AppTextButton";
 
@@ -51,7 +51,7 @@ export const LoginForm = ({
 					error={fieldErrors.password}
 				/>
 
-				{formError && <AuthFormError message={formError} />}
+				{formError && <AppFormError message={formError} />}
 
 				<AppButton
 					type="submit"

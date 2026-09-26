@@ -1,3 +1,4 @@
+import type {ApiError} from "@/app/api/httpClient";
 import {
 	LOGIN_ERROR_CODE,
 	type LoginErrorCode,
@@ -38,7 +39,8 @@ const REGISTER_MESSAGES: Record<RegisterErrorCode, string> = {
 	[REGISTER_ERROR_CODE.EMAIL_REQUIRED]: "Enter email",
 	[REGISTER_ERROR_CODE.INVALID_EMAIL]: "Invalid email format",
 	[REGISTER_ERROR_CODE.EMAIL_TOO_LONG]: "Email is too long",
-	[REGISTER_ERROR_CODE.EMAIL_ALREADY_EXISTS]: "This email is already registered",
+	[REGISTER_ERROR_CODE.EMAIL_ALREADY_EXISTS]:
+		"This email is already registered",
 	[REGISTER_ERROR_CODE.PASSWORD_REQUIRED]: "Enter password",
 	[REGISTER_ERROR_CODE.PASSWORD_TOO_SHORT]: "Minimum 8 characters",
 	[REGISTER_ERROR_CODE.PASSWORD_TOO_LONG]: "Maximum 128 characters",
@@ -63,11 +65,6 @@ export const getLoginMessage = (code: string): string =>
 
 export const getRegisterMessage = (code: string): string =>
 	REGISTER_MESSAGES[code as RegisterErrorCode] ?? UNKNOWN_ERROR_MESSAGE;
-
-type AuthApiError = {
-	code: string;
-	fieldErrors: Record<string, string>;
-};
 
 type AuthApiFormErrors<TFieldErrors> = {
 	fieldErrors: TFieldErrors;
@@ -102,7 +99,7 @@ export const mapRegisterClientErrors = (
 ): RegisterFieldErrors => mapFieldErrorCodes(codes, getRegisterMessage);
 
 const mapApiFormErrors = <TField extends string>(
-	error: AuthApiError,
+	error: ApiError,
 	fields: readonly TField[],
 	getMessage: (code: string) => string,
 ): AuthApiFormErrors<Partial<Record<TField, string>>> => {
@@ -123,12 +120,10 @@ const mapApiFormErrors = <TField extends string>(
 	};
 };
 
-export const mapLoginApiError = (error: AuthApiError): LoginApiFormErrors =>
+export const mapLoginApiError = (error: ApiError): LoginApiFormErrors =>
 	mapApiFormErrors(error, LOGIN_FORM_FIELDS, getLoginMessage);
 
-export const mapRegisterApiError = (
-	error: AuthApiError,
-): RegisterApiFormErrors =>
+export const mapRegisterApiError = (error: ApiError): RegisterApiFormErrors =>
 	mapApiFormErrors(error, REGISTER_FORM_FIELDS, getRegisterMessage);
 
 export const getLoginUnknownError = (): LoginApiFormErrors => ({

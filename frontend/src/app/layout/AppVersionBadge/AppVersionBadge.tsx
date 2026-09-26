@@ -23,10 +23,10 @@ export const AppVersionBadge = () => {
 				"fixed right-20 bottom-[max(20px,env(safe-area-inset-bottom))] z-50",
 				"cursor-pointer rounded-full border px-10 py-5 text-10 font-medium",
 				"transition-(border-color,background,color) duration-150",
-				"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-e-heading",
+				"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-e-zinc",
 				isWebsiteTesting
-					? "border-e-heading/30 bg-e-heading/10 text-e-heading"
-					: "border-e-border bg-e-subtle/90 text-e-muted hover:border-e-heading/20 hover:text-e-text",
+					? "border-e-zinc/30 bg-e-zinc/10 text-e-zinc"
+					: "border-e-border bg-e-subtle/90 text-e-muted hover:border-e-zinc/20 hover:text-e-text",
 			)}
 		>
 			v{APP_VERSION}

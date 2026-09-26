@@ -14,11 +14,7 @@ export const useRouteNavigation = () => {
 		() =>
 			createNavigation({
 				route: (path: AppRoute, options?: RouteNavigateOptions) => {
-					const slide = resolveNavigationSlide(
-						pathname,
-						path,
-						options?.slide,
-					);
+					const slide = resolveNavigationSlide(pathname, path, options?.slide);
 					const replace = options?.replace === true;
 
 					if (!slide && !replace) {

@@ -1,7 +1,7 @@
-import {AuthFormError} from "@/pages/auth/components/AuthFormError";
 import {useRegisterForm} from "@/pages/auth/hooks/useRegisterForm";
 import {AppButton} from "@/shared/ui/AppButton/AppButton";
 import {AppField} from "@/shared/ui/AppField/AppField";
+import {AppFormError} from "@/shared/ui/AppFormError/AppFormError";
 import {AppHeading} from "@/shared/ui/AppHeading/AppHeading";
 import {AppTextButton} from "@/shared/ui/AppTextButton/AppTextButton";
 
@@ -83,7 +83,7 @@ export const RegisterForm = ({
 					error={fieldErrors.passwordConfirm}
 				/>
 
-				{formError && <AuthFormError message={formError} />}
+				{formError && <AppFormError message={formError} />}
 
 				<AppButton
 					type="submit"

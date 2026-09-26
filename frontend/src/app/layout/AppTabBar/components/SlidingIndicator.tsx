@@ -1,7 +1,6 @@
 import {motion} from "motion/react";
-
-import {twx} from "@/shared/lib/twx";
 import {tabBarSpring} from "@/app/layout/AppTabBar/config/tabBarMotion";
+import {twx} from "@/shared/lib/twx";
 
 type SlidingIndicatorProps = {
 	slotIndex: number;
@@ -37,14 +36,14 @@ export const SlidingIndicator = ({
 	}
 
 	return (
-	<motion.div
-		className={indicatorClass}
-		initial={false}
-		animate={slotPosition(slotIndex, slotCount)}
-		transition={reducedMotion ? {duration: 0} : tabBarSpring}
-		aria-hidden
-	>
-		<SlotPill />
-	</motion.div>
+		<motion.div
+			className={indicatorClass}
+			initial={false}
+			animate={slotPosition(slotIndex, slotCount)}
+			transition={reducedMotion ? {duration: 0} : tabBarSpring}
+			aria-hidden
+		>
+			<SlotPill />
+		</motion.div>
 	);
 };

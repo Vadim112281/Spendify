@@ -1,8 +1,8 @@
-import {AppDecorativeIcon} from "@/shared/ui/AppDecorativeIcon/AppDecorativeIcon";
 import {
 	TabIcon,
 	type TabIconActiveProps,
 } from "@/app/layout/AppTabBar/components/icons/TabIcon";
+import {AppDecorativeIcon} from "@/shared/ui/AppDecorativeIcon/AppDecorativeIcon";
 
 export const HomeTabIcon = ({active}: TabIconActiveProps) => (
 	<TabIcon active={active}>

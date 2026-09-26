@@ -13,7 +13,7 @@ export const AppHeading = ({children, className}: AppHeadingProps) => (
 	<h1
 		className={twx(
 			styles.title,
-			"leading-120 font-semibold tracking-tight-03 text-e-heading",
+			"leading-120 font-semibold tracking-tight-03 text-e-zinc",
 			className,
 		)}
 	>

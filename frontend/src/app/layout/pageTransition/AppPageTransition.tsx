@@ -1,58 +1,95 @@
-import {motion, type Transition} from "motion/react";
+import {motion, useAnimationControls} from "motion/react";
+import {useLayoutEffect} from "react";
 
+import {pageSlideTransition} from "@/app/layout/pageTransition/pageSlideTransitionConfig";
 import {usePageSlideTransition} from "@/app/layout/pageTransition/usePageSlideTransition";
 import {twx} from "@/shared/lib/twx";
 
-const pageSlideTransition: Transition = {
-	duration: 0.42,
-	ease: [0.22, 1, 0.36, 1],
-};
-
-const pageClassName = twx(
-	"h-full overflow-y-auto bg-e-bg px-20",
+const pageLayoutClassName = twx(
+	"bg-e-bg px-20",
 	"pt-[max(20px,env(safe-area-inset-top))]",
 	"pb-tab-bar-layout",
 );
 
+const pagePanelScrollClassName = twx(
+	pageLayoutClassName,
+	"h-full overflow-x-hidden overflow-y-auto overscroll-contain touch-pan-y",
+);
+
+const panelHalfClassName = twx(
+	pagePanelScrollClassName,
+	"relative w-1/2 shrink-0 overflow-hidden",
+);
+
 export const AppPageTransition = () => {
 	const {outlet, transition, finishTransition} = usePageSlideTransition();
+	const slideControls = useAnimationControls();
+	const isSliding = transition !== null;
 
-	if (!transition) {
-		return <div className={pageClassName}>{outlet}</div>;
-	}
+	const slideForward = transition ? transition.direction > 0 : true;
+	const leftOutlet =
+		isSliding && transition
+			? slideForward
+				? transition.fromOutlet
+				: transition.toOutlet
+			: outlet;
+	const rightOutlet =
+		isSliding && transition
+			? slideForward
+				? transition.toOutlet
+				: transition.fromOutlet
+			: null;
 
-	// Order panels left-to-right; swap when sliding back to a tab on the left.
-	const pages =
-		transition.direction > 0
-			? [
-					{key: transition.fromPath, outlet: transition.fromOutlet},
-					{key: transition.toPath, outlet: transition.toOutlet},
-				]
-			: [
-					{key: transition.toPath, outlet: transition.toOutlet},
-					{key: transition.fromPath, outlet: transition.fromOutlet},
-				];
-	const slidesForward = transition.direction > 0;
+	useLayoutEffect(() => {
+		if (!transition) {
+			void slideControls.set({x: "0%"});
+			return;
+		}
+
+		const transitionId = transition.id;
+		const slideStartX = transition.direction > 0 ? "0%" : "-50%";
+		const slideEndX = transition.direction > 0 ? "-50%" : "0%";
+		let cancelled = false;
+
+		const runSlide = async () => {
+			await slideControls.set({x: slideStartX});
+			await slideControls.start({x: slideEndX}, pageSlideTransition);
+
+			if (!cancelled) {
+				finishTransition(transitionId);
+			}
+		};
+
+		void runSlide();
+
+		return () => {
+			cancelled = true;
+		};
+	}, [transition, slideControls, finishTransition]);
 
 	return (
-		<div className="absolute inset-0 overflow-hidden">
+		<div className="fixed inset-0 overflow-hidden">
 			<motion.div
-				key={transition.id}
 				className="flex h-full"
-				style={{width: "200%"}}
-				initial={{x: slidesForward ? "0%" : "-50%"}}
-				animate={{x: slidesForward ? "-50%" : "0%"}}
-				transition={pageSlideTransition}
-				onAnimationComplete={() => finishTransition(transition.id)}
+				style={{width: isSliding ? "200%" : "100%"}}
+				animate={slideControls}
+				initial={false}
 			>
-				{pages.map((page) => (
-					<div
-						key={page.key}
-						className={twx(pageClassName, "w-1/2 shrink-0")}
-					>
-						{page.outlet}
+				<div
+					key="primary"
+					className={
+						isSliding
+							? panelHalfClassName
+							: twx(pagePanelScrollClassName, "w-full")
+					}
+				>
+					{leftOutlet}
+				</div>
+				{isSliding && rightOutlet ? (
+					<div key="secondary" className={panelHalfClassName}>
+						{rightOutlet}
 					</div>
-				))}
+				) : null}
 			</motion.div>
 		</div>
 	);

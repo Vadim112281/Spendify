@@ -15,7 +15,7 @@ export const EntryDashboard = ({variant = "default"}: EntryDashboardProps) => (
 	<div
 		className={twx(
 			styles.root,
-			"relative overflow-hidden rounded-18 border border-white/10 p-16 text-e-heading shadow-e-dash",
+			"relative overflow-hidden rounded-18 border border-white/10 p-16 text-e-zinc shadow-e-dash",
 		)}
 		aria-hidden="true"
 	>
@@ -42,7 +42,7 @@ export const EntryDashboard = ({variant = "default"}: EntryDashboardProps) => (
 				<span
 					className={twx(
 						styles.riseDelayMd,
-						"text-21 leading-110 font-bold tracking-tight-03 text-e-heading tabular-nums",
+						"text-21 leading-110 font-bold tracking-tight-03 text-e-zinc tabular-nums",
 					)}
 				>
 					₴ <span className="opacity-90">24 850</span>

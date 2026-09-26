@@ -16,8 +16,8 @@
 	}
 
 	#root {
-		@apply min-h-svh;
-		overflow-x: hidden;
+		@apply h-dvh min-h-svh;
+		overflow: hidden;
 		max-width: 100%;
 	}
 

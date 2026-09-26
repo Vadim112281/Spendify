@@ -6,7 +6,10 @@
 import {AUTH_SCREEN, type AuthScreen} from "@/pages/auth/types/authScreen";
 
 import {APP_ROUTES, type AppRoute} from "./routes";
-import type {RouteNavigateOptions} from "./types/slideIntentTypes";
+import {
+	type RouteNavigateOptions,
+	SLIDE_INTENT,
+} from "./types/slideIntentTypes";
 
 export type NavigationHandlers = {
 	auth?: (screen: AuthScreen) => void;
@@ -31,6 +34,11 @@ export const createNavigation = ({auth, route}: NavigationHandlers) => ({
 		route?.(APP_ROUTES.APP_ANALYTICS, options),
 	goToProfilePage: (options?: RouteNavigateOptions) =>
 		route?.(APP_ROUTES.APP_PROFILE, options),
+	goToCreateWalletPage: (options?: RouteNavigateOptions) =>
+		route?.(APP_ROUTES.APP_CREATE_WALLET, {
+			slide: SLIDE_INTENT.FORWARD,
+			...options,
+		}),
 });
 
 export type Navigation = ReturnType<typeof createNavigation>;

@@ -26,7 +26,7 @@ export const AppButton = ({
 			size === "sm" ? "px-18 py-12 text-14" : "px-20 py-15 text-15",
 			"shadow-e-btn transition-(transform,background) duration-150",
 			"hover:-translate-y-px hover:bg-e-btn-hover active:translate-y-0",
-			"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-e-heading",
+			"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-e-zinc",
 			"disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0",
 			className,
 		)}

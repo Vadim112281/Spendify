@@ -29,13 +29,13 @@ export const DesktopOnlyPage = () => (
 			{tips.map((tip) => (
 				<div
 					key={tip.label}
-					className="flex flex-col gap-10 rounded-14 border border-e-border bg-e-subtle p-14 text-13 leading-140 text-e-muted transition-(transform,border-color) duration-150 hover:-translate-y-0.5 hover:border-e-heading/12"
+					className="flex flex-col gap-10 rounded-14 border border-e-border bg-e-subtle p-14 text-13 leading-140 text-e-muted transition-(transform,border-color) duration-150 hover:-translate-y-0.5 hover:border-e-zinc/12"
 				>
-					<span className="grid size-38 place-items-center rounded-11 border border-e-border bg-e-surface-solid text-e-heading">
+					<span className="grid size-38 place-items-center rounded-11 border border-e-border bg-e-surface-solid text-e-zinc">
 						{tip.icon}
 					</span>
 					<span>
-						<span className="block text-14 font-semibold text-e-heading">
+						<span className="block text-14 font-semibold text-e-zinc">
 							{tip.label}
 						</span>
 						<span className="mt-2 block text-12 text-e-muted">
