@@ -5,8 +5,8 @@ import {isApiError} from "@/app/api/httpClient";
 import {SLIDE_INTENT} from "@/app/navigation/types/slideIntentTypes";
 import {useRouteNavigation} from "@/app/navigation/useRouteNavigation";
 import {createWallet} from "@/features/wallets/api/walletsApi";
+import {getWalletDisplayName} from "@/features/wallets/walletDisplay";
 import type {CurrencyType, WalletType} from "@/features/wallets/walletTypes";
-import {resolveWalletName} from "@/pages/wallets/services/resolveWalletName";
 import {
 	getCreateWalletUnknownError,
 	mapCreateWalletApiError,
@@ -74,7 +74,7 @@ export const useCreateWalletForm = () => {
 			await createWallet({
 				walletType: values.walletType,
 				currencyType: values.currencyType,
-				walletName: resolveWalletName(values.walletName, values.walletType),
+				walletName: getWalletDisplayName(values.walletName, values.walletType),
 			});
 			navigation.goToHomePage({
 				replace: true,

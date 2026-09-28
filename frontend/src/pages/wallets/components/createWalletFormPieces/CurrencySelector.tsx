@@ -1,10 +1,10 @@
-import type {CurrencyType} from "@/features/wallets/walletTypes";
 import {
 	CURRENCY_TYPE_DISPLAY,
 	CURRENCY_TYPE_OPTIONS,
-} from "@/pages/wallets/config/createWalletFormConfig";
+} from "@/features/wallets/walletDisplay";
+import type {CurrencyType} from "@/features/wallets/walletTypes";
 import {CURRENCY_ACCENT_STYLES} from "@/pages/wallets/config/currencyAccentConfig";
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 
 type CurrencySelectorProps = {
 	value: CurrencyType | null;

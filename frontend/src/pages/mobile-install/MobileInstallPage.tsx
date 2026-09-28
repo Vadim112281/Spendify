@@ -1,5 +1,5 @@
 import {usePwaInstall} from "@/pages/mobile-install/model/usePwaInstall";
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 import {AppButton} from "@/shared/ui/AppButton/AppButton";
 import {AppHeading} from "@/shared/ui/AppHeading/AppHeading";
 import {EntryDashboard} from "@/shared/ui/EntryDashboard/EntryDashboard";

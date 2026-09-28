@@ -1,7 +1,7 @@
 import {motion} from "motion/react";
 
 import {addButtonSpring} from "@/app/layout/AppTabBar/config/tabBarMotion";
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 import {AppDecorativeIcon} from "@/shared/ui/AppDecorativeIcon/AppDecorativeIcon";
 
 export const AddButton = () => (

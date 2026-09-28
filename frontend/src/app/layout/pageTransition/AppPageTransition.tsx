@@ -3,10 +3,10 @@ import {useLayoutEffect} from "react";
 
 import {pageSlideTransition} from "@/app/layout/pageTransition/pageSlideTransitionConfig";
 import {usePageSlideTransition} from "@/app/layout/pageTransition/usePageSlideTransition";
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 
 const pageLayoutClassName = twx(
-	"bg-e-bg px-20",
+	"min-h-0 bg-e-bg px-20",
 	"pt-[max(20px,env(safe-area-inset-top))]",
 	"pb-tab-bar-layout",
 );
@@ -70,13 +70,14 @@ export const AppPageTransition = () => {
 	return (
 		<div className="fixed inset-0 overflow-hidden">
 			<motion.div
-				className="flex h-full"
+				className="flex h-full min-h-0"
 				style={{width: isSliding ? "200%" : "100%"}}
 				animate={slideControls}
 				initial={false}
 			>
 				<div
 					key="primary"
+					data-app-page-scroll
 					className={
 						isSliding
 							? panelHalfClassName
@@ -86,7 +87,7 @@ export const AppPageTransition = () => {
 					{leftOutlet}
 				</div>
 				{isSliding && rightOutlet ? (
-					<div key="secondary" className={panelHalfClassName}>
+					<div key="secondary" data-app-page-scroll className={panelHalfClassName}>
 						{rightOutlet}
 					</div>
 				) : null}

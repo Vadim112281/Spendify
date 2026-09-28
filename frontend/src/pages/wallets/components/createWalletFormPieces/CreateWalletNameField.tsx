@@ -1,7 +1,6 @@
 import type {ChangeEvent} from "react";
-
+import {DEFAULT_WALLET_NAMES} from "@/features/wallets/walletDisplay";
 import type {WalletType} from "@/features/wallets/walletTypes";
-import {DEFAULT_WALLET_NAMES} from "@/pages/wallets/config/createWalletFormConfig";
 import {AppField} from "@/shared/ui/AppField/AppField";
 
 type CreateWalletNameFieldProps = {

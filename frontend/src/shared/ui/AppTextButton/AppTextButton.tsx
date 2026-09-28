@@ -1,6 +1,6 @@
 import type {ButtonHTMLAttributes, ReactNode} from "react";
 
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 
 type AppTextButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 	children: ReactNode;

@@ -1,7 +1,7 @@
+import {CURRENCY_TYPE_OPTIONS} from "@/features/wallets/walletDisplay";
 import type {CurrencyType} from "@/features/wallets/walletTypes";
-import {CURRENCY_TYPE_OPTIONS} from "@/pages/wallets/config/createWalletFormConfig";
 import {CURRENCY_ACCENT_STYLES} from "@/pages/wallets/config/currencyAccentConfig";
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 
 type CreateWalletPageBackgroundProps = {
 	currencyType: CurrencyType | null;

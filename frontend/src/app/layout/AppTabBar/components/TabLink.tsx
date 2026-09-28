@@ -1,8 +1,9 @@
 import type {ComponentType} from "react";
 import {NavLink} from "react-router-dom";
+
 import type {TabIconActiveProps} from "@/app/layout/AppTabBar/components/icons/TabIcon";
 import {type AppTabRoute, getTabSlideIntent} from "@/app/navigation/appTabs";
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 
 type TabLinkProps = {
 	route: AppTabRoute;

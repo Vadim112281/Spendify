@@ -26,3 +26,13 @@
 		@apply font-medium text-heading;
 	}
 }
+
+@layer utilities {
+	.scrollbar-hidden {
+		scrollbar-width: none;
+	}
+
+	.scrollbar-hidden::-webkit-scrollbar {
+		display: none;
+	}
+}
