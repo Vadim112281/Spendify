@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {APP_VERSION} from "@/app/config/appVersion";
 import {APP_ROUTES} from "@/app/navigation/routes";
 import {WebsiteTestingSetting} from "@/pages/dev-tools/components/WebsiteTestingSetting";
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 import {AppHeading} from "@/shared/ui/AppHeading/AppHeading";
 import {AppTextButton} from "@/shared/ui/AppTextButton/AppTextButton";
 

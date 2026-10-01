@@ -1,16 +1,18 @@
-import {WalletTypeIcon} from "@/pages/wallets/components/createWalletFormPieces/WalletTypeIcon";
 import {
 	CURRENCY_TYPE_DISPLAY,
+	getWalletDisplayNameForPreview,
 	WALLET_TYPE_LABELS,
-} from "@/pages/wallets/config/createWalletFormConfig";
+} from "@/features/wallets/walletDisplay";
+import {WalletTypeIcon} from "@/pages/wallets/components/createWalletFormPieces/WalletTypeIcon";
 import {CURRENCY_ACCENT_STYLES} from "@/pages/wallets/config/currencyAccentConfig";
-import {resolveWalletPreviewName} from "@/pages/wallets/services/resolveWalletName";
 import type {CreateWalletFormValues} from "@/pages/wallets/types/createWalletFormTypes";
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 
 type CreateWalletPreviewCardProps = {
 	values: CreateWalletFormValues;
 };
+
+const PREVIEW_NAME_BEFORE_TYPE = "New wallet";
 
 const getPreviewMeta = (values: CreateWalletFormValues): string => {
 	if (values.walletType && values.currencyType) {
@@ -96,7 +98,11 @@ export const CreateWalletPreviewCard = ({
 
 				<div className="min-w-0 flex-1 pr-32">
 					<p className="truncate text-16 font-semibold tracking-tight-03 text-e-zinc">
-						{resolveWalletPreviewName(values.walletName, values.walletType)}
+						{getWalletDisplayNameForPreview(
+							values.walletName,
+							values.walletType,
+							PREVIEW_NAME_BEFORE_TYPE,
+						)}
 					</p>
 					<p className="mt-6 truncate text-13 text-e-muted">
 						{getPreviewMeta(values)}

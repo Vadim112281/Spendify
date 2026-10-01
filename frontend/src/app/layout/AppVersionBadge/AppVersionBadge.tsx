@@ -1,9 +1,8 @@
 import {useLocation, useNavigate} from "react-router-dom";
-
 import {APP_VERSION} from "@/app/config/appVersion";
 import {APP_ROUTES} from "@/app/navigation/routes";
-import {twx} from "@/shared/lib/twx";
 import {getWebsiteTesting} from "@/shared/services/storage/appStorage";
+import {twx} from "@/shared/utils/twx";
 
 export const AppVersionBadge = () => {
 	const navigate = useNavigate();
@@ -16,20 +15,26 @@ export const AppVersionBadge = () => {
 	}
 
 	return (
-		<button
-			type="button"
-			onClick={() => navigate(APP_ROUTES.DEV_TOOLS)}
+		<div
 			className={twx(
-				"fixed right-20 bottom-[max(20px,env(safe-area-inset-bottom))] z-50",
-				"cursor-pointer rounded-full border px-10 py-5 text-10 font-medium",
-				"transition-(border-color,background,color) duration-150",
-				"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-e-zinc",
-				isWebsiteTesting
-					? "border-e-zinc/30 bg-e-zinc/10 text-e-zinc"
-					: "border-e-border bg-e-subtle/90 text-e-muted hover:border-e-zinc/20 hover:text-e-text",
+				"fixed right-20 z-50 flex flex-col items-end",
+				"bottom-[max(20px,env(safe-area-inset-bottom))]",
 			)}
 		>
-			v{APP_VERSION}
-		</button>
+			<button
+				type="button"
+				onClick={() => navigate(APP_ROUTES.DEV_TOOLS)}
+				className={twx(
+					"cursor-pointer rounded-full border px-10 py-5 text-10 font-medium",
+					"transition-(border-color,background,color) duration-150",
+					"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-e-heading",
+					isWebsiteTesting
+						? "border-e-heading/30 bg-e-heading/10 text-e-heading"
+						: "border-e-border bg-e-subtle/90 text-e-muted hover:border-e-heading/20 hover:text-e-text",
+				)}
+			>
+				v{APP_VERSION}
+			</button>
+		</div>
 	);
 };

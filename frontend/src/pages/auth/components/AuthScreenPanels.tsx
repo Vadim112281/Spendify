@@ -17,7 +17,7 @@ import {AUTH_TAB_A11Y} from "@/pages/auth/config/authTabA11y";
 import type {AuthPanelMeasure} from "@/pages/auth/hooks/useAuthPanelHeight";
 import {useAuthPanelMeasure} from "@/pages/auth/hooks/useAuthPanelMeasure";
 import {AUTH_SCREEN, type AuthScreen} from "@/pages/auth/types/authScreen";
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 
 import styles from "./AuthComponents.module.scss";
 

@@ -1,6 +1,6 @@
 import type {ReactNode} from "react";
 
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 
 type CreateWalletFormSectionProps = {
 	label: string;

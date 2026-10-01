@@ -1,6 +1,7 @@
 import {motion} from "motion/react";
+
 import {tabBarSpring} from "@/app/layout/AppTabBar/config/tabBarMotion";
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 
 type SlidingIndicatorProps = {
 	slotIndex: number;

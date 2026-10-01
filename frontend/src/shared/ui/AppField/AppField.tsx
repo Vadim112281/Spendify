@@ -1,6 +1,6 @@
 import type {InputHTMLAttributes} from "react";
 
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 
 type AppFieldSize = "sm" | "md";
 

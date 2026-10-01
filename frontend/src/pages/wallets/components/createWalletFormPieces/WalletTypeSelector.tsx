@@ -1,11 +1,11 @@
+import {WALLET_TYPE_LABELS} from "@/features/wallets/walletDisplay";
 import type {WalletType} from "@/features/wallets/walletTypes";
 import {WalletTypeIcon} from "@/pages/wallets/components/createWalletFormPieces/WalletTypeIcon";
 import {
 	WALLET_TYPE_DESCRIPTIONS,
-	WALLET_TYPE_LABELS,
 	WALLET_TYPE_OPTIONS,
 } from "@/pages/wallets/config/createWalletFormConfig";
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 
 type WalletTypeSelectorProps = {
 	value: WalletType | null;

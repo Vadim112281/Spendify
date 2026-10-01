@@ -1,5 +1,5 @@
+import {HomeWalletIcon} from "@/pages/home/components/dashboard/icons/HomeWalletIcon";
 import {AppButton} from "@/shared/ui/AppButton/AppButton";
-import {AppDecorativeIcon} from "@/shared/ui/AppDecorativeIcon/AppDecorativeIcon";
 
 type HomeWalletEmptyProps = {
 	onCreateWallet: () => void;
@@ -13,10 +13,7 @@ export const HomeWalletEmpty = ({onCreateWallet}: HomeWalletEmptyProps) => (
 				aria-hidden="true"
 			/>
 			<div className="relative grid size-54 place-items-center rounded-18 border border-white/10 bg-e-dash shadow-e-dash">
-				<AppDecorativeIcon width={28} height={28} strokeWidth={1.65}>
-					<path d="M19 7H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
-					<path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
-				</AppDecorativeIcon>
+				<HomeWalletIcon width={28} height={28} strokeWidth={1.65} />
 			</div>
 		</div>
 

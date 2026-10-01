@@ -17,7 +17,7 @@ src/
     └── api/          # API client
 ```
 
-Imports use the `@/` alias and point at files directly (no `index.ts` barrels), e.g. `@/app/App`, `@/pages/entry/EntryPage`, `@/shared/lib/twx`.
+Imports use the `@/` alias and point at files directly (no `index.ts` barrels), e.g. `@/app/App`, `@/pages/entry/EntryPage`, `@/shared/utils/twx`.
 
 ## Design tokens (Tailwind)
 

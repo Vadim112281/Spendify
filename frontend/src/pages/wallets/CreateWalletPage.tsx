@@ -4,7 +4,7 @@ import {CreateWalletForm} from "@/pages/wallets/components/CreateWalletForm";
 import {CreateWalletPageBackground} from "@/pages/wallets/components/CreateWalletPageBackground";
 import {CreateWalletPreviewCard} from "@/pages/wallets/components/CreateWalletPreviewCard";
 import {useCreateWalletForm} from "@/pages/wallets/hooks/useCreateWalletForm";
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 import {AppBackButton} from "@/shared/ui/AppBackButton/AppBackButton";
 import {AppHeading} from "@/shared/ui/AppHeading/AppHeading";
 

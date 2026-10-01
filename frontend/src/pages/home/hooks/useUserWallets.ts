@@ -15,8 +15,8 @@ export const useUserWallets = () => {
 		}
 
 		try {
-			const nextWallets = await getUserWallets();
-			setWallets(nextWallets);
+			const userWallets = await getUserWallets();
+			setWallets(userWallets);
 			setError(undefined);
 		} catch (loadError) {
 			setError(mapLoadWalletsError(loadError));

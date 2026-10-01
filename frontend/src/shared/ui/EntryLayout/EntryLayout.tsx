@@ -1,5 +1,5 @@
 import type {ReactNode} from "react";
-import {twx} from "@/shared/lib/twx";
+import {twx} from "@/shared/utils/twx";
 import {AppIcon} from "@/shared/ui/AppIcon/AppIcon";
 import {
 	ENTRY_LAYOUT_SIZE,

@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
 
-import {isIosBrowser} from "@/shared/lib/isMobileBrowser";
+import {isIosBrowser} from "@/shared/browser/isMobileBrowser";
 
 interface BeforeInstallPromptEvent extends Event {
 	prompt: () => Promise<void>;

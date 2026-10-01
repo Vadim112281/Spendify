@@ -91,7 +91,7 @@ aria-label="Головне меню"
 
 ## Imports and structure
 
-- **No barrel `index.ts`** — import files directly: `@/pages/entry/EntryPage`, `@/shared/lib/twx`, `@/shared/services/storage/storageService`.
+- **No barrel `index.ts`** — import files directly: `@/pages/entry/EntryPage`, `@/shared/utils/twx`, `@/shared/services/storage/storageService`.
 - Alias: `@/` → `frontend/src/`.
 - **`app/`** — shell, routing, layout, navigation, global styles (not routable screens):
   - `App.tsx` — router root
@@ -122,7 +122,9 @@ aria-label="Головне меню"
 Before writing new UI or a utility in `pages/`, check whether something suitable already exists in `shared/`.
 
 - **UI** — `shared/ui/` (`AppButton`, `AppField`, `AppHeading`, `AppTextButton`, `AppIcon`, `EntryLayout`…). If you need the same styles, markup, or behavior — import the existing piece; do not copy classes or markup into the page.
-- **Utilities** — `shared/lib/` (`twx`, `isMobileBrowser`…). Pure helpers without side effects. Do not duplicate locally in `pages/`.
+- **Utilities** — `shared/utils/` (`twx`, `timeUtils`…). Pure helpers without side effects. Do not duplicate locally in `pages/`.
+- **Hooks** — `shared/hooks/` (`useScrollLock`, `useScreenTransition`…). Shared React hooks reused on 2+ screens or in app shell.
+- **Browser** — `shared/browser/` (`isMobileBrowser`, `isPwaStandalone`…). UA / display-mode reads; call as plain functions, not hooks.
 - **Services** — `shared/services/` (`storageService`, `appStorage`…). `storageService` — low-level `localStorage` access; `appStorage` — named getters/setters (`getWebsiteTesting`…).
 - **New shared component** — when the same UI exists (or will exist) on **2+** screens, or it is a design-system primitive (button, field, heading). One-off UI unique to a single page — keep it in `pages/<name>/`.
 - **Extend instead of copy** — if a shared component is close enough, add a prop (`size`, `className`) in `shared/ui` instead of forking a copy in the page.
@@ -152,7 +154,7 @@ const LoginButton = () => (
 ## Styles (Tailwind)
 
 - Classes in JSX; **tokens from `app/styles/tokens.css`** (`text-15`, `size-38`, `rounded-11`) — avoid `text-[0.9375rem]` unless necessary.
-- Conditional classes: `twx` from `@/shared/lib/twx`.
+- Conditional classes: `twx` from `@/shared/utils/twx`.
 - Minimize arbitrary `[]` — only `env()`, rare selectors (`[&_strong]:…`).
 - Formatter: Biome, `bracketSpacing: false` → `{EntryPage}`, not `{ EntryPage }`.
 
@@ -203,7 +205,7 @@ export const usePageSlideTransition = () => {
 import {AppShell} from "@/app/layout/AppShell";
 import {EntryPage} from "@/pages/entry/EntryPage";
 import {getWebsiteTesting} from "@/shared/services/storage/appStorage";
-import {twx} from "@/shared/lib/twx";
-import {isMobileBrowser} from "@/shared/lib/isMobileBrowser";
+import {twx} from "@/shared/utils/twx";
+import {isMobileBrowser} from "@/shared/browser/isMobileBrowser";
 import {storageService} from "@/shared/services/storage/storageService";
 ```

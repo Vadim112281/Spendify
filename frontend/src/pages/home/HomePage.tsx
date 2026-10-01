@@ -1,4 +1,5 @@
 import {useRouteNavigation} from "@/app/navigation/useRouteNavigation";
+import {HomeDashboard} from "@/pages/home/components/dashboard/HomeDashboard";
 import {HomeWalletEmpty} from "@/pages/home/components/wallet/HomeWalletEmpty";
 import {HomeWalletLoadError} from "@/pages/home/components/wallet/HomeWalletLoadError";
 import {HomeWalletLoading} from "@/pages/home/components/wallet/HomeWalletLoading";
@@ -6,14 +7,14 @@ import {useUserWallets} from "@/pages/home/hooks/useUserWallets";
 
 export const HomePage = () => {
 	const navigation = useRouteNavigation();
-	const {isLoading, error, hasWallet, refetch} = useUserWallets();
+	const {wallets, isLoading, error, hasWallet, refetch} = useUserWallets();
 
-	const pageClassName =
+	const centeredPageClassName =
 		"flex min-h-app-page w-full items-center justify-center";
 
 	if (isLoading) {
 		return (
-			<div className={pageClassName}>
+			<div className={centeredPageClassName}>
 				<HomeWalletLoading />
 			</div>
 		);
@@ -21,7 +22,7 @@ export const HomePage = () => {
 
 	if (error) {
 		return (
-			<div className={pageClassName}>
+			<div className={centeredPageClassName}>
 				<HomeWalletLoadError
 					message={error}
 					onRetry={() => {
@@ -32,13 +33,17 @@ export const HomePage = () => {
 		);
 	}
 
-	if (hasWallet) {
-		return <div className="min-h-app-page w-full" />;
+	if (!hasWallet) {
+		return (
+			<div className={centeredPageClassName}>
+				<HomeWalletEmpty onCreateWallet={navigation.goToCreateWalletPage} />
+			</div>
+		);
 	}
 
 	return (
-		<div className={pageClassName}>
-			<HomeWalletEmpty onCreateWallet={navigation.goToCreateWalletPage} />
+		<div className="flex h-full min-h-0 flex-col">
+			<HomeDashboard wallets={wallets} />
 		</div>
 	);
 };
