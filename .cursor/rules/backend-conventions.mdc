@@ -8,59 +8,117 @@ alwaysApply: false
 
 Apply on any work in `backend/`.
 
+## Stack and request flow
+
+- **.NET 8**, **MediatR**, **FluentValidation**, **EF Core + Npgsql**, **JWT** (`[Authorize]` on app APIs).
+- **Api** → `IMediator.Send` → **ValidationBehavior** (validators) → **handler** → **`I*Service`** (Infrastructure) → `AppResult<T>` → **AppResultExtensions** → HTTP.
+
+Handlers stay thin: current user, map command → contract, call service, return result. No `DbContext` in Application.
+
 ## Layer boundaries
 
-- **Domain** — entities, enums, domain rules. No Application/Infrastructure references.
-- **Application** — commands, queries, handlers, validators, interfaces, DTOs/read models (`WalletResult`, `AuthSessionResult`), policies, error codes.
-- **Infrastructure** — EF, Identity, service implementations, entity ↔ DTO mapping.
-- **Api** — controllers, HTTP mapping (`AppResultExtensions`), DI wiring.
+| Layer | Contains | Must not reference |
+|-------|----------|-------------------|
+| **Domain** | `Models/`, `Enums/` | Application, Infrastructure, Api |
+| **Application** | Features (below), `Common/` | Infrastructure, Api |
+| **Infrastructure** | `Data/`, `*Service` impls, Identity, JWT | Api |
+| **Api** | Controllers, `Mapping/`, `Program.cs` DI | — (references Application + Infrastructure) |
+
+**Application may use `Spendify.Domain.Enums`** in commands, contracts, and `*Result` types. **Do not** use `Spendify.Domain.Models` entities in Application — only Infrastructure.
+
+Register MediatR + validators in `Spendify.Application/DependencyInjection.cs`. Register `I*Service` implementations in `Spendify.Infrastructure/DependencyInjection.cs`.
+
+## Feature layout (`Spendify.Application/<Feature>/`)
+
+Mirror **Transactions** for new work:
+
+- `Commands/<Operation>/` — `*Command`, `*Handler`, `*Validator` (nullable body fields for validation).
+- `Queries/` — `*Query`, `*Handler`, `*Validator` when query params need rules (pagination, ids).
+- `Contracts/` — `Create*Request`, `Update*Request` (required fields; passed to services).
+- `Interfaces/I*Service.cs` — persistence API for the feature.
+- `Policies/` — shared limits, defaults (`MaxPageSize`, string max length).
+- `*Result.cs`, `*Errors.cs` (or `Errors/` for Auth) — read models and stable `AppError` codes.
+- `Common/` — `AppResult`, `PagedResult`, `ValidationErrors`, `ValidationBehavior`, `ICurrentUserService`.
+
+Auth is flatter (no `Contracts/` yet); login/register validators live under `Commands/`.
 
 ## Application services must not expose domain entities
 
-Interfaces in `Spendify.Application/**/Interfaces/` return **DTOs, tuples, or primitives** — not `Domain.Models` types.
+Interfaces in `**/Interfaces/` return **DTOs, tuples, primitives, or `PagedResult<T>`** — not entity types.
 
-Map `Entity → DTO` inside **Infrastructure** (private helper on the service impl). Handlers should not call `SomeResult.From(entity)`.
+Map **entity → DTO** inside Infrastructure (`private static XxxResult MapToResult(...)` on the service). Handlers must not map EF entities.
 
 ```csharp
-// ✅ IAuthService — minimal data, no User entity
+// ✅ ITransactionService — DTOs + AppResult
+Task<AppResult<TransactionResult>> CreateAsync(
+    Guid userId, Guid walletId, CreateTransactionRequest request, CancellationToken cancellationToken = default);
+
+// ✅ IAuthService — tuple, no User entity
 Task<AppResult<(Guid UserId, string Email)>> LoginAsync(...);
 
-// ✅ IWalletService — read model, not Wallet
-Task<WalletResult> CreateAsync(...);
-Task<List<WalletResult>> GetByUserIdAsync(...);
-Task<AppResult<WalletResult>> UpdateAsync(...);
-Task<AppResult<bool>> DeleteAsync(...);
-
-// ❌ Application interface leaking persistence shape
+// ❌ leaking persistence shape
 Task<Wallet> CreateAsync(...);
-Task<AppResult<Wallet>> UpdateAsync(...);
 ```
+
+Prefer **`AppResult<T>` on all service methods** that can fail (not found, conflict). Handlers always return `AppResult<T>` to MediatR. Older wallet create/list paths may differ — align them when you touch those endpoints.
+
+## Service method parameters
+
+- **Create / update** with several body fields — one `record` per operation in `Contracts/`. `*Result` stays in the feature root. Signature: `(Guid userId, …scope ids…, XxxRequest request, CancellationToken ct)`.
+- **`userId`** and **scope ids** (`walletId`, `transactionId`) — separate parameters, not inside the request record. Handler reads `userId` from `ICurrentUserService`.
+- **Commands** are MediatR types only. After validation, handler builds the contract record and calls the service. **Never** pass `IRequest` / command types into `I*Service`.
+- **Get / delete** with only `userId` + one or two ids — plain parameters; no contract record.
+- **Lists with pagination** — `page`, `pageSize` on the service (or query); return `AppResult<PagedResult<T>>`. Defaults and caps from `*Policy`.
 
 ```csharp
-// ✅ Infrastructure — mapping stays here
-private static WalletResult MapToResult(Wallet wallet) =>
-    new(wallet.WalletId, wallet.WalletName, wallet.WalletType, wallet.CurrencyType, wallet.CreatedAtUtc);
-
-// ❌ Handler mapping domain entity
-return AppResult<WalletResult>.Success(WalletResult.From(wallet));
+// ✅ handler after validation
+var createRequest = new CreateTransactionRequest(
+    request.Type!.Value, request.Category!.Value, request.Amount!.Value,
+    request.Note, request.TransactionDate!.Value);
+return await _transactionService.CreateAsync(userId, request.WalletId, createRequest, cancellationToken);
 ```
 
-Handlers orchestrate auth + service calls; they do not know EF entities.
+**Legacy:** `IWalletService` still uses a long parameter list for create/update. New features and wallet refactors should use `Contracts/` like Transactions.
+
+## Authorization and ownership
+
+- **Authentication:** `[Authorize]` on controllers; missing/invalid JWT handled by ASP.NET.
+- **Current user:** protected handlers check `_currentUser.UserId`; if null → feature `*Errors.Unauthorized` (401).
+- **Resource access:** services verify the resource belongs to the user (e.g. wallet exists for `userId`) before read/write. Return feature errors such as `WalletNotFound` — do not leak whether an id exists for another user.
 
 ## Validation and policies
 
-- FluentValidation in `Commands/**/**Validator.cs`; error codes from `ValidationErrors` / domain error static classes.
-- Shared limits and normalization — `Application/**/Policies/` (`EmailPolicy`, `WalletPolicy`). Do not duplicate `const int MaxLength` across validators.
+- Validators: `AbstractValidator<T>` next to the command or query (`*CommandValidator`, `*QueryValidator`).
+- Use `.WithErrorCode(...)` — codes from `ValidationErrors` or feature error static classes. **Additive only**; do not rename codes clients rely on.
+- `ValidationBehavior` runs all validators; failures become field-keyed validation errors (camelCase property names).
+- Shared numeric/string limits — `Application/**/Policies/`; reference from validators and API defaults (e.g. controller query `pageSize` default).
 
 ## Results and API mapping
 
-- Handlers return `AppResult<T>`.
-- Controllers map via `AppResultExtensions`: `ToActionResult()`, `ToCreatedResult()`, `ToNoContentResult()`.
+- Handlers: `IRequestHandler<..., AppResult<T>>`.
+- Controllers: inject `IMediator` only; set route ids on commands when needed (`command.WalletId = walletId`); map with `ToActionResult()`, `ToCreatedResult()`, `ToNoContentResult()`.
 - JSON enums as strings — `JsonStringEnumConverter` in `Program.cs`.
+
+## Infrastructure (EF)
+
+- Reads that do not update entities: **`AsNoTracking()`**.
+- Prefer **projections** (`Select` → DTO) or `MapToResult` after fetch when lists are large; paginate with `Skip`/`Take` + `CountAsync` → `PagedResult`.
+- Migrations in `Spendify.Infrastructure/Migrations/`; model config in `AppDbContext` / `OnModelCreating`.
+- Keep transactions and business rules that need DB in the service, not in handlers.
+
+## Agent verification (build)
+
+Full `dotnet build` on this solution is slow (~minutes). **Do not run it by default** after small edits (single service, handler, migration brace fix, etc.). Rely on correct C#/EF patterns and let the user or CI confirm compile.
+
+- **Skip** background builds, `dotnet build … | tail`, and repeated build retries unless the user explicitly asks to build or verify compile.
+- **When the user asks to build**, prefer a short filtered summary (e.g. pipe to `rg` for `error|Build succeeded|Build FAILED`) — not unfiltered multi-minute output.
+- **Optional, only if clearly needed** (large refactor, DI/registration, new project references): one targeted build of the affected `.csproj`, with a reasonable timeout; still use filtered output if shown in chat.
 
 ## New feature checklist
 
-1. Command/query + handler + validator in Application.
-2. Service interface returns DTOs only; implementation in Infrastructure.
-3. Controller action uses shared result mappers.
-4. New validation codes — **additive only**; do not rename existing error codes used by clients.
+1. Domain entity/enum if needed.
+2. Application: command(s)/query + handler + validator; `Contracts/` for multi-field writes; `I*Service` + `*Result` + `*Errors` + policy.
+3. Infrastructure: service implementation + `MapToResult`; register in `AddInfrastructure`.
+4. Api: controller action + result mapper; route under `api/...`.
+5. Migration if schema changes; snapshot updated.
+6. New API/validation error codes — **additive only**.

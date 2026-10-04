@@ -37,6 +37,29 @@ public static class ValidationErrors
 
     public const string WalletUpdateFieldsRequired = "WALLET_UPDATE_FIELDS_REQUIRED";
 
+    public const string TransactionIdRequired = "TRANSACTION_ID_REQUIRED";
+
+    public const string TransactionTypeRequired = "TRANSACTION_TYPE_REQUIRED";
+    public const string InvalidTransactionType = "INVALID_TRANSACTION_TYPE";
+
+    public const string TransactionCategoryRequired = "TRANSACTION_CATEGORY_REQUIRED";
+    public const string InvalidTransactionCategory = "INVALID_TRANSACTION_CATEGORY";
+
+    public const string TransactionAmountRequired = "TRANSACTION_AMOUNT_REQUIRED";
+    public const string TransactionAmountTooSmall = "TRANSACTION_AMOUNT_TOO_SMALL";
+    public const string TransactionAmountTooLarge = "TRANSACTION_AMOUNT_TOO_LARGE";
+
+    public const string TransactionNoteTooLong = "TRANSACTION_NOTE_TOO_LONG";
+
+    public const string TransactionDateRequired = "TRANSACTION_DATE_REQUIRED";
+
+    public const string TransactionUpdateFieldsRequired = "TRANSACTION_UPDATE_FIELDS_REQUIRED";
+
+    public const string PageTooSmall = "PAGE_TOO_SMALL";
+    public const string PageTooLarge = "PAGE_TOO_LARGE";
+    public const string PageSizeTooSmall = "PAGE_SIZE_TOO_SMALL";
+    public const string PageSizeTooLarge = "PAGE_SIZE_TOO_LARGE";
+
     public static AppError FromFieldErrors(IReadOnlyDictionary<string, string> fieldErrors) =>
         new(Failed, StatusCode, fieldErrors);
 }
