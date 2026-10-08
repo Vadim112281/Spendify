@@ -11,4 +11,5 @@ public class Wallet
     public WalletType WalletType { get; set; }
     public CurrencyType CurrencyType { get; set; }
     public DateTime CreatedAtUtc { get; set; }
+    public List<Transaction>? Transactions { get; set; }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Spendify.Infrastructure.Data;
@@ -11,9 +12,11 @@ using Spendify.Infrastructure.Data;
 namespace Spendify.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20261003212841_AddTransactions")]
+    partial class AddTransactions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,8 +162,7 @@ namespace Spendify.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
-                        .HasPrecision(11, 2)
-                        .HasColumnType("numeric(11,2)");
+                        .HasColumnType("numeric");
 
                     b.Property<int>("Category")
                         .HasColumnType("integer");
@@ -169,8 +171,7 @@ namespace Spendify.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Note")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("text");
 
                     b.Property<DateOnly>("TransactionDate")
                         .HasColumnType("date");

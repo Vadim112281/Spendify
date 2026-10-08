@@ -11,6 +11,7 @@ public class AppDbContext: IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     public AppDbContext(DbContextOptions<AppDbContext> _options): base(_options) {}
 
     public DbSet<Wallet> Wallets { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,6 +32,16 @@ public class AppDbContext: IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
                 .HasForeignKey(wallet => wallet.UserId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
+        });
+
+        modelBuilder.Entity<Transaction>(entity =>
+        {
+            // Note max length — keep in sync with TransactionPolicy.NoteMaxLength.
+            entity.Property(transaction => transaction.Note)
+                .HasMaxLength(200);
+
+            entity.Property(transaction => transaction.Amount)
+                .HasPrecision(11, 2);
         });
     }
 }
