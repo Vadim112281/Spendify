@@ -2,8 +2,19 @@ import {animate, useReducedMotion} from "motion/react";
 import {useEffect, useRef, useState} from "react";
 
 type UseAnimatedNumberOptions = {
-	duration?: number;
-	ease?: readonly number[];
+	spring?: {
+		type?: "spring";
+		stiffness?: number;
+		damping?: number;
+		mass?: number;
+	};
+};
+
+const defaultSpring = {
+	type: "spring" as const,
+	stiffness: 88,
+	damping: 18,
+	mass: 0.85,
 };
 
 export const useAnimatedNumber = (
@@ -13,6 +24,7 @@ export const useAnimatedNumber = (
 	const reducedMotion = useReducedMotion();
 	const valueRef = useRef(0);
 	const [value, setValue] = useState(0);
+	const spring = options?.spring ?? defaultSpring;
 
 	useEffect(() => {
 		if (reducedMotion) {
@@ -26,16 +38,8 @@ export const useAnimatedNumber = (
 			return;
 		}
 
-		const ease = (options?.ease ?? [0.22, 1, 0.36, 1]) as [
-			number,
-			number,
-			number,
-			number,
-		];
-
 		const controls = animate(from, target, {
-			duration: options?.duration ?? 0.9,
-			ease,
+			...spring,
 			onUpdate: (latest) => {
 				valueRef.current = latest;
 				setValue(latest);
@@ -46,7 +50,7 @@ export const useAnimatedNumber = (
 		});
 
 		return () => controls.stop();
-	}, [target, reducedMotion, options?.duration, options?.ease]);
+	}, [target, reducedMotion, spring.damping, spring.mass, spring.stiffness]);
 
 	return value;
 };

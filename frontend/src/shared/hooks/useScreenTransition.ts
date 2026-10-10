@@ -6,14 +6,14 @@ export const useScreenTransition = <T extends string>(initial: T) => {
 
 	const goTo = useCallback(
 		(next: T) => {
-			if (next === screen || isTransitioning) {
+			if (next === screen) {
 				return;
 			}
 
 			setScreen(next);
 			setIsTransitioning(true);
 		},
-		[isTransitioning, screen],
+		[screen],
 	);
 
 	const onTransitionComplete = useCallback(() => {

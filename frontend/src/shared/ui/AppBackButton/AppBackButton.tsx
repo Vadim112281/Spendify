@@ -15,7 +15,7 @@ export const AppBackButton = ({
 		type={type}
 		aria-label={ariaLabel}
 		className={twx(
-			"flex size-38 items-center justify-center rounded-full",
+			"flex size-44 items-center justify-center rounded-full",
 			"border border-white/10 bg-white/6 text-e-zinc",
 			"transition-colors duration-150 hover:bg-white/10",
 			"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-e-zinc",

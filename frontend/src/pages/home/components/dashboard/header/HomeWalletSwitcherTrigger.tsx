@@ -1,10 +1,13 @@
+import {motion} from "motion/react";
+
+import {tabBarIconSpring} from "@/app/layout/AppTabBar/config/tabBarMotion";
 import {HomeWalletSwitcherSummary} from "@/pages/home/components/dashboard/header/HomeWalletSwitcherSummary";
 import {HomeChevronDownIcon} from "@/pages/home/components/dashboard/icons/HomeChevronDownIcon";
 import type {HomeDashboardWallet} from "@/pages/home/types/homeDashboardTypes";
 import {twx} from "@/shared/utils/twx";
 
 const shellClassName = twx(
-	"flex w-full items-center gap-8 rounded-full py-8 pr-12 pl-10",
+	"flex min-h-44 w-full items-center gap-8 rounded-full py-8 pr-12 pl-10",
 	"e-home-stat-surface backdrop-blur-sm",
 );
 
@@ -45,12 +48,14 @@ export const HomeWalletSwitcherTrigger = ({
 			onClick={onToggle}
 		>
 			{summary}
-			<HomeChevronDownIcon
-				className={twx(
-					"ml-auto shrink-0 text-e-zinc/80 transition-transform duration-200",
-					isOpen && "rotate-180",
-				)}
-			/>
+			<motion.span
+				className="ml-auto shrink-0 text-e-zinc/80"
+				initial={false}
+				animate={{rotate: isOpen ? 180 : 0}}
+				transition={tabBarIconSpring}
+			>
+				<HomeChevronDownIcon />
+			</motion.span>
 		</button>
 	);
 };

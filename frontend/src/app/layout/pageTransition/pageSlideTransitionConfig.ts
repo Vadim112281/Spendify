@@ -1,10 +1,12 @@
 import type {Transition} from "motion/react";
 
-export const PAGE_SLIDE_DURATION_MS = 420;
-export const PAGE_SLIDE_DURATION_S = PAGE_SLIDE_DURATION_MS / 1000;
-export const PAGE_SLIDE_FALLBACK_MS = PAGE_SLIDE_DURATION_MS + 80;
+// Safety net if spring onComplete is missed.
+export const PAGE_SLIDE_FALLBACK_MS = 480;
 
+// Critically damped page push — snappy, no endpoint overshoot (Apple-style).
 export const pageSlideTransition: Transition = {
-	duration: PAGE_SLIDE_DURATION_S,
-	ease: [0.22, 1, 0.36, 1],
+	type: "spring",
+	stiffness: 480,
+	damping: 44,
+	mass: 1,
 };

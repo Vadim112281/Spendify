@@ -11,8 +11,7 @@ import {ENTRY_LAYOUT_SIZE} from "@/shared/ui/EntryLayout/entryLayoutSize";
 import styles from "./AuthPage.module.scss";
 
 export const AuthPage = () => {
-	const {screen, isTransitioning, onTransitionComplete, navigation} =
-		useAuthNavigation();
+	const {screen, onTransitionComplete, navigation} = useAuthNavigation();
 	const [panelMeasure, setPanelMeasure] = useState<AuthPanelMeasure | null>(
 		null,
 	);
@@ -30,11 +29,7 @@ export const AuthPage = () => {
 		<EntryLayout size={ENTRY_LAYOUT_SIZE.SM}>
 			<EntryBrand size={ENTRY_LAYOUT_SIZE.SM} className="mb-12" />
 			<div className={styles.sectionTabs}>
-				<AuthScreenTabs
-					screen={screen}
-					disabled={isTransitioning}
-					navigation={navigation}
-				/>
+				<AuthScreenTabs screen={screen} navigation={navigation} />
 			</div>
 			<div className={styles.sectionPanels}>
 				<AuthScreenPanels
@@ -42,7 +37,6 @@ export const AuthPage = () => {
 					height={height}
 					viewportRef={viewportRef}
 					viewportReady={panelMeasure !== null}
-					interactionsDisabled={isTransitioning}
 					onMeasure={onMeasure}
 					onMotionComplete={onTransitionComplete}
 					navigation={navigation}

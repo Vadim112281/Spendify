@@ -11,7 +11,7 @@ export const AddButton = () => (
 		title="Add transaction"
 		disabled
 		className={twx(
-			"flex items-center justify-center text-e-zinc/42 opacity-50",
+			"flex min-h-44 min-w-44 items-center justify-center text-e-zinc/42 opacity-50",
 			"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-e-zinc",
 		)}
 		transition={addButtonSpring}

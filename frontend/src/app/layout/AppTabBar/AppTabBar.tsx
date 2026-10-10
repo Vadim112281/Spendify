@@ -28,8 +28,8 @@ export const AppTabBar = () => {
 			<div
 				className={twx(
 					"pointer-events-auto mx-auto h-[58px] max-w-[340px] p-1",
-					"rounded-full border border-white/10 bg-white/6 shadow-[0_10px_40px_rgb(0_0_0/0.42)]",
-					"backdrop-blur-2xl",
+					"rounded-full border border-white/10 bg-white/6",
+					"shadow-[0_8px_28px_rgb(0_0_0/0.22)] backdrop-blur-2xl",
 				)}
 			>
 				<div className="relative h-full">

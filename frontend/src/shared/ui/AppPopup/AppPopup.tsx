@@ -14,8 +14,13 @@ const contentClassName = twx(
 	"outline-none focus:outline-none",
 );
 
-const handleClassName =
-	"mx-auto mt-10 mb-14 h-4 w-32 shrink-0 cursor-grab rounded-full bg-white/12 active:cursor-grabbing";
+const handleClassName = twx(
+	"mx-auto flex w-full shrink-0 cursor-grab touch-none",
+	"min-h-44 items-start justify-center pt-10 pb-6 active:cursor-grabbing",
+);
+
+const handleGripClassName =
+	"h-4 w-32 shrink-0 rounded-full bg-white/12";
 
 type AppPopupProps = {
 	open: boolean;
@@ -51,7 +56,9 @@ export const AppPopup = ({
 				<Drawer.Overlay className={overlayClassName} />
 				<Drawer.Content className={contentClassName}>
 					<div className="flex shrink-0 flex-col px-20">
-						<Drawer.Handle className={handleClassName} />
+						<Drawer.Handle className={handleClassName}>
+							<span className={handleGripClassName} aria-hidden />
+						</Drawer.Handle>
 						<div className="flex items-start justify-between gap-12 pb-14">
 							<div className="min-w-0 pt-2">
 								<Drawer.Title className="m-0 text-17 font-semibold tracking-tight-03 text-e-heading">

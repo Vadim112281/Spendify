@@ -1,0 +1,38 @@
+---
+description: Apple design principles and fluid interface rules for UI components and animations
+globs: **/*.{tsx,jsx,css,scss}
+alwaysApply: false
+---
+
+# Apple Design & Fluid Interfaces
+
+Apply Apple Human Interface Guidelines (HIG) and WWDC Fluid Interface principles when creating or refactoring UI components and animations.
+
+## Core Rules
+
+### 1. Interruptibility (Zero-Lock Interfaces)
+- **Never lock interaction**: UI must never block pointer/touch events during an in-flight animation.
+- If a gesture starts mid-animation, immediately catch the component at its current render position and transfer velocity smoothly (`setPointerCapture`, momentum handoff).
+- Avoid fixed programmatic duration blocks where user inputs are queued or ignored.
+
+### 2. Motion & Physics
+- **Springs over durations**: Prefer spring physics (`stiffness`, `damping`, `mass`) over fixed time easings (`ease-in-out`, `cubic-bezier`).
+- Match real-world physical behavior:
+  - Small dismissals / swipes: high stiffness, snappy feedback.
+  - Large sheets / views: slightly heavier mass, critically damped (no excessive cartoon bounce).
+- Retain velocity: when user releases a drag/swipe, inherit release speed into the final settling spring.
+
+### 3. Touch & Precision Targets
+- Interactive elements minimum target area: `44x44px` (or `min-h-[44px] min-w-[44px]`).
+- Visual boundaries may be smaller, but hit-testing padding must meet touch ergonomics.
+- Prevent accidental browser gestures (`touch-action: pan-y` / `none` where custom gestures live).
+
+### 4. Visual Hierarchy & Materials
+- **Materials (Blur / Vibrancy)**: Use subtle backdrop blurs (`backdrop-blur-md`, semi-transparent layers) to indicate layering and depth rather than heavy drop shadows.
+- **Borders & Highlights**: Apple surfaces use ultra-subtle 1px inner borders (`border border-white/10` or dynamic contrast borders) to separate planes.
+- **Corner Radii**: Nesting rule — outer radius = inner radius + padding.
+
+### 5. Implementation Standards (React / CSS / Motion)
+- When using Framer Motion: prefer `type: "spring"` configurations.
+- Favor GPU-accelerated properties only: `transform` (`translate3d`, `scale`) and `opacity`.
+- Never animate layout triggers directly (`width`, `height`, `top`, `margin`) during gesture tracking.

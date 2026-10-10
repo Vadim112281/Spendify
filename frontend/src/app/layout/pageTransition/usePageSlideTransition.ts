@@ -34,6 +34,11 @@ type NavigationRef = {
 	pending: PendingNavigation | null;
 };
 
+type RestingViewport = {
+	panel: "primary" | "secondary";
+	outlet: ReactElement;
+};
+
 export const usePageSlideTransition = () => {
 	const location = useLocation();
 	const outlet = useOutlet();
@@ -44,23 +49,17 @@ export const usePageSlideTransition = () => {
 		pending: null,
 	});
 	const [transition, setTransition] = useState<PageTransition | null>(null);
+	const [resting, setResting] = useState<RestingViewport | null>(null);
 
-	const completeActiveTransition = useCallback((transitionId: number) => {
-		setTransition((current) => {
-			if (current?.id !== transitionId) {
-				return current;
-			}
-
-			return null;
-		});
-	}, []);
+	const restingPanel = resting?.panel ?? "primary";
+	const displayOutlet = resting?.outlet ?? outlet;
 
 	const navigation = navigationRef.current;
 	const committed = navigation.committed;
 	const pathnameChanged = location.pathname !== committed.pathname;
 
 	if (outlet && !pathnameChanged && !transition && !navigation.pending) {
-		committed.outlet = outlet;
+		committed.outlet = displayOutlet;
 	}
 
 	if (pathnameChanged && outlet) {
@@ -95,6 +94,21 @@ export const usePageSlideTransition = () => {
 	const activeTransition = pendingSlide ?? transition;
 	const activeTransitionId = activeTransition?.id ?? null;
 
+	const finishTransition = useCallback(
+		(completedId: number, completed: PageTransition | null) => {
+			if (!completed || completed.id !== completedId) {
+				return;
+			}
+
+			setResting({
+				panel: completed.direction > 0 ? "secondary" : "primary",
+				outlet: completed.toOutlet,
+			});
+			setTransition(null);
+		},
+		[],
+	);
+
 	useLayoutEffect(() => {
 		// Pending work is assigned during render; commit it before paint.
 		void location.key;
@@ -112,6 +126,7 @@ export const usePageSlideTransition = () => {
 		}
 
 		setTransition(null);
+		setResting(null);
 	}, [location.key]);
 
 	useLayoutEffect(() => {
@@ -120,23 +135,18 @@ export const usePageSlideTransition = () => {
 		}
 
 		const timeoutId = window.setTimeout(() => {
-			completeActiveTransition(activeTransitionId);
+			finishTransition(activeTransitionId, activeTransition);
 		}, PAGE_SLIDE_FALLBACK_MS);
 
 		return () => {
 			window.clearTimeout(timeoutId);
 		};
-	}, [activeTransitionId, completeActiveTransition]);
-
-	const finishTransition = useCallback(
-		(completedId: number) => {
-			completeActiveTransition(completedId);
-		},
-		[completeActiveTransition],
-	);
+	}, [activeTransitionId, activeTransition, finishTransition]);
 
 	return {
-		outlet,
+		displayOutlet,
+		hasRestingViewport: resting !== null,
+		restingPanel,
 		transition: activeTransition,
 		finishTransition,
 	};

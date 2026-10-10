@@ -1,6 +1,8 @@
+import {motion} from "motion/react";
+
 import type {CurrencyType} from "@/features/wallets/walletTypes";
 import {HomeAnimatedMoney} from "@/pages/home/components/dashboard/HomeAnimatedMoney";
-import {HOME_MONEY_ROLL_DURATION_S} from "@/pages/home/config/homeDashboardMotion";
+import {HOME_MONEY_ROLL_SPRING} from "@/pages/home/config/homeDashboardMotion";
 import {HomeDashTile} from "@/pages/home/components/dashboard/summary/HomeDashTile";
 import type {HomeMonthSummary} from "@/pages/home/types/homeDashboardTypes";
 import {twx} from "@/shared/utils/twx";
@@ -69,12 +71,11 @@ export const HomeMonthFlow = ({summary, currency}: HomeMonthFlowProps) => {
 				role="img"
 				aria-label={`Expenses ${spentShareLabel}, income ${incomeShareLabel} of monthly flow`}
 			>
-				<div
-					className="h-full bg-e-error/85 transition-[width] ease-out"
-					style={{
-						width: `${spentShare}%`,
-						transitionDuration: `${HOME_MONEY_ROLL_DURATION_S}s`,
-					}}
+				<motion.div
+					className="h-full bg-e-error/85"
+					initial={false}
+					animate={{width: `${spentShare}%`}}
+					transition={HOME_MONEY_ROLL_SPRING}
 				/>
 				<div className="h-full flex-1 bg-e-positive/85" />
 			</div>

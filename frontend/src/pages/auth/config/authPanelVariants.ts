@@ -1,7 +1,5 @@
 import type {Transition} from "motion/react";
 
-const easePage = [0.76, 0, 0.24, 1] as const;
-
 export const authPanelOffLeft = {
 	x: "-100%",
 	opacity: 0.55,
@@ -33,15 +31,21 @@ export const authPanelFadeVisible = {
 	zIndex: 2,
 };
 
+const authPanelMotionSpring = {
+	type: "spring",
+	stiffness: 300,
+	damping: 30,
+	mass: 0.95,
+} as const;
+
 export const authPanelPageTransition: Transition = {
-	x: {type: "spring", stiffness: 300, damping: 30, mass: 0.95},
-	opacity: {duration: 0.38, ease: easePage},
-	scale: {duration: 0.42, ease: easePage},
+	x: authPanelMotionSpring,
+	opacity: {type: "spring", stiffness: 380, damping: 36, mass: 0.85},
+	scale: authPanelMotionSpring,
 };
 
 export const authPanelFadeTransition: Transition = {
-	duration: 0.2,
-	ease: easePage,
+	opacity: {type: "spring", stiffness: 520, damping: 42, mass: 0.7},
 };
 
 export const authPanelHeightTransition = {

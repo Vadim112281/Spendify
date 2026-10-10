@@ -21,10 +21,30 @@ const panelHalfClassName = twx(
 	"relative w-1/2 shrink-0 overflow-hidden",
 );
 
+const panelFullClassName = twx(
+	pagePanelScrollClassName,
+	"relative h-full w-full shrink-0 overflow-hidden",
+);
+
+const panelSpacerClassName = twx(
+	panelHalfClassName,
+	"pointer-events-none invisible",
+);
+
+const restingTranslateX = (panel: "primary" | "secondary") =>
+	panel === "secondary" ? "-50%" : "0%";
+
 export const AppPageTransition = () => {
-	const {outlet, transition, finishTransition} = usePageSlideTransition();
+	const {
+		displayOutlet,
+		hasRestingViewport,
+		restingPanel,
+		transition,
+		finishTransition,
+	} = usePageSlideTransition();
 	const slideControls = useAnimationControls();
 	const isSliding = transition !== null;
+	const useWideTrack = isSliding || hasRestingViewport;
 
 	const slideForward = transition ? transition.direction > 0 : true;
 	const leftOutlet =
@@ -32,7 +52,7 @@ export const AppPageTransition = () => {
 			? slideForward
 				? transition.fromOutlet
 				: transition.toOutlet
-			: outlet;
+			: null;
 	const rightOutlet =
 		isSliding && transition
 			? slideForward
@@ -42,7 +62,6 @@ export const AppPageTransition = () => {
 
 	useLayoutEffect(() => {
 		if (!transition) {
-			void slideControls.set({x: "0%"});
 			return;
 		}
 
@@ -52,11 +71,15 @@ export const AppPageTransition = () => {
 		let cancelled = false;
 
 		const runSlide = async () => {
+			slideControls.stop();
 			await slideControls.set({x: slideStartX});
-			await slideControls.start({x: slideEndX}, pageSlideTransition);
+			await slideControls.start(
+				{x: slideEndX},
+				{...pageSlideTransition, velocity: 0},
+			);
 
 			if (!cancelled) {
-				finishTransition(transitionId);
+				finishTransition(transitionId, transition);
 			}
 		};
 
@@ -67,30 +90,68 @@ export const AppPageTransition = () => {
 		};
 	}, [transition, slideControls, finishTransition]);
 
+	const restingX = restingTranslateX(restingPanel);
+
 	return (
 		<div className="fixed inset-0 overflow-hidden">
 			<motion.div
-				className="flex h-full min-h-0"
-				style={{width: isSliding ? "200%" : "100%"}}
-				animate={slideControls}
+				className={twx(
+					"flex h-full min-h-0",
+					useWideTrack ? "w-[200%]" : "w-full",
+				)}
+				animate={
+					isSliding
+						? slideControls
+						: {x: hasRestingViewport ? restingX : "0%"}
+				}
 				initial={false}
+				transition={isSliding ? undefined : {duration: 0}}
 			>
-				<div
-					key="primary"
-					data-app-page-scroll
-					className={
-						isSliding
-							? panelHalfClassName
-							: twx(pagePanelScrollClassName, "w-full")
-					}
-				>
-					{leftOutlet}
-				</div>
-				{isSliding && rightOutlet ? (
-					<div key="secondary" data-app-page-scroll className={panelHalfClassName}>
-						{rightOutlet}
+				{isSliding && transition && leftOutlet && rightOutlet ? (
+					<>
+						<div
+							key="primary"
+							data-app-page-scroll
+							className={panelHalfClassName}
+						>
+							{leftOutlet}
+						</div>
+						<div
+							key="secondary"
+							data-app-page-scroll
+							className={panelHalfClassName}
+						>
+							{rightOutlet}
+						</div>
+					</>
+				) : hasRestingViewport && restingPanel === "secondary" ? (
+					<>
+						<div key="primary" className={panelSpacerClassName} />
+						<div
+							key="secondary"
+							data-app-page-scroll
+							className={panelHalfClassName}
+						>
+							{displayOutlet}
+						</div>
+					</>
+				) : hasRestingViewport ? (
+					<div
+						key="primary"
+						data-app-page-scroll
+						className={panelHalfClassName}
+					>
+						{displayOutlet}
 					</div>
-				) : null}
+				) : (
+					<div
+						key="primary"
+						data-app-page-scroll
+						className={panelFullClassName}
+					>
+						{displayOutlet}
+					</div>
+				)}
 			</motion.div>
 		</div>
 	);
