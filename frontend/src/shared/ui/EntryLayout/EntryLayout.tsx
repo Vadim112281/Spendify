@@ -25,7 +25,7 @@ export const EntryLayout = ({
 		className={twx(
 			"fixed inset-0 box-border flex w-full max-w-full items-center justify-center",
 			"overflow-x-hidden overflow-y-auto overscroll-none touch-pan-y",
-			"px-20 pt-[max(20px,env(safe-area-inset-top))] pb-[max(28px,env(safe-area-inset-bottom))]",
+			"px-20 pt-inset-top-page pb-inset-bottom-lg",
 			"bg-e-bg text-e-text color-scheme-dark",
 			"before:fixed before:inset-0 before:-z-10 before:bg-e-bg before:content-empty",
 		)}

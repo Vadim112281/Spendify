@@ -1,5 +1,5 @@
 import type {ChangeEvent} from "react";
-import {DEFAULT_WALLET_NAMES} from "@/features/wallets/walletDisplay";
+import {DEFAULT_WALLET_NAMES} from "@/features/wallets/walletDisplayService";
 import type {WalletType} from "@/features/wallets/walletTypes";
 import {AppField} from "@/shared/ui/AppField/AppField";
 

@@ -8,6 +8,8 @@ alwaysApply: false
 
 Apply on any work in `backend/`.
 
+**Questions vs tasks:** `.cursor/rules/ask-dont-implement.mdc` — opinion / “how should we…” → answer only; implement when the user asks to change code.
+
 ## Stack and request flow
 
 - **.NET 8**, **MediatR**, **FluentValidation**, **EF Core + Npgsql**, **JWT** (`[Authorize]` on app APIs).

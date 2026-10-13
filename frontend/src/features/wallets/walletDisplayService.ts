@@ -36,7 +36,7 @@ export const WALLET_TYPE_LABELS: Record<WalletType, string> = {
 const trimWalletName = (walletName: string | undefined | null): string =>
 	walletName?.trim() ?? "";
 
-export const getWalletDisplayName = (
+const getWalletDisplayName = (
 	walletName: string | undefined | null,
 	walletType: WalletType,
 ): string => {
@@ -44,7 +44,7 @@ export const getWalletDisplayName = (
 	return trimmed || DEFAULT_WALLET_NAMES[walletType];
 };
 
-export const getWalletDisplayNameForPreview = (
+const getWalletDisplayNameForPreview = (
 	walletName: string,
 	walletType: WalletType | null,
 	beforeTypeSelected: string,
@@ -55,4 +55,9 @@ export const getWalletDisplayNameForPreview = (
 
 	const trimmed = trimWalletName(walletName);
 	return trimmed || beforeTypeSelected;
+};
+
+export const walletDisplayService = {
+	getWalletDisplayName,
+	getWalletDisplayNameForPreview,
 };

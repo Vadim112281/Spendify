@@ -1,6 +1,7 @@
 import type {CurrencyType} from "@/features/wallets/walletTypes";
 import {HomeActivityCategoryIcon} from "@/pages/home/components/dashboard/icons/HomeActivityCategoryIcon";
-import {formatHomeMoney} from "@/pages/home/services/homeMoneyService";
+import {CURRENCY_TYPE_DISPLAY} from "@/features/wallets/walletDisplayService";
+import {formatCurrencyAmount} from "@/shared/utils/moneyFormat";
 import {
 	type HomeDashboardTransaction,
 	TRANSACTION_KIND,
@@ -38,9 +39,11 @@ export const HomeTransactionRow = ({
 						: "bg-e-error/14 text-e-error",
 				)}
 			>
-				{formatHomeMoney(signedAmount, currency, {
-					signed: true,
-				})}
+				{formatCurrencyAmount(
+					signedAmount,
+					CURRENCY_TYPE_DISPLAY[currency].symbol,
+					{signed: true},
+				)}
 			</p>
 		</li>
 	);

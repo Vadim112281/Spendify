@@ -1,0 +1,29 @@
+---
+description: Ultimate web design, visual hierarchy, micro-interactions, and high-precision UI standards
+globs: **/*.{tsx,jsx,css,scss}
+alwaysApply: false
+---
+
+# Modern High-Precision Web Design Rules
+
+## 1. Visual Hierarchy & Typography
+- **Display vs Body Contrast**: Headings must have high optical contrast (`tracking-tight`, `font-semibold` or `font-bold`). Body text must use relaxed line-heights (`leading-relaxed`) and muted shades (`text-neutral-600` / `dark:text-neutral-400`).
+- **Letter Spacing Logic**: 
+  - Large headings (>24px): `tracking-tight` (-0.02em to -0.04em).
+  - Uppercase labels/badges (<12px): `tracking-wider` or `tracking-widest` + `uppercase`.
+- **Monospace for Data**: All numerical values, dates, timestamps, code, and status badges must use `font-mono`.
+
+## 2. Layout, Spacing & Depth
+- **Generous Whitespace**: Sections need room to breathe — default to `py-16 md:py-24` for landing blocks, `p-6` or `p-8` for container cards.
+- **Layering over Flatness**: Use subtle overlays and translucent background layers (`bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md`) rather than heavy opaque backgrounds.
+- **Precision Borders**: Separate visual planes with ultra-thin, low-opacity borders (`border border-neutral-200/80 dark:border-white/10`).
+
+## 3. Micro-Interactions & States
+- **State Feedback**: Every clickable element MUST have distinct, instantaneous hover, focus, and active states (`transition-all duration-200`).
+- **Interactive Depth**: Buttons and primary cards should physically respond to hover: slight elevation or subtle glow (`hover:-translate-y-0.5 hover:shadow-lg dark:hover:border-white/20`).
+- **Focus Rings**: Never remove outline without replacing it. Ensure visible, elegant focus rings (`focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2`).
+
+## 4. Mobile Ergonomics & Structure
+- **No Overflow Rule**: Always protect the horizontal canvas (`max-w-full overflow-x-hidden` on main wrappers).
+- **Responsive Fluidity**: Dynamic sizing using Tailwind container clamps or explicit grid breakdowns (`grid-cols-1 md:grid-cols-2 lg:grid-cols-3`).
+- **Semantic HTML**: Mandatory standard structure — `<header>`, `<main>`, `<nav>`, `<section>`, `<footer>`, `<article>`. Avoid `<div>`-only architectures.
