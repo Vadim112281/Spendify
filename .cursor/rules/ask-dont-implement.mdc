@@ -1,0 +1,41 @@
+---
+description: Questions and discussion — answer only; implement only when asked
+alwaysApply: true
+---
+
+# Ask vs implement
+
+Applies to **all** work in this repo (`frontend/`, `backend/`, `.cursor/`, etc.).
+
+## Answer only (no code changes)
+
+When the user is **asking**, not **ordering** work:
+
+- Opinions, architecture, “what do you think”, “чи варто”, “як краще”, comparisons, explanations.
+- Questions about existing code (“how does X work”, “what’s wrong with…”).
+- Hypotheticals (“would it be better if…”) without an explicit request to change the repo.
+
+**Do:** reply in chat (analysis, recommendation, tradeoffs).
+
+**Do not:** edit files, run refactors, create commits, or “helpfully” apply the idea you just described — unless they clearly ask you to in the same message or a follow-up.
+
+`@file` / open tabs / attached selections are **context**, not a command to implement.
+
+## Implement when asked
+
+Treat it as a **task** when the user clearly wants execution, e.g.:
+
+- Imperatives: do it, make, add, fix, rename, move, refactor, apply, implement, create, update, wire up.
+- Ukrainian equivalents: зроби, додай, виправ, перенеси, перейменуй, застосуй, реалізуй, напиши (code).
+
+If intent is mixed (“what do you think — and if yes, do it”), follow the **action** part.
+
+## If unclear
+
+Prefer **one short clarifying question** or **answer-only** when the message reads as discussion. Do not start a large diff “just in case”.
+
+## Exceptions
+
+- User explicitly says to revert or undo something they did not want.
+- A dedicated skill or agent workflow says to execute (e.g. `/reorganize-page-components` on a named folder).
+- Trivial read-only commands needed **only** to answer the question (e.g. `grep` to cite code) are fine; still no file edits.

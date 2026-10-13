@@ -1,8 +1,8 @@
 import {
 	CURRENCY_TYPE_DISPLAY,
-	getWalletDisplayNameForPreview,
 	WALLET_TYPE_LABELS,
-} from "@/features/wallets/walletDisplay";
+	walletDisplayService,
+} from "@/features/wallets/walletDisplayService";
 import {WalletTypeIcon} from "@/pages/wallets/components/createWalletFormPieces/WalletTypeIcon";
 import {CURRENCY_ACCENT_STYLES} from "@/pages/wallets/config/currencyAccentConfig";
 import type {CreateWalletFormValues} from "@/pages/wallets/types/createWalletFormTypes";
@@ -98,7 +98,7 @@ export const CreateWalletPreviewCard = ({
 
 				<div className="min-w-0 flex-1 pr-32">
 					<p className="truncate text-16 font-semibold tracking-tight-03 text-e-zinc">
-						{getWalletDisplayNameForPreview(
+						{walletDisplayService.getWalletDisplayNameForPreview(
 							values.walletName,
 							values.walletType,
 							PREVIEW_NAME_BEFORE_TYPE,

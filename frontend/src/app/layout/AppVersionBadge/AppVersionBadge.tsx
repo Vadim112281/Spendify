@@ -18,7 +18,7 @@ export const AppVersionBadge = () => {
 		<div
 			className={twx(
 				"fixed right-20 z-50 flex flex-col items-end",
-				"bottom-[max(20px,env(safe-area-inset-bottom))]",
+				"bottom-inset-bottom-float",
 			)}
 		>
 			<button

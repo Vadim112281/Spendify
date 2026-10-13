@@ -1,4 +1,4 @@
-import {WALLET_TYPE_LABELS} from "@/features/wallets/walletDisplay";
+import {WALLET_TYPE_LABELS} from "@/features/wallets/walletDisplayService";
 import type {WalletType} from "@/features/wallets/walletTypes";
 import {WalletTypeIcon} from "@/pages/wallets/components/createWalletFormPieces/WalletTypeIcon";
 import {

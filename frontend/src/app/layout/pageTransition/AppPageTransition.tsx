@@ -7,7 +7,7 @@ import {twx} from "@/shared/utils/twx";
 
 const pageLayoutClassName = twx(
 	"min-h-0 bg-e-bg px-20",
-	"pt-[max(20px,env(safe-area-inset-top))]",
+	"pt-inset-top-page",
 	"pb-tab-bar-layout",
 );
 

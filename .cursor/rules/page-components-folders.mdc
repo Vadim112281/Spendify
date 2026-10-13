@@ -1,0 +1,52 @@
+---
+description: When to split pages/*/components into domain subfolders (frontend)
+globs: frontend/src/pages/**/components/**
+alwaysApply: false
+---
+
+# Page `components/` subfolders
+
+Apply when adding files under `frontend/src/pages/**/components/` or when that folder already feels crowded.
+
+## Default
+
+- One component per file at `components/<Name>.tsx`.
+- Page orchestrators stay at `components/<Feature>Form.tsx` or the page root — not buried in a subfolder unless the whole feature lives there.
+
+## When to add a subfolder
+
+Create a **domain** subfolder (lowercase, short noun) when **any** of:
+
+- **Count:** 7+ `.tsx` files directly in `components/` (not counting one orchestrator).
+- **Steps / panels:** distinct wizard steps, tabs, or panels that do not import each other’s internals (e.g. `amount/` vs `details/`).
+- **Clusters:** 3+ files share a name prefix or are only imported by one parent step component.
+
+Do **not** subfolder for:
+
+- 1–2 files “for later”.
+- `ComponentName/ComponentName.tsx` (reserved for `shared/ui/`).
+- Barrel `index.ts` re-exports.
+
+## Naming
+
+- Subfolder = **UI block or step**, not a single component: `header/`, `transactions/`, `amount/`, `step/`, `icons/`.
+- Files inside keep **PascalCase** and full component names unless the path already disambiguates (`details/AddTransactionDetailsSummary.tsx` is fine).
+- Imports: `@/pages/<page>/.../components/<subfolder>/<File>` — always direct file paths.
+
+## Reference layout in this repo
+
+`pages/home/components/dashboard/` — `header/`, `transactions/`, `icons/`, `summary/`, etc.
+
+Multi-step popup example:
+
+```
+popup/components/
+  AddTransactionForm.tsx
+  step/          # step chrome shared by sheet + form
+  amount/        # amount step only
+  details/       # details step + its pickers
+```
+
+## Bulk refactor
+
+When reorganizing an existing flat folder, use the project skill `.cursor/skills/reorganize-page-components/SKILL.md` (user asks explicitly — do not reshuffle unrelated folders opportunistically).

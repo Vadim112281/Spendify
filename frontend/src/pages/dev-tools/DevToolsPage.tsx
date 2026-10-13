@@ -14,7 +14,7 @@ export const DevToolsPage = () => {
 		<div
 			className={twx(
 				"fixed inset-0 z-50 overflow-y-auto bg-e-bg text-e-text color-scheme-dark",
-				"px-20 pt-[max(20px,env(safe-area-inset-top))] pb-[max(28px,env(safe-area-inset-bottom))]",
+				"px-20 pt-inset-top-page pb-inset-bottom-lg",
 			)}
 		>
 			<header className="mb-24">

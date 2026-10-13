@@ -88,13 +88,18 @@
 	--spacing-38: 38px;
 	--spacing-44: 44px;
 	--spacing-54: 54px;
+	/* Safe area — pt-inset-top-page, pb-inset-bottom-tab, bottom-inset-bottom-float, … */
+	--spacing-inset-top-page: max(20px, env(safe-area-inset-top));
+	--spacing-inset-top-sheet: max(16px, env(safe-area-inset-top));
+	--spacing-inset-bottom-lg: max(28px, env(safe-area-inset-bottom));
+	--spacing-inset-bottom-tab: max(12px, env(safe-area-inset-bottom));
+	--spacing-inset-bottom-sheet: max(8px, env(safe-area-inset-bottom));
+	--spacing-inset-bottom-float: max(20px, env(safe-area-inset-bottom));
 	/* App shell — tab bar pill (58px) + nav bottom offset (12px) + safe area → pb-tab-bar-layout */
 	--spacing-tab-bar-layout: calc(70px + env(safe-area-inset-bottom));
 	/* Scroll area between top safe area and tab bar → min-h-app-page */
 	--min-height-app-page: calc(
-		100dvh -
-		max(20px, env(safe-area-inset-top)) -
-		var(--spacing-tab-bar-layout)
+		100dvh - var(--spacing-inset-top-page) - var(--spacing-tab-bar-layout)
 	);
 
 	/* Max width → max-w-card */

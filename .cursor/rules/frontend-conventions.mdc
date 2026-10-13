@@ -7,6 +7,8 @@ alwaysApply: true
 
 Apply on any work in `frontend/` (and on new code in this repo when the context is UI).
 
+**Questions vs tasks:** `.cursor/rules/ask-dont-implement.mdc` — opinion / “how should we…” → answer only; implement when the user asks to change code.
+
 ## Functions and components
 
 - **Always arrow functions** for components, hooks, and utilities in `frontend/src`.
@@ -100,7 +102,7 @@ aria-label="Головне меню"
   - `navigation/` — `routes.ts`, `navigation.ts`, `useRouteNavigation`
   - `styles/` — `global.css`, `tokens.css`
 - Pages: `pages/<name>/<Page>.tsx`, page-local pieces in subfolders as needed:
-  - `components/` — page UI (forms, panels, tabs); flat files (`LoginForm.tsx`), not nested `LoginForm/LoginForm.tsx`
+  - `components/` — page UI (forms, panels, tabs); default flat files (`LoginForm.tsx`). When the folder grows or has clear UI blocks, group by domain in subfolders (`amount/`, `details/`, `icons/`) — see `.cursor/rules/page-components-folders.mdc`. Never `LoginForm/LoginForm.tsx` mirror folders.
   - `hooks/` — page and form hooks
   - `api/` — page-scoped HTTP calls (e.g. `pages/auth/api/authApi.ts`)
   - `services/` — mappers, messages, page-scoped helpers
@@ -122,6 +124,7 @@ aria-label="Головне меню"
 Before writing new UI or a utility in `pages/`, check whether something suitable already exists in `shared/`.
 
 - **UI** — `shared/ui/` (`AppButton`, `AppField`, `AppHeading`, `AppTextButton`, `AppIcon`, `EntryLayout`…). If you need the same styles, markup, or behavior — import the existing piece; do not copy classes or markup into the page.
+- **Bottom sheets / popups** — any mobile drawer overlay (slide-up panel, modal sheet, “popup” over the app) must use `AppPopup` from `@/shared/ui/AppPopup/AppPopup`. Do not import `vaul` / `Drawer` directly in pages or features; do not build custom `fixed inset-0` + `motion` sheet shells. Wrap flow-specific UI in a thin component (e.g. `HomeTransactionsPopup`, `AddTransactionPopup`) that composes `AppPopup` with `open` + `onOpenChange`. Use `AppPopupClose` / `AppPopupTitle` inside custom `header`; use `size`, `showHandle`, and `header` props before forking styles. Extend `AppPopup` when a new sheet variant is needed for multiple call sites — not one-off duplicates. **Exception:** anchored menus / dropdowns (e.g. wallet switcher) are not sheets — no `AppPopup`.
 - **Utilities** — `shared/utils/` (`twx`, `timeUtils`…). Pure helpers without side effects. Do not duplicate locally in `pages/`.
 - **Hooks** — `shared/hooks/` (`useScrollLock`, `useScreenTransition`…). Shared React hooks reused on 2+ screens or in app shell.
 - **Browser** — `shared/browser/` (`isMobileBrowser`, `isPwaStandalone`…). UA / display-mode reads; call as plain functions, not hooks.
@@ -151,11 +154,25 @@ const LoginButton = () => (
 );
 ```
 
+```tsx
+// ✅ sheet popup — AppPopup + controlled state in the parent that opens it
+import {AppPopup} from "@/shared/ui/AppPopup/AppPopup";
+
+export const ExamplePopup = ({open, onOpenChange}: Props) => (
+  <AppPopup open={open} onOpenChange={onOpenChange} title="Recent">
+    {children}
+  </AppPopup>
+);
+
+// ❌ raw vaul or custom overlay sheet in a page
+import {Drawer} from "vaul";
+```
+
 ## Styles (Tailwind)
 
 - Classes in JSX; **tokens from `app/styles/tokens.css`** (`text-15`, `size-38`, `rounded-11`) — avoid `text-[0.9375rem]` unless necessary.
 - Conditional classes: `twx` from `@/shared/utils/twx`.
-- Minimize arbitrary `[]` — only `env()`, rare selectors (`[&_strong]:…`).
+- Minimize arbitrary `[]` — rare selectors (`[&_strong]:…`). Safe-area padding/margin: use inset tokens from `tokens.css` (`pt-inset-top-page`, `pb-inset-bottom-tab`, …), not `max(..., env(safe-area-inset-*))` in JSX.
 - Formatter: Biome, `bracketSpacing: false` → `{EntryPage}`, not `{ EntryPage }`.
 
 ## React

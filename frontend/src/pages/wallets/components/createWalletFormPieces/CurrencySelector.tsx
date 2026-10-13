@@ -1,7 +1,7 @@
 import {
 	CURRENCY_TYPE_DISPLAY,
 	CURRENCY_TYPE_OPTIONS,
-} from "@/features/wallets/walletDisplay";
+} from "@/features/wallets/walletDisplayService";
 import type {CurrencyType} from "@/features/wallets/walletTypes";
 import {CURRENCY_ACCENT_STYLES} from "@/pages/wallets/config/currencyAccentConfig";
 import {twx} from "@/shared/utils/twx";

@@ -1,8 +1,8 @@
 import {useCallback, useMemo, useState} from "react";
 import {
-	getWalletDisplayName,
 	WALLET_TYPE_LABELS,
-} from "@/features/wallets/walletDisplay";
+	walletDisplayService,
+} from "@/features/wallets/walletDisplayService";
 import type {Wallet} from "@/features/wallets/walletTypes";
 import type {
 	HomeDashboardWallet,
@@ -14,7 +14,10 @@ const EMPTY_MONTH_SUMMARY: HomeMonthSummary = {spent: 0, income: 0};
 const toDashboardWallet = (wallet: Wallet): HomeDashboardWallet => {
 	return {
 		walletId: wallet.walletId,
-		name: getWalletDisplayName(wallet.walletName, wallet.walletType),
+		name: walletDisplayService.getWalletDisplayName(
+			wallet.walletName,
+			wallet.walletType,
+		),
 		walletTypeLabel: WALLET_TYPE_LABELS[wallet.walletType],
 		currency: wallet.currencyType,
 		balance: 0,

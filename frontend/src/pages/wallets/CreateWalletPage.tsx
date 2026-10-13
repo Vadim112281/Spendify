@@ -25,14 +25,14 @@ export const CreateWalletPage = () => {
 	return (
 		// Cancel shell pt so background reaches the top; safe area stays on content only.
 		<div
-			className={twx("relative", "-mt-[max(20px,env(safe-area-inset-top))]")}
+			className={twx("relative", "-mt-inset-top-page")}
 		>
 			<CreateWalletPageBackground currencyType={values.currencyType} />
 
 			<div
 				className={twx(
 					"relative z-1 mx-auto min-h-app-page w-full max-w-card",
-					"pt-[max(20px,env(safe-area-inset-top))]",
+					"pt-inset-top-page",
 				)}
 			>
 				<header className="mb-16">
