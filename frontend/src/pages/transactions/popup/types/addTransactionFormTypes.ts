@@ -1,5 +1,5 @@
 import type {TransactionCategory} from "@/features/transactions/types/transactionCategory";
-import type {TransactionType} from "@/pages/transactions/types/transactionTypes";
+import type {TransactionType} from "@/features/transactions/types/transactionTypes";
 import type {CreateTransactionErrorCode} from "@/pages/transactions/popup/types/addTransactionErrorCodes";
 
 export type AddTransactionFormValues = {

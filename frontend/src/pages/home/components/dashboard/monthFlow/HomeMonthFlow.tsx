@@ -2,14 +2,18 @@ import {motion} from "motion/react";
 
 import type {CurrencyType} from "@/features/wallets/walletTypes";
 import {HomeAnimatedMoney} from "@/pages/home/components/dashboard/HomeAnimatedMoney";
-import {HOME_MONEY_ROLL_SPRING} from "@/pages/home/config/homeDashboardMotion";
+import {HomeDashStatsError} from "@/pages/home/components/dashboard/summary/HomeDashStatsError";
 import {HomeDashTile} from "@/pages/home/components/dashboard/summary/HomeDashTile";
+import {HOME_MONEY_ROLL_SPRING} from "@/pages/home/config/homeDashboardMotion";
 import type {HomeMonthSummary} from "@/pages/home/types/homeDashboardTypes";
 import {twx} from "@/shared/utils/twx";
 
 type HomeMonthFlowProps = {
 	summary: HomeMonthSummary;
 	currency: CurrencyType;
+	isStatsLoading?: boolean;
+	isStatsError?: boolean;
+	onStatsRetry?: () => void;
 };
 
 type FlowSideProps = {
@@ -43,17 +47,19 @@ const FlowSide = ({
 					isIncome ? "text-e-positive" : "text-e-error",
 				)}
 			>
-				<HomeAnimatedMoney
-					amount={signedAmount}
-					currency={currency}
-					signed
-				/>
+				<HomeAnimatedMoney amount={signedAmount} currency={currency} signed />
 			</p>
 		</div>
 	);
 };
 
-export const HomeMonthFlow = ({summary, currency}: HomeMonthFlowProps) => {
+export const HomeMonthFlow = ({
+	summary,
+	currency,
+	isStatsLoading = false,
+	isStatsError = false,
+	onStatsRetry,
+}: HomeMonthFlowProps) => {
 	const flowTotal = summary.spent + summary.income;
 	const spentShare = flowTotal > 0 ? (summary.spent / flowTotal) * 100 : 50;
 	const incomeShare = 100 - spentShare;
@@ -66,37 +72,54 @@ export const HomeMonthFlow = ({summary, currency}: HomeMonthFlowProps) => {
 				This month
 			</p>
 
-			<div
-				className="mt-12 flex h-5 overflow-hidden rounded-full bg-white/10"
-				role="img"
-				aria-label={`Expenses ${spentShareLabel}, income ${incomeShareLabel} of monthly flow`}
-			>
-				<motion.div
-					className="h-full bg-e-error/85"
-					initial={false}
-					animate={{width: `${spentShare}%`}}
-					transition={HOME_MONEY_ROLL_SPRING}
-				/>
-				<div className="h-full flex-1 bg-e-positive/85" />
-			</div>
+			{isStatsLoading ? (
+				<>
+					<div
+						className="mt-12 h-5 animate-pulse rounded-full bg-white/10"
+						aria-hidden="true"
+					/>
+					<div className="mt-16 grid grid-cols-2 gap-16">
+						<div className="h-44 animate-pulse rounded-12 bg-white/10" />
+						<div className="h-44 animate-pulse rounded-12 bg-white/10" />
+					</div>
+				</>
+			) : isStatsError ? (
+				<HomeDashStatsError onRetry={onStatsRetry} />
+			) : (
+				<>
+					<div
+						className="mt-12 flex h-5 overflow-hidden rounded-full bg-white/10"
+						role="img"
+						aria-label={`Expenses ${spentShareLabel}, income ${incomeShareLabel} of monthly flow`}
+					>
+						<motion.div
+							className="h-full bg-e-error/85"
+							initial={false}
+							animate={{width: `${spentShare}%`}}
+							transition={HOME_MONEY_ROLL_SPRING}
+						/>
+						<div className="h-full flex-1 bg-e-positive/85" />
+					</div>
 
-			<div className="mt-16 grid grid-cols-2 gap-16">
-				<FlowSide
-					label="Expenses"
-					amount={summary.spent}
-					currency={currency}
-					isIncome={false}
-					shareLabel={spentShareLabel}
-				/>
-				<FlowSide
-					label="Income"
-					amount={summary.income}
-					currency={currency}
-					alignEnd
-					isIncome
-					shareLabel={incomeShareLabel}
-				/>
-			</div>
+					<div className="mt-16 grid grid-cols-2 gap-16">
+						<FlowSide
+							label="Expenses"
+							amount={summary.spent}
+							currency={currency}
+							isIncome={false}
+							shareLabel={spentShareLabel}
+						/>
+						<FlowSide
+							label="Income"
+							amount={summary.income}
+							currency={currency}
+							alignEnd
+							isIncome
+							shareLabel={incomeShareLabel}
+						/>
+					</div>
+				</>
+			)}
 		</HomeDashTile>
 	);
 };

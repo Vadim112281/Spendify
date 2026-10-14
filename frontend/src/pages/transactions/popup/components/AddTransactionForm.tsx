@@ -1,4 +1,4 @@
-import {TRANSACTION_TYPE} from "@/pages/transactions/types/transactionTypes";
+import {TRANSACTION_TYPE} from "@/features/transactions/types/transactionTypes";
 import {CURRENCY_TYPE} from "@/features/wallets/walletTypes";
 import {AddTransactionAmountField} from "@/pages/transactions/popup/components/amount/AddTransactionAmountField";
 import {AddTransactionAmountKeypad} from "@/pages/transactions/popup/components/amount/AddTransactionAmountKeypad";

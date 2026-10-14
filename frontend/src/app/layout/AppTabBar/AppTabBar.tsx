@@ -24,7 +24,7 @@ export const AppTabBar = () => {
 		<>
 			<nav
 				className={twx(
-					"pointer-events-none fixed inset-x-0 bottom-0 z-40 px-20",
+					"pointer-events-none fixed inset-x-0 bottom-0 z-40 bg-transparent px-20",
 					"pb-inset-bottom-tab",
 				)}
 				aria-label="Main menu"

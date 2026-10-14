@@ -1,8 +1,8 @@
+import {CURRENCY_TYPE_DISPLAY} from "@/features/wallets/walletDisplayService";
 import type {CurrencyType} from "@/features/wallets/walletTypes";
 import {HOME_MONEY_ROLL_SPRING} from "@/pages/home/config/homeDashboardMotion";
-import {CURRENCY_TYPE_DISPLAY} from "@/features/wallets/walletDisplayService";
-import {formatCurrencyAmount} from "@/shared/utils/moneyFormat";
 import {useAnimatedNumber} from "@/shared/hooks/useAnimatedNumber";
+import {formatCurrencyAmount} from "@/shared/utils/moneyFormat";
 
 type HomeAnimatedMoneyProps = {
 	amount: number;

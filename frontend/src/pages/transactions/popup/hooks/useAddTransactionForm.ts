@@ -2,12 +2,12 @@ import type {SubmitEventHandler} from "react";
 import {useCallback, useEffect, useRef, useState} from "react";
 
 import {isApiError} from "@/app/api/httpClient";
-import {createTransaction} from "@/pages/transactions/api/transactionsApi";
-import {TRANSACTION_TYPE} from "@/pages/transactions/types/transactionTypes";
+import {useCreateTransactionMutation} from "@/features/transactions/transactionsQuery";
+import {TRANSACTION_TYPE} from "@/features/transactions/types/transactionTypes";
 import {useAddTransactionStep} from "@/pages/transactions/popup/hooks/useAddTransactionStep";
 import {useAddTransactionWallets} from "@/pages/transactions/popup/hooks/useAddTransactionWallets";
-import {addTransactionPopupService} from "@/pages/transactions/popup/services/addTransactionPopupService";
 import {addTransactionMessagesService} from "@/pages/transactions/popup/services/addTransactionMessagesService";
+import {addTransactionPopupService} from "@/pages/transactions/popup/services/addTransactionPopupService";
 import {
 	type AddTransactionFieldErrors,
 	type AddTransactionFormValues,
@@ -44,8 +44,12 @@ export const useAddTransactionForm = ({
 	const [values, setValues] = useState<AddTransactionFormValues>(initialValues);
 	const [fieldErrors, setFieldErrors] = useState<AddTransactionFieldErrors>({});
 	const [formError, setFormError] = useState<string | undefined>();
-	const [isSubmitting, setIsSubmitting] = useState(false);
 	const openRef = useRef(open);
+	const {
+		mutateAsync: createTransaction,
+		reset: resetCreateTransaction,
+		isPending: isCreateTransactionPending,
+	} = useCreateTransactionMutation();
 
 	const {
 		wallets,
@@ -87,8 +91,8 @@ export const useAddTransactionForm = ({
 		setValues({...initialValues, transactionDate: todayDateOnly()});
 		setFieldErrors({});
 		setFormError(undefined);
-		setIsSubmitting(false);
 		resetStep();
+		resetCreateTransaction();
 	}, [open, resetStep]);
 
 	const setFormValue = useCallback(
@@ -167,18 +171,21 @@ export const useAddTransactionForm = ({
 			return;
 		}
 
-		setIsSubmitting(true);
-
 		try {
 			const trimmedNote = values.note.trim();
-			await createTransaction(values.walletId, {
-				type: values.type,
-				category: values.category,
-				amount,
-				transactionDate: values.transactionDate,
-				...(trimmedNote ? {note: trimmedNote} : {}),
+			await createTransaction({
+				walletId: values.walletId,
+				body: {
+					type: values.type,
+					category: values.category,
+					amount,
+					transactionDate: values.transactionDate,
+					...(trimmedNote ? {note: trimmedNote} : {}),
+				},
 			});
-			setIsSubmitting(false);
+			if (!openRef.current) {
+				return;
+			}
 			onSuccess();
 		} catch (error) {
 			if (!openRef.current) {
@@ -191,7 +198,6 @@ export const useAddTransactionForm = ({
 
 			applySubmitFieldErrors(apiErrors.fieldErrors);
 			setFormError(apiErrors.formError);
-			setIsSubmitting(false);
 		}
 	};
 
@@ -203,7 +209,7 @@ export const useAddTransactionForm = ({
 		values,
 		fieldErrors,
 		formError,
-		isSubmitting,
+		isSubmitting: isCreateTransactionPending,
 		wallets,
 		walletsLoading,
 		walletsError,

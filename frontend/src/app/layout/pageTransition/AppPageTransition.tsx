@@ -1,40 +1,18 @@
 import {motion, useAnimationControls} from "motion/react";
-import {useLayoutEffect} from "react";
+import {useLayoutEffect, useMemo} from "react";
+import {useLocation} from "react-router-dom";
 
+import {buildPagePanelClassNames} from "@/app/layout/pageTransition/pagePanelLayout";
 import {pageSlideTransition} from "@/app/layout/pageTransition/pageSlideTransitionConfig";
 import {usePageSlideTransition} from "@/app/layout/pageTransition/usePageSlideTransition";
+import {APP_ROUTES} from "@/app/navigation/routes";
 import {twx} from "@/shared/utils/twx";
-
-const pageLayoutClassName = twx(
-	"min-h-0 bg-e-bg px-20",
-	"pt-inset-top-page",
-	"pb-tab-bar-layout",
-);
-
-const pagePanelScrollClassName = twx(
-	pageLayoutClassName,
-	"h-full overflow-x-hidden overflow-y-auto overscroll-contain touch-pan-y",
-);
-
-const panelHalfClassName = twx(
-	pagePanelScrollClassName,
-	"relative w-1/2 shrink-0 overflow-hidden",
-);
-
-const panelFullClassName = twx(
-	pagePanelScrollClassName,
-	"relative h-full w-full shrink-0 overflow-hidden",
-);
-
-const panelSpacerClassName = twx(
-	panelHalfClassName,
-	"pointer-events-none invisible",
-);
 
 const restingTranslateX = (panel: "primary" | "secondary") =>
 	panel === "secondary" ? "-50%" : "0%";
 
 export const AppPageTransition = () => {
+	const {pathname} = useLocation();
 	const {
 		displayOutlet,
 		hasRestingViewport,
@@ -43,6 +21,11 @@ export const AppPageTransition = () => {
 		finishTransition,
 	} = usePageSlideTransition();
 	const slideControls = useAnimationControls();
+	const {panelFullClassName, panelHalfClassName, panelSpacerClassName} =
+		useMemo(
+			() => buildPagePanelClassNames(pathname !== APP_ROUTES.APP_HOME),
+			[pathname],
+		);
 	const isSliding = transition !== null;
 	const useWideTrack = isSliding || hasRestingViewport;
 
@@ -100,9 +83,7 @@ export const AppPageTransition = () => {
 					useWideTrack ? "w-[200%]" : "w-full",
 				)}
 				animate={
-					isSliding
-						? slideControls
-						: {x: hasRestingViewport ? restingX : "0%"}
+					isSliding ? slideControls : {x: hasRestingViewport ? restingX : "0%"}
 				}
 				initial={false}
 				transition={isSliding ? undefined : {duration: 0}}

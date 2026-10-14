@@ -1,7 +1,7 @@
 import {
 	TRANSACTION_TYPE,
 	type TransactionType,
-} from "@/pages/transactions/types/transactionTypes";
+} from "@/features/transactions/types/transactionTypes";
 import {twx} from "@/shared/utils/twx";
 
 type TransactionTypeSwitcherProps = {
