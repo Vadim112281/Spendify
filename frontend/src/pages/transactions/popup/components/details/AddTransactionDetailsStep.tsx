@@ -1,4 +1,4 @@
-import {TRANSACTION_TYPE} from "@/pages/transactions/types/transactionTypes";
+import {TRANSACTION_TYPE} from "@/features/transactions/types/transactionTypes";
 import {walletDisplayService} from "@/features/wallets/walletDisplayService";
 import {CURRENCY_TYPE} from "@/features/wallets/walletTypes";
 import {AddTransactionDetailsGroup} from "@/pages/transactions/popup/components/details/AddTransactionDetailsGroup";

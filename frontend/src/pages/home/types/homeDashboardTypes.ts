@@ -1,3 +1,4 @@
+import type {TransactionCategory} from "@/features/transactions/types/transactionCategory";
 import type {CurrencyType} from "@/features/wallets/walletTypes";
 
 export const TRANSACTION_KIND = {
@@ -21,23 +22,12 @@ export type HomeMonthSummary = {
 	income: number;
 };
 
-// TODO: Load categories from the user API when home is wired to real data.
-export const ACTIVITY_CATEGORY = {
-	CAFE: "cafe",
-	SALARY: "salary",
-	TRANSPORT: "transport",
-	GROCERIES: "groceries",
-	SUBSCRIPTION: "subscription",
-} as const;
-
-export type HomeActivityCategory =
-	(typeof ACTIVITY_CATEGORY)[keyof typeof ACTIVITY_CATEGORY];
-
 export type HomeDashboardTransaction = {
 	id: string;
 	title: string;
-	category: HomeActivityCategory;
+	category: TransactionCategory;
 	kind: TransactionKind;
 	amount: number;
-	occurredLabel: string;
+	transactionDate: string;
+	dateGroupLabel: string;
 };

@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from "react";
 import {getUserWallets} from "@/features/wallets/api/walletsApi";
-import type {Wallet} from "@/features/wallets/walletTypes";
 import {mapLoadWalletsError} from "@/features/wallets/walletLoadMessages";
+import type {Wallet} from "@/features/wallets/walletTypes";
 
 export const useUserWallets = () => {
 	const [wallets, setWallets] = useState<Wallet[]>([]);
