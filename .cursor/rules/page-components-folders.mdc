@@ -40,7 +40,7 @@ Do **not** subfolder for:
 Multi-step popup example:
 
 ```
-popup/components/
+popups/components/
   AddTransactionForm.tsx
   step/          # step chrome shared by sheet + form
   amount/        # amount step only

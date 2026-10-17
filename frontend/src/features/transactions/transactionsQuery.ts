@@ -5,11 +5,16 @@ import {
 	useQueryClient,
 } from "@tanstack/react-query";
 
-import {createTransaction} from "@/features/transactions/api/transactionsApi";
+import {
+	createTransaction,
+	deleteTransaction,
+	updateTransaction,
+} from "@/features/transactions/api/transactionsApi";
 import {fetchAllWalletTransactions} from "@/features/transactions/services/fetchAllWalletTransactions";
 import type {
 	CreateTransactionRequest,
 	Transaction,
+	UpdateTransactionRequest,
 } from "@/features/transactions/types/transactionTypes";
 
 const walletTransactionsQueryKey = (walletId: string) =>
@@ -25,6 +30,26 @@ type CreateTransactionVariables = {
 	body: CreateTransactionRequest;
 };
 
+type UpdateTransactionVariables = {
+	walletId: string;
+	transactionId: string;
+	body: UpdateTransactionRequest;
+};
+
+type DeleteTransactionVariables = {
+	walletId: string;
+	transactionId: string;
+};
+
+const invalidateWalletTransactions = (
+	queryClient: ReturnType<typeof useQueryClient>,
+	walletId: string,
+) => {
+	void queryClient.invalidateQueries({
+		queryKey: walletTransactionsQueryKey(walletId),
+	});
+};
+
 export const useCreateTransactionMutation = () => {
 	const queryClient = useQueryClient();
 
@@ -32,9 +57,31 @@ export const useCreateTransactionMutation = () => {
 		mutationFn: ({walletId, body}: CreateTransactionVariables) =>
 			createTransaction(walletId, body),
 		onSuccess: (_transaction, {walletId}) => {
-			void queryClient.invalidateQueries({
-				queryKey: walletTransactionsQueryKey(walletId),
-			});
+			invalidateWalletTransactions(queryClient, walletId);
+		},
+	});
+};
+
+export const useUpdateTransactionMutation = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: ({walletId, transactionId, body}: UpdateTransactionVariables) =>
+			updateTransaction(walletId, transactionId, body),
+		onSuccess: (_transaction, {walletId}) => {
+			invalidateWalletTransactions(queryClient, walletId);
+		},
+	});
+};
+
+export const useDeleteTransactionMutation = () => {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: ({walletId, transactionId}: DeleteTransactionVariables) =>
+			deleteTransaction(walletId, transactionId),
+		onSuccess: (_result, {walletId}) => {
+			invalidateWalletTransactions(queryClient, walletId);
 		},
 	});
 };

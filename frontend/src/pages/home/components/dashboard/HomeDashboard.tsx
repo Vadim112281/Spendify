@@ -14,7 +14,8 @@ type HomeDashboardProps = {
 export const HomeDashboard = ({wallets}: HomeDashboardProps) => {
 	const monthLabel = formatLongMonth();
 	const {
-		wallet,
+		activeWallet,
+		sourceWallet,
 		wallets: dashboardWallets,
 		selectWallet,
 		monthSummary,
@@ -28,7 +29,7 @@ export const HomeDashboard = ({wallets}: HomeDashboardProps) => {
 		void refetchTransactions();
 	};
 
-	if (!wallet) {
+	if (!activeWallet || !sourceWallet) {
 		return null;
 	}
 
@@ -40,19 +41,19 @@ export const HomeDashboard = ({wallets}: HomeDashboardProps) => {
 				<HomeDashboardHeader
 					monthLabel={monthLabel}
 					wallets={dashboardWallets}
-					activeWallet={wallet}
+					activeWallet={activeWallet}
 					onSelectWallet={selectWallet}
 				/>
 				<div className="flex flex-col gap-10">
 					<HomeBalanceCard
-						wallet={wallet}
+						wallet={activeWallet}
 						isStatsLoading={transactionsLoading}
 						isStatsError={isStatsError}
 						onStatsRetry={retryTransactions}
 					/>
 					<HomeMonthFlow
 						summary={monthSummary}
-						currency={wallet.currency}
+						currency={activeWallet.currency}
 						isStatsLoading={transactionsLoading}
 						isStatsError={isStatsError}
 						onStatsRetry={retryTransactions}
@@ -75,8 +76,9 @@ export const HomeDashboard = ({wallets}: HomeDashboardProps) => {
 				>
 					<div className="pb-tab-bar-layout">
 						<HomeTransactionsPreview
+							wallet={sourceWallet}
 							transactions={transactions}
-							currency={wallet.currency}
+							currency={activeWallet.currency}
 							isLoading={transactionsLoading}
 							isError={transactionsError}
 							onRetry={retryTransactions}
