@@ -1,8 +1,6 @@
 import {useReducedMotion} from "motion/react";
 import {useState} from "react";
 import {useLocation} from "react-router-dom";
-
-import {AddTransactionPopup} from "@/pages/transactions/popup/AddTransactionPopup";
 import {AddButton} from "@/app/layout/AppTabBar/components/AddButton";
 import {SlidingIndicator} from "@/app/layout/AppTabBar/components/SlidingIndicator";
 import {TabLink} from "@/app/layout/AppTabBar/components/TabLink";
@@ -11,6 +9,7 @@ import {
 	getTabBarActiveSlotIndex,
 	TAB_BAR_SLOTS,
 } from "@/app/navigation/appTabs";
+import {AddTransactionPopup} from "@/features/transactions/popups/AddTransactionPopup";
 import {twx} from "@/shared/utils/twx";
 
 export const AppTabBar = () => {

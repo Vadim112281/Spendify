@@ -1,3 +1,4 @@
+import type {EditTransactionTarget} from "@/features/transactions/popups/types/editTransactionTypes";
 import type {TransactionCategory} from "@/features/transactions/types/transactionCategory";
 import {
 	TRANSACTION_TYPE,
@@ -28,6 +29,7 @@ const mapHomeDashboardTransaction = (
 			? TRANSACTION_KIND.INCOME
 			: TRANSACTION_KIND.EXPENSE,
 	amount: transaction.amount,
+	note: transaction.note?.trim() ?? "",
 	transactionDate: transaction.transactionDate,
 	dateGroupLabel: formatTransactionDateGroupLabel(transaction.transactionDate),
 });
@@ -63,4 +65,24 @@ const groupHomeTransactionsByDate = (
 	return groups;
 };
 
-export {groupHomeTransactionsByDate, mapHomeDashboardTransaction};
+const mapHomeTransactionToEditTarget = (
+	walletId: string,
+	transaction: HomeDashboardTransaction,
+): EditTransactionTarget => ({
+	transactionId: transaction.id,
+	walletId,
+	type:
+		transaction.kind === TRANSACTION_KIND.INCOME
+			? TRANSACTION_TYPE.INCOME
+			: TRANSACTION_TYPE.EXPENSE,
+	category: transaction.category,
+	amount: transaction.amount,
+	note: transaction.note,
+	transactionDate: transaction.transactionDate,
+});
+
+export {
+	groupHomeTransactionsByDate,
+	mapHomeDashboardTransaction,
+	mapHomeTransactionToEditTarget,
+};

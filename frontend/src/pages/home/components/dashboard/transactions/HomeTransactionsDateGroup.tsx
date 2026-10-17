@@ -1,6 +1,7 @@
 import type {CurrencyType} from "@/features/wallets/walletTypes";
 import {HomeTransactionRow} from "@/pages/home/components/dashboard/transactions/HomeTransactionRow";
 import type {HomeTransactionDateGroup} from "@/pages/home/services/homeDashboardTransactionsService";
+import type {HomeDashboardTransaction} from "@/pages/home/types/homeDashboardTypes";
 import {twx} from "@/shared/utils/twx";
 
 type HomeTransactionsDateGroupProps = {
@@ -8,6 +9,10 @@ type HomeTransactionsDateGroupProps = {
 	currency: CurrencyType;
 	isFirst?: boolean;
 	showGroupLabel?: boolean;
+	openSwipeId: string | null;
+	onSwipeOpenChange: (transactionId: string, open: boolean) => void;
+	onEditTransaction: (transaction: HomeDashboardTransaction) => void;
+	onDeleteTransaction: (transaction: HomeDashboardTransaction) => void;
 };
 
 export const HomeTransactionsDateGroup = ({
@@ -15,6 +20,10 @@ export const HomeTransactionsDateGroup = ({
 	currency,
 	isFirst = false,
 	showGroupLabel = true,
+	openSwipeId,
+	onSwipeOpenChange,
+	onEditTransaction,
+	onDeleteTransaction,
 }: HomeTransactionsDateGroupProps) => {
 	return (
 		<div>
@@ -34,6 +43,16 @@ export const HomeTransactionsDateGroup = ({
 						key={transaction.id}
 						transaction={transaction}
 						currency={currency}
+						isSwipeOpen={openSwipeId === transaction.id}
+						onSwipeOpenChange={(open) => {
+							onSwipeOpenChange(transaction.id, open);
+						}}
+						onEdit={() => {
+							onEditTransaction(transaction);
+						}}
+						onDelete={() => {
+							onDeleteTransaction(transaction);
+						}}
 					/>
 				))}
 			</ul>

@@ -1,7 +1,9 @@
 import {useMemo} from "react";
-
-import type {CurrencyType} from "@/features/wallets/walletTypes";
+import {DeleteTransactionConfirmPopup} from "@/features/transactions/popups/DeleteTransactionConfirmPopup";
+import {EditTransactionPopup} from "@/features/transactions/popups/EditTransactionPopup";
+import type {CurrencyType, Wallet} from "@/features/wallets/walletTypes";
 import {HomeTransactionsDateGroup} from "@/pages/home/components/dashboard/transactions/HomeTransactionsDateGroup";
+import {useHomeTransactionsPreviewActions} from "@/pages/home/components/dashboard/transactions/hooks/useHomeTransactionsPreviewActions";
 import {HomeWalletLoading} from "@/pages/home/components/wallet/HomeWalletLoading";
 import {groupHomeTransactionsByDate} from "@/pages/home/services/homeDashboardTransactionsService";
 import type {HomeDashboardTransaction} from "@/pages/home/types/homeDashboardTypes";
@@ -11,6 +13,7 @@ const TRANSACTIONS_LOAD_ERROR_MESSAGE =
 	"Could not load transactions. Please try again.";
 
 type HomeTransactionsPreviewProps = {
+	wallet: Wallet;
 	transactions: HomeDashboardTransaction[];
 	currency: CurrencyType;
 	isLoading?: boolean;
@@ -19,6 +22,7 @@ type HomeTransactionsPreviewProps = {
 };
 
 export const HomeTransactionsPreview = ({
+	wallet,
 	transactions,
 	currency,
 	isLoading = false,
@@ -30,6 +34,20 @@ export const HomeTransactionsPreview = ({
 		[transactions],
 	);
 	const hideGroupLabels = groups.length === 1;
+	const {
+		openSwipeId,
+		handleSwipeOpenChange,
+		handleEditTransaction,
+		handleDeleteTransaction,
+		editConfirmOpen,
+		editTarget,
+		handleEditOpenChange,
+		deleteConfirmOpen,
+		deleteError,
+		isDeletePending,
+		handleDeleteOpenChange,
+		handleConfirmDelete,
+	} = useHomeTransactionsPreviewActions(wallet.walletId);
 
 	if (isLoading) {
 		return (
@@ -61,22 +79,46 @@ export const HomeTransactionsPreview = ({
 	}
 
 	return (
-		<section aria-labelledby="home-transactions-preview-heading">
-			{groups.length === 0 ? (
-				<p className="m-0 text-14 leading-relaxed text-e-zinc/85">
-					No transactions yet. Tap + to add your first one.
-				</p>
-			) : (
-				groups.map((group, index) => (
-					<HomeTransactionsDateGroup
-						key={group.dateKey}
-						group={group}
-						currency={currency}
-						isFirst={index === 0}
-						showGroupLabel={!hideGroupLabels}
-					/>
-				))
-			)}
-		</section>
+		<>
+			<section aria-labelledby="home-transactions-preview-heading">
+				{groups.length === 0 ? (
+					<p className="m-0 text-14 leading-relaxed text-e-zinc/85">
+						No transactions yet. Tap + to add your first one.
+					</p>
+				) : (
+					groups.map((group, index) => (
+						<HomeTransactionsDateGroup
+							key={group.dateKey}
+							group={group}
+							currency={currency}
+							isFirst={index === 0}
+							showGroupLabel={!hideGroupLabels}
+							openSwipeId={openSwipeId}
+							onSwipeOpenChange={handleSwipeOpenChange}
+							onEditTransaction={handleEditTransaction}
+							onDeleteTransaction={handleDeleteTransaction}
+						/>
+					))
+				)}
+			</section>
+
+			<EditTransactionPopup
+				open={editConfirmOpen}
+				target={editTarget}
+				lockedWallet={wallet}
+				onOpenChange={handleEditOpenChange}
+			/>
+
+			<DeleteTransactionConfirmPopup
+				open={deleteConfirmOpen}
+				error={deleteError}
+				isPending={isDeletePending}
+				onOpenChange={handleDeleteOpenChange}
+				onConfirm={handleConfirmDelete}
+				onCancel={() => {
+					handleDeleteOpenChange(false);
+				}}
+			/>
+		</>
 	);
 };

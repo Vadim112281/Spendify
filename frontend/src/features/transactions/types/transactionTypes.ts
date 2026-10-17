@@ -26,3 +26,11 @@ export type CreateTransactionRequest = {
 	note?: string;
 	transactionDate: string;
 };
+
+export type UpdateTransactionRequest = {
+	type: TransactionType;
+	category: TransactionCategory;
+	amount: number;
+	note?: string;
+	transactionDate: string;
+};
