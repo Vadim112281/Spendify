@@ -28,6 +28,7 @@ export type HomeDashboardTransaction = {
 	category: TransactionCategory;
 	kind: TransactionKind;
 	amount: number;
+	note: string;
 	transactionDate: string;
 	dateGroupLabel: string;
 };
