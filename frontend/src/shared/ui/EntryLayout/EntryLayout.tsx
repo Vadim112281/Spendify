@@ -1,10 +1,10 @@
 import type {ReactNode} from "react";
-import {twx} from "@/shared/utils/twx";
 import {AppIcon} from "@/shared/ui/AppIcon/AppIcon";
 import {
 	ENTRY_LAYOUT_SIZE,
 	type EntryLayoutSize,
 } from "@/shared/ui/EntryLayout/entryLayoutSize";
+import {twx} from "@/shared/utils/twx";
 
 import styles from "./EntryLayout.module.scss";
 

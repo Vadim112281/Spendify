@@ -1,13 +1,13 @@
-import type {EditTransactionTarget} from "@/features/transactions/popups/types/editTransactionTypes";
 import type {TransactionCategory} from "@/features/transactions/types/transactionCategory";
+import type {TransactionListActionTarget} from "@/features/transactions/types/transactionListActionsTypes";
+import {
+	TRANSACTION_KIND,
+	type TransactionListViewItem,
+} from "@/features/transactions/types/transactionListViewTypes";
 import {
 	TRANSACTION_TYPE,
 	type Transaction,
 } from "@/features/transactions/types/transactionTypes";
-import {
-	type HomeDashboardTransaction,
-	TRANSACTION_KIND,
-} from "@/pages/home/types/homeDashboardTypes";
 import {formatTransactionDateGroupLabel} from "@/shared/utils/timeUtils";
 
 const getTransactionTitle = (
@@ -18,9 +18,9 @@ const getTransactionTitle = (
 	return trimmedNote && trimmedNote.length > 0 ? trimmedNote : category;
 };
 
-const mapHomeDashboardTransaction = (
+export const mapTransactionToListView = (
 	transaction: Transaction,
-): HomeDashboardTransaction => ({
+): TransactionListViewItem => ({
 	id: transaction.transactionId,
 	title: getTransactionTitle(transaction.category, transaction.note),
 	category: transaction.category,
@@ -32,18 +32,19 @@ const mapHomeDashboardTransaction = (
 	note: transaction.note?.trim() ?? "",
 	transactionDate: transaction.transactionDate,
 	dateGroupLabel: formatTransactionDateGroupLabel(transaction.transactionDate),
+	createdAtUtc: transaction.createdAtUtc,
 });
 
-export type HomeTransactionDateGroup = {
+export type TransactionDateGroup = {
 	dateKey: string;
 	label: string;
-	transactions: HomeDashboardTransaction[];
+	transactions: TransactionListViewItem[];
 };
 
-const groupHomeTransactionsByDate = (
-	transactions: HomeDashboardTransaction[],
-): HomeTransactionDateGroup[] => {
-	const groups: HomeTransactionDateGroup[] = [];
+export const groupTransactionsByDate = (
+	transactions: TransactionListViewItem[],
+): TransactionDateGroup[] => {
+	const groups: TransactionDateGroup[] = [];
 	const groupIndexByDateKey = new Map<string, number>();
 
 	for (const transaction of transactions) {
@@ -65,12 +66,10 @@ const groupHomeTransactionsByDate = (
 	return groups;
 };
 
-const mapHomeTransactionToEditTarget = (
-	walletId: string,
-	transaction: HomeDashboardTransaction,
-): EditTransactionTarget => ({
-	transactionId: transaction.id,
-	walletId,
+export const mapListViewToListActionTarget = (
+	transaction: TransactionListViewItem,
+): TransactionListActionTarget => ({
+	id: transaction.id,
 	type:
 		transaction.kind === TRANSACTION_KIND.INCOME
 			? TRANSACTION_TYPE.INCOME
@@ -80,9 +79,3 @@ const mapHomeTransactionToEditTarget = (
 	note: transaction.note,
 	transactionDate: transaction.transactionDate,
 });
-
-export {
-	groupHomeTransactionsByDate,
-	mapHomeDashboardTransaction,
-	mapHomeTransactionToEditTarget,
-};

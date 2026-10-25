@@ -2,10 +2,12 @@ import {motion, useAnimationControls} from "motion/react";
 import {useLayoutEffect, useMemo} from "react";
 import {useLocation} from "react-router-dom";
 
-import {buildPagePanelClassNames} from "@/app/layout/pageTransition/pagePanelLayout";
+import {
+	buildPagePanelClassNames,
+	shouldIncludeTabBarPageInset,
+} from "@/app/layout/pageTransition/pagePanelLayout";
 import {pageSlideTransition} from "@/app/layout/pageTransition/pageSlideTransitionConfig";
 import {usePageSlideTransition} from "@/app/layout/pageTransition/usePageSlideTransition";
-import {APP_ROUTES} from "@/app/navigation/routes";
 import {twx} from "@/shared/utils/twx";
 
 const restingTranslateX = (panel: "primary" | "secondary") =>
@@ -23,7 +25,7 @@ export const AppPageTransition = () => {
 	const slideControls = useAnimationControls();
 	const {panelFullClassName, panelHalfClassName, panelSpacerClassName} =
 		useMemo(
-			() => buildPagePanelClassNames(pathname !== APP_ROUTES.APP_HOME),
+			() => buildPagePanelClassNames(shouldIncludeTabBarPageInset(pathname)),
 			[pathname],
 		);
 	const isSliding = transition !== null;

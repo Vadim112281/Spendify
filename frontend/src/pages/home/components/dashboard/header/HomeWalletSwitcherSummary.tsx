@@ -1,4 +1,4 @@
-import {HomeWalletIcon} from "@/pages/home/components/dashboard/icons/HomeWalletIcon";
+import {WalletIcon} from "@/features/wallets/components/icons/WalletIcon";
 import {twx} from "@/shared/utils/twx";
 
 type HomeWalletSwitcherSummaryProps = {
@@ -17,7 +17,7 @@ export const HomeWalletSwitcherSummary = ({
 			className="grid size-28 shrink-0 place-items-center rounded-full bg-e-dash text-e-heading"
 			aria-hidden="true"
 		>
-			<HomeWalletIcon width={14} height={14} strokeWidth={1.75} />
+			<WalletIcon width={14} height={14} strokeWidth={1.75} />
 		</span>
 		<span
 			className={twx("min-w-0 truncate text-13 font-medium", labelClassName)}

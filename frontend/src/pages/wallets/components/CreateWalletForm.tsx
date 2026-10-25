@@ -9,9 +9,9 @@ import type {
 	CreateWalletFieldErrors,
 	CreateWalletFormValues,
 } from "@/pages/wallets/types/createWalletFormTypes";
-import {twx} from "@/shared/utils/twx";
 import {AppButton} from "@/shared/ui/AppButton/AppButton";
 import {AppFormError} from "@/shared/ui/AppFormError/AppFormError";
+import {twx} from "@/shared/utils/twx";
 
 type CreateWalletFormProps = {
 	className?: string;

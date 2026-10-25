@@ -88,6 +88,7 @@
 	--spacing-38: 38px;
 	--spacing-44: 44px;
 	--spacing-54: 54px;
+	--spacing-118: 118px;
 	/* Safe area — pt-inset-top-page, pb-inset-bottom-tab, bottom-inset-bottom-float, … */
 	--spacing-inset-top-page: max(20px, env(safe-area-inset-top));
 	--spacing-inset-top-sheet: max(16px, env(safe-area-inset-top));
@@ -99,7 +100,9 @@
 	--spacing-tab-bar-layout: calc(70px + env(safe-area-inset-bottom));
 	/* Scroll area between top safe area and tab bar → min-h-app-page */
 	--min-height-app-page: calc(
-		100dvh - var(--spacing-inset-top-page) - var(--spacing-tab-bar-layout)
+		100dvh -
+		var(--spacing-inset-top-page) -
+		var(--spacing-tab-bar-layout)
 	);
 
 	/* Max width → max-w-card */
@@ -159,12 +162,14 @@
 	--shadow-e-btn: 0 4px 14px -4px rgb(0 0 0 / 0.25);
 	--shadow-e-dash: 0 4px 16px -6px rgb(0 0 0 / 0.2);
 	--shadow-e-chip-selected: inset 0 0 0 1px rgb(255 255 255 / 0.12);
+	--shadow-e-swatch: 0 0 0 1px rgb(0 0 0 / 0.2);
 	--drop-shadow-app-icon: 0 4px 14px rgb(0 0 0 / 0.35);
 	--drop-shadow-app-icon-sm: 0 3px 10px rgb(0 0 0 / 0.3);
 }
 
 /* Home dashboard stat cards — lift + top light on e-bg. */
 @utility e-home-stat-surface {
+	--e-stat-inset-ring: transparent;
 	border: 1px solid rgb(255 255 255 / 0.11);
 	background-image: linear-gradient(
 		180deg,
@@ -173,7 +178,24 @@
 	);
 	box-shadow:
 		0 16px 40px -28px rgb(0 0 0 / 0.65),
-		inset 0 1px 0 rgb(255 255 255 / 0.08);
+		inset 0 1px 0 rgb(255 255 255 / 0.08),
+		inset 0 0 0 1px var(--e-stat-inset-ring);
+}
+
+@utility e-stat-ring-expense {
+	--e-stat-inset-ring: color-mix(in srgb, var(--color-e-error) 6%, transparent);
+}
+
+@utility e-stat-ring-income {
+	--e-stat-inset-ring: color-mix(
+		in srgb,
+		var(--color-e-positive) 8%,
+		transparent
+	);
+}
+
+@utility e-stat-ring-neutral {
+	--e-stat-inset-ring: rgb(255 255 255 / 0.06);
 }
 
 /* Masked grid for create-wallet page background (CreateWalletPageBackground). */

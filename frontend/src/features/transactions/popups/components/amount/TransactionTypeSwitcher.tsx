@@ -28,6 +28,7 @@ export const TransactionTypeSwitcher = ({
 			const isIncome = option.value === TRANSACTION_TYPE.INCOME;
 
 			return (
+				// biome-ignore lint/a11y/useSemanticElements: styled segmented control (radiogroup + button)
 				<button
 					key={option.value}
 					type="button"

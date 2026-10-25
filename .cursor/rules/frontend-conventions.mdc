@@ -110,6 +110,7 @@ aria-label="Головне меню"
   - `validation/` — client-side validators
   - `config/` — UI behavior constants only (motion variants, a11y ids) — not `const`+`type` enums; those go in `types/`
 - **`features/`** — optional; extract domain here only when reused on **2+ screens**. Until then, keep logic in `pages/<name>/`.
+- **Layer boundaries** — `pages/<a>/` must not import from `pages/<b>/` (another screen). Shared screen logic or UI used on 2+ routes → `features/<domain>/` (e.g. wallet list and bootstrap states → `features/wallets/`). Cross-tab month header chrome (`label` + month `title`) → `shared/ui/AppMonthPageHeader/`; page-specific accessories (e.g. Home wallet switcher) stay on that page. `features/*` must not import from `pages/*`. `app/navigation` must not import pages.
 - **`shared/ui/`** — **PascalCase** folder = component name, same for the file inside: `AppButton/AppButton.tsx`, `EntryLayout/EntryLayout.tsx`. Import: `@/shared/ui/AppButton/AppButton`.
 - **`App` prefix** — shared design-system components: `AppButton`, `AppField`, `AppHeading`… Exception: `Entry*` (entry funnel shell) — no `App`.
 - **Larger `shared/ui` pieces** — same split as pages, but scoped to the component folder:

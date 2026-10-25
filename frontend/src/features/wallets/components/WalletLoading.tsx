@@ -1,10 +1,10 @@
-type HomeWalletLoadingProps = {
+type WalletLoadingProps = {
 	label?: string;
 };
 
-export const HomeWalletLoading = ({
+export const WalletLoading = ({
 	label = "Loading wallet…",
-}: HomeWalletLoadingProps) => (
+}: WalletLoadingProps) => (
 	<div className="flex w-full flex-col items-center px-4 text-center">
 		<div
 			className="mb-20 size-54 animate-pulse rounded-18 border border-white/10 bg-white/6"

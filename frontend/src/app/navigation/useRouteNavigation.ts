@@ -4,7 +4,10 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {resolveNavigationSlide} from "@/app/navigation/appTabs";
 import {createNavigation} from "@/app/navigation/navigation";
 import type {AppRoute} from "@/app/navigation/routes";
-import type {RouteNavigateOptions} from "@/app/navigation/types/slideIntentTypes";
+import type {
+	RouteLocationState,
+	RouteNavigateOptions,
+} from "@/app/navigation/types/slideIntentTypes";
 
 export const useRouteNavigation = () => {
 	const navigate = useNavigate();
@@ -16,15 +19,27 @@ export const useRouteNavigation = () => {
 				route: (path: AppRoute, options?: RouteNavigateOptions) => {
 					const slide = resolveNavigationSlide(pathname, path, options?.slide);
 					const replace = options?.replace === true;
+					const state: RouteLocationState = {};
 
-					if (!slide && !replace) {
+					if (slide) {
+						state.slide = slide;
+					}
+
+					if (options?.focusTransactionId) {
+						state.focusTransactionId = options.focusTransactionId;
+					}
+
+					const hasState =
+						state.slide !== undefined || state.focusTransactionId !== undefined;
+
+					if (!hasState && !replace) {
 						navigate(path);
 						return;
 					}
 
 					navigate(path, {
 						...(replace ? {replace: true} : {}),
-						...(slide ? {state: {slide}} : {}),
+						...(hasState ? {state} : {}),
 					});
 				},
 			}),

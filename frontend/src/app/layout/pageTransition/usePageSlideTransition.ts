@@ -8,6 +8,7 @@ import {
 } from "react";
 import {useLocation, useOutlet} from "react-router-dom";
 
+import {setPageSlideActive} from "@/app/layout/pageTransition/pageSlideActivity";
 import {PAGE_SLIDE_FALLBACK_MS} from "@/app/layout/pageTransition/pageSlideTransitionConfig";
 import {getSlideDirection, readSlideIntent} from "@/app/navigation/slideIntent";
 
@@ -91,8 +92,13 @@ export const usePageSlideTransition = () => {
 	const pendingSlide = navigation.pending?.shouldSlide
 		? navigation.pending.transition
 		: null;
+
 	const activeTransition = pendingSlide ?? transition;
 	const activeTransitionId = activeTransition?.id ?? null;
+
+	useLayoutEffect(() => {
+		setPageSlideActive(activeTransitionId !== null);
+	}, [activeTransitionId]);
 
 	const finishTransition = useCallback(
 		(completedId: number, completed: PageTransition | null) => {

@@ -1,11 +1,11 @@
-import {HomeWalletIcon} from "@/pages/home/components/dashboard/icons/HomeWalletIcon";
+import {WalletIcon} from "@/features/wallets/components/icons/WalletIcon";
 import {AppButton} from "@/shared/ui/AppButton/AppButton";
 
-type HomeWalletEmptyProps = {
+type WalletEmptyProps = {
 	onCreateWallet: () => void;
 };
 
-export const HomeWalletEmpty = ({onCreateWallet}: HomeWalletEmptyProps) => (
+export const WalletEmpty = ({onCreateWallet}: WalletEmptyProps) => (
 	<div className="flex w-full flex-col items-center px-4 text-center">
 		<div className="relative mb-28 grid place-items-center">
 			<div
@@ -13,7 +13,7 @@ export const HomeWalletEmpty = ({onCreateWallet}: HomeWalletEmptyProps) => (
 				aria-hidden="true"
 			/>
 			<div className="relative grid size-54 place-items-center rounded-18 border border-white/10 bg-e-dash shadow-e-dash">
-				<HomeWalletIcon width={28} height={28} strokeWidth={1.65} />
+				<WalletIcon width={28} height={28} strokeWidth={1.65} />
 			</div>
 		</div>
 

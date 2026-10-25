@@ -6,8 +6,8 @@ import {AnalyticsPage} from "@/pages/analytics/AnalyticsPage";
 import {DevToolsPage} from "@/pages/dev-tools/DevToolsPage";
 import {EntryGate} from "@/pages/entry/EntryGate";
 import {HomePage} from "@/pages/home/HomePage";
-import {OperationsPage} from "@/pages/operations/OperationsPage";
 import {ProfilePage} from "@/pages/profile/ProfilePage";
+import {TransactionsPage} from "@/pages/transactions/TransactionsPage";
 import {CreateWalletPage} from "@/pages/wallets/CreateWalletPage";
 
 import "./styles/global.css";
@@ -21,8 +21,8 @@ export const App = () => (
 				<Route index element={<Navigate to={APP_ROUTES.APP_HOME} replace />} />
 				<Route path={APP_ROUTE_SEGMENTS.HOME} element={<HomePage />} />
 				<Route
-					path={APP_ROUTE_SEGMENTS.OPERATIONS}
-					element={<OperationsPage />}
+					path={APP_ROUTE_SEGMENTS.TRANSACTIONS}
+					element={<TransactionsPage />}
 				/>
 				<Route
 					path={APP_ROUTE_SEGMENTS.ANALYTICS}

@@ -3,6 +3,7 @@ import {storageService} from "@/shared/services/storage/storageService";
 const KEYS = {
 	websiteTesting: "website-testing",
 	authToken: "auth-token",
+	activeWalletId: "active-wallet-id",
 } as const;
 
 export const getWebsiteTesting = (): boolean =>
@@ -24,3 +25,14 @@ export const clearAuthToken = (): void => {
 };
 
 export const hasAuthSession = (): boolean => getAuthToken() !== null;
+
+export const getActiveWalletId = (): string | null =>
+	storageService.getString(KEYS.activeWalletId);
+
+export const storeActiveWalletId = (walletId: string): void => {
+	storageService.setString(KEYS.activeWalletId, walletId);
+};
+
+export const clearActiveWalletId = (): void => {
+	storageService.remove(KEYS.activeWalletId);
+};

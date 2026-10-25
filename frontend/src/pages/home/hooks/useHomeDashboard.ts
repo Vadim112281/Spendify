@@ -1,11 +1,12 @@
-import {useCallback, useMemo, useState} from "react";
+import {useCallback, useMemo} from "react";
+import {mapTransactionToListView} from "@/features/transactions/services/transactionListViewService";
 import {useWalletTransactionsQuery} from "@/features/transactions/transactionsQuery";
+import {useActiveWalletId} from "@/features/wallets/hooks/useActiveWalletId";
 import {
 	WALLET_TYPE_LABELS,
 	walletDisplayService,
 } from "@/features/wallets/walletDisplayService";
 import type {Wallet} from "@/features/wallets/walletTypes";
-import {mapHomeDashboardTransaction} from "@/pages/home/services/homeDashboardTransactionsService";
 import {calculateHomeWalletStats} from "@/pages/home/services/homeWalletStatsService";
 import type {HomeDashboardWallet} from "@/pages/home/types/homeDashboardTypes";
 
@@ -24,7 +25,7 @@ const toDashboardWallet = (wallet: Wallet): HomeDashboardWallet => {
 };
 
 export const useHomeDashboard = (wallets: Wallet[]) => {
-	const [activeWalletId, setActiveWalletId] = useState<string | undefined>();
+	const {activeWalletId, setActiveWalletId} = useActiveWalletId(wallets);
 
 	const dashboardWallets = useMemo(
 		() => wallets.map(toDashboardWallet),
@@ -32,16 +33,14 @@ export const useHomeDashboard = (wallets: Wallet[]) => {
 	);
 
 	const activeDashboardWallet = useMemo(() => {
-		if (activeWalletId) {
-			const selectedWallet = dashboardWallets.find(
-				(item) => item.walletId === activeWalletId,
-			);
-			if (selectedWallet) {
-				return selectedWallet;
-			}
+		if (!activeWalletId) {
+			return dashboardWallets[0];
 		}
 
-		return dashboardWallets[0];
+		return (
+			dashboardWallets.find((item) => item.walletId === activeWalletId) ??
+			dashboardWallets[0]
+		);
 	}, [activeWalletId, dashboardWallets]);
 
 	const {
@@ -56,7 +55,7 @@ export const useHomeDashboard = (wallets: Wallet[]) => {
 		transactionsLoading || (transactionsFetching && transactionsError);
 
 	const transactions = useMemo(
-		() => walletTransactions.map(mapHomeDashboardTransaction),
+		() => walletTransactions.map(mapTransactionToListView),
 		[walletTransactions],
 	);
 
@@ -72,7 +71,9 @@ export const useHomeDashboard = (wallets: Wallet[]) => {
 			return undefined;
 		}
 
-		return wallets.find((item) => item.walletId === activeDashboardWallet.walletId);
+		return wallets.find(
+			(item) => item.walletId === activeDashboardWallet.walletId,
+		);
 	}, [activeDashboardWallet, wallets]);
 
 	// HomeDashboardWallet plus balance for header, cards, and stats.
@@ -87,9 +88,12 @@ export const useHomeDashboard = (wallets: Wallet[]) => {
 		};
 	}, [activeDashboardWallet, sourceWallet, balance]);
 
-	const selectWallet = useCallback((walletId: string) => {
-		setActiveWalletId(walletId);
-	}, []);
+	const selectWallet = useCallback(
+		(walletId: string) => {
+			setActiveWalletId(walletId);
+		},
+		[setActiveWalletId],
+	);
 
 	return {
 		activeWallet,

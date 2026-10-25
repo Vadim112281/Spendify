@@ -1,14 +1,11 @@
 import {AppButton} from "@/shared/ui/AppButton/AppButton";
 
-type HomeWalletLoadErrorProps = {
+type WalletLoadErrorProps = {
 	message: string;
 	onRetry: () => void;
 };
 
-export const HomeWalletLoadError = ({
-	message,
-	onRetry,
-}: HomeWalletLoadErrorProps) => (
+export const WalletLoadError = ({message, onRetry}: WalletLoadErrorProps) => (
 	<div className="flex w-full max-w-card flex-col items-center px-4 text-center">
 		<p className="mb-8 text-11 font-medium tracking-label text-e-muted uppercase">
 			Wallet
