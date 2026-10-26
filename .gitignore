@@ -119,6 +119,14 @@ Thumbs.db
 # Cursor — personal skills (local only, do not push)
 .cursor/skills/
 
+# Local agent instructions (personal pitfalls / notes; team rules stay in .cursor/rules/)
+AGENTS.md
+
+# BMAD installer output and agent skills (local workflow, not the app)
+_bmad/
+_bmad-output/
+.agents/skills/
+
 # IDE (optional — remove if you commit shared editor settings)
 .idea/
 *.swp

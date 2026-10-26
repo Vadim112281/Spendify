@@ -1,7 +1,6 @@
 import type {ButtonHTMLAttributes} from "react";
-
-import {twx} from "@/shared/utils/twx";
 import {AppDecorativeIcon} from "@/shared/ui/AppDecorativeIcon/AppDecorativeIcon";
+import {twx} from "@/shared/utils/twx";
 
 type AppBackButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 

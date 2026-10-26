@@ -26,8 +26,7 @@ const TRANSACTION_API_ERROR_MESSAGES: Record<TransactionApiErrorCode, string> =
 			"Choose a category",
 		[TRANSACTION_API_ERROR_CODE.INVALID_TRANSACTION_CATEGORY]:
 			"Invalid category",
-		[TRANSACTION_API_ERROR_CODE.TRANSACTION_AMOUNT_REQUIRED]:
-			"Enter an amount",
+		[TRANSACTION_API_ERROR_CODE.TRANSACTION_AMOUNT_REQUIRED]: "Enter an amount",
 		[TRANSACTION_API_ERROR_CODE.TRANSACTION_AMOUNT_TOO_SMALL]:
 			"Minimum amount is 0.01",
 		[TRANSACTION_API_ERROR_CODE.TRANSACTION_AMOUNT_TOO_LARGE]:
@@ -41,8 +40,7 @@ const TRANSACTION_API_ERROR_MESSAGES: Record<TransactionApiErrorCode, string> =
 			"Transaction is required",
 		[TRANSACTION_API_ERROR_CODE.TRANSACTION_UPDATE_FIELDS_REQUIRED]:
 			"Change at least one field to update",
-		[TRANSACTION_API_ERROR_CODE.TRANSACTION_NOT_FOUND]:
-			"Transaction not found",
+		[TRANSACTION_API_ERROR_CODE.TRANSACTION_NOT_FOUND]: "Transaction not found",
 	};
 
 const getApiErrorMessage = (code: string): string =>
@@ -74,7 +72,9 @@ type CreateTransactionApiFormErrors = {
 	formError?: string;
 };
 
-const mapTransactionApiError = (error: ApiError): CreateTransactionApiFormErrors => {
+const mapTransactionApiError = (
+	error: ApiError,
+): CreateTransactionApiFormErrors => {
 	const fieldErrors: AddTransactionFieldErrors = {};
 
 	for (const field of API_FIELD_ERROR_KEYS) {

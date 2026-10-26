@@ -28,8 +28,8 @@ export const createNavigation = ({auth, route}: NavigationHandlers) => ({
 	goToDevToolsPage: () => route?.(APP_ROUTES.DEV_TOOLS),
 	goToHomePage: (options?: RouteNavigateOptions) =>
 		route?.(APP_ROUTES.APP_HOME, options),
-	goToOperationsPage: (options?: RouteNavigateOptions) =>
-		route?.(APP_ROUTES.APP_OPERATIONS, options),
+	goToTransactionsPage: (options?: RouteNavigateOptions) =>
+		route?.(APP_ROUTES.APP_TRANSACTIONS, options),
 	goToAnalyticsPage: (options?: RouteNavigateOptions) =>
 		route?.(APP_ROUTES.APP_ANALYTICS, options),
 	goToProfilePage: (options?: RouteNavigateOptions) =>

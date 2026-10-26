@@ -1,4 +1,13 @@
+import {APP_ROUTES} from "@/app/navigation/routes";
 import {twx} from "@/shared/utils/twx";
+
+const PANEL_TAB_BAR_INSET_EXCLUDED = new Set<string>([
+	APP_ROUTES.APP_HOME,
+	APP_ROUTES.APP_TRANSACTIONS,
+]);
+
+export const shouldIncludeTabBarPageInset = (pathname: string) =>
+	!PANEL_TAB_BAR_INSET_EXCLUDED.has(pathname);
 
 export const buildPagePanelClassNames = (includeTabBarPageInset: boolean) => {
 	const pageLayoutClassName = twx(

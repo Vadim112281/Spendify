@@ -37,4 +37,3 @@ export const formatTransactionDateGroupLabel = (
 
 	return date.toLocaleDateString("en-US", formatOptions);
 };
-

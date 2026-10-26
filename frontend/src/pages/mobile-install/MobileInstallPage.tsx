@@ -1,9 +1,9 @@
 import {usePwaInstall} from "@/pages/mobile-install/model/usePwaInstall";
-import {twx} from "@/shared/utils/twx";
 import {AppButton} from "@/shared/ui/AppButton/AppButton";
 import {AppHeading} from "@/shared/ui/AppHeading/AppHeading";
 import {EntryDashboard} from "@/shared/ui/EntryDashboard/EntryDashboard";
 import {EntryBrand, EntryLayout} from "@/shared/ui/EntryLayout/EntryLayout";
+import {twx} from "@/shared/utils/twx";
 
 // TODO: Rework it in normal way
 const iosSteps = [

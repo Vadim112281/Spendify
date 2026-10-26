@@ -1,8 +1,8 @@
 import {motion} from "motion/react";
 
 import {addButtonSpring} from "@/app/layout/AppTabBar/config/tabBarMotion";
-import {twx} from "@/shared/utils/twx";
 import {AppDecorativeIcon} from "@/shared/ui/AppDecorativeIcon/AppDecorativeIcon";
+import {twx} from "@/shared/utils/twx";
 
 type AddButtonProps = {
 	onPress?: () => void;

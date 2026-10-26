@@ -103,18 +103,14 @@ export const AppPopup = ({
 							) : null}
 							<div className="flex items-start justify-between gap-12 pb-14">
 								<div className="min-w-0 pt-2">
-									{title ? (
-										<AppPopupTitle>{title}</AppPopupTitle>
-									) : null}
+									{title ? <AppPopupTitle>{title}</AppPopupTitle> : null}
 									{description ? (
 										<Drawer.Description className="m-0 mt-4 text-12 text-e-muted">
 											{description}
 										</Drawer.Description>
 									) : null}
 								</div>
-								{showCloseButton ? (
-									<AppPopupClose />
-								) : null}
+								{showCloseButton ? <AppPopupClose /> : null}
 							</div>
 						</div>
 					) : header !== null ? (

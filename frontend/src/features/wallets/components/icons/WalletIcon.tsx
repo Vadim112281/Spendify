@@ -1,18 +1,18 @@
 import {AppDecorativeIcon} from "@/shared/ui/AppDecorativeIcon/AppDecorativeIcon";
 
-type HomeWalletIconProps = {
+type WalletIconProps = {
 	width?: number;
 	height?: number;
 	strokeWidth?: number;
 	className?: string;
 };
 
-export const HomeWalletIcon = ({
+export const WalletIcon = ({
 	width = 24,
 	height = 24,
 	strokeWidth = 1.65,
 	className,
-}: HomeWalletIconProps) => (
+}: WalletIconProps) => (
 	<AppDecorativeIcon
 		className={className}
 		width={width}

@@ -4,9 +4,9 @@ import {CreateWalletForm} from "@/pages/wallets/components/CreateWalletForm";
 import {CreateWalletPageBackground} from "@/pages/wallets/components/CreateWalletPageBackground";
 import {CreateWalletPreviewCard} from "@/pages/wallets/components/CreateWalletPreviewCard";
 import {useCreateWalletForm} from "@/pages/wallets/hooks/useCreateWalletForm";
-import {twx} from "@/shared/utils/twx";
 import {AppBackButton} from "@/shared/ui/AppBackButton/AppBackButton";
 import {AppHeading} from "@/shared/ui/AppHeading/AppHeading";
+import {twx} from "@/shared/utils/twx";
 
 export const CreateWalletPage = () => {
 	const navigation = useRouteNavigation();
@@ -24,9 +24,7 @@ export const CreateWalletPage = () => {
 
 	return (
 		// Cancel shell pt so background reaches the top; safe area stays on content only.
-		<div
-			className={twx("relative", "-mt-inset-top-page")}
-		>
+		<div className={twx("relative", "-mt-inset-top-page")}>
 			<CreateWalletPageBackground currencyType={values.currencyType} />
 
 			<div

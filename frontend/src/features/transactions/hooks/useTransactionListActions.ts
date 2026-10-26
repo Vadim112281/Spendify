@@ -3,13 +3,25 @@ import {isApiError} from "@/app/api/httpClient";
 import {addTransactionMessagesService} from "@/features/transactions/popups/services/addTransactionMessagesService";
 import type {EditTransactionTarget} from "@/features/transactions/popups/types/editTransactionTypes";
 import {useDeleteTransactionMutation} from "@/features/transactions/transactionsQuery";
-import {mapHomeTransactionToEditTarget} from "@/pages/home/services/homeDashboardTransactionsService";
-import type {HomeDashboardTransaction} from "@/pages/home/types/homeDashboardTypes";
+import type {TransactionListActionTarget} from "@/features/transactions/types/transactionListActionsTypes";
 
 const DELETE_TRANSACTION_ERROR_MESSAGE =
 	"Could not delete this transaction. Please try again.";
 
-export const useHomeTransactionsPreviewActions = (walletId: string) => {
+const toEditTransactionTarget = (
+	walletId: string,
+	item: TransactionListActionTarget,
+): EditTransactionTarget => ({
+	transactionId: item.id,
+	walletId,
+	type: item.type,
+	category: item.category,
+	amount: item.amount,
+	note: item.note,
+	transactionDate: item.transactionDate,
+});
+
+export const useTransactionListActions = (walletId: string) => {
 	const [openSwipeId, setOpenSwipeId] = useState<string | null>(null);
 	const [editTarget, setEditTarget] = useState<EditTransactionTarget | null>(
 		null,
@@ -26,15 +38,15 @@ export const useHomeTransactionsPreviewActions = (walletId: string) => {
 	);
 
 	const handleEditTransaction = useCallback(
-		(transaction: HomeDashboardTransaction) => {
+		(transaction: TransactionListActionTarget) => {
 			setOpenSwipeId(null);
-			setEditTarget(mapHomeTransactionToEditTarget(walletId, transaction));
+			setEditTarget(toEditTransactionTarget(walletId, transaction));
 		},
 		[walletId],
 	);
 
 	const handleDeleteTransaction = useCallback(
-		(transaction: HomeDashboardTransaction) => {
+		(transaction: TransactionListActionTarget) => {
 			setOpenSwipeId(null);
 			setDeleteError(undefined);
 			deleteTransaction(

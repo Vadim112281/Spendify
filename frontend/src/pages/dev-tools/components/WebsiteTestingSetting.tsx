@@ -1,9 +1,9 @@
 import {useState} from "react";
-import {twx} from "@/shared/utils/twx";
 import {
 	getWebsiteTesting,
 	setWebsiteTesting,
 } from "@/shared/services/storage/appStorage";
+import {twx} from "@/shared/utils/twx";
 
 export const WebsiteTestingSetting = () => {
 	const [enabled, setEnabled] = useState(getWebsiteTesting);

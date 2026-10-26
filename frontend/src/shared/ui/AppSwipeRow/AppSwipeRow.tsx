@@ -15,6 +15,8 @@ type AppSwipeRowProps = {
 	isOpen: boolean;
 	onOpenChange: (open: boolean) => void;
 	className?: string;
+	cardClassName?: string;
+	focusHighlighted?: boolean;
 };
 
 export const AppSwipeRow = ({
@@ -23,6 +25,8 @@ export const AppSwipeRow = ({
 	isOpen,
 	onOpenChange,
 	className,
+	cardClassName,
+	focusHighlighted = false,
 }: AppSwipeRowProps) => {
 	const openOffset = -getAppSwipeRowRevealWidth(actions.length);
 	const canSwipe = actions.length > 0;
@@ -76,9 +80,19 @@ export const AppSwipeRow = ({
 				onDragEnd={canSwipe ? onDragEnd : undefined}
 			>
 				<motion.div
-					className="rounded-14 border bg-e-bg"
+					className={twx(
+						"relative rounded-14 e-home-stat-surface",
+						focusHighlighted && "transaction-row-focus-pulse",
+						cardClassName,
+					)}
 					style={{borderColor: cardBorderColor}}
 				>
+					{focusHighlighted ? (
+						<span
+							aria-hidden
+							className="pointer-events-none absolute inset-0 z-20 rounded-14 transaction-row-focus-ring"
+						/>
+					) : null}
 					{children}
 				</motion.div>
 			</motion.div>

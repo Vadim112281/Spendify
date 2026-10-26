@@ -6,7 +6,7 @@ import {
 
 export type AppTabRoute =
 	| typeof APP_ROUTES.APP_HOME
-	| typeof APP_ROUTES.APP_OPERATIONS
+	| typeof APP_ROUTES.APP_TRANSACTIONS
 	| typeof APP_ROUTES.APP_ANALYTICS
 	| typeof APP_ROUTES.APP_PROFILE;
 
@@ -24,7 +24,7 @@ export type TabBarSlot = AppTabSlot | AddTabSlot;
 
 export const TAB_BAR_SLOTS: TabBarSlot[] = [
 	{kind: "tab", route: APP_ROUTES.APP_HOME, end: true},
-	{kind: "tab", route: APP_ROUTES.APP_OPERATIONS},
+	{kind: "tab", route: APP_ROUTES.APP_TRANSACTIONS},
 	{kind: "add"},
 	{kind: "tab", route: APP_ROUTES.APP_ANALYTICS},
 	{kind: "tab", route: APP_ROUTES.APP_PROFILE},

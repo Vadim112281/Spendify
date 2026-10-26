@@ -1,9 +1,9 @@
 import type {ComponentType} from "react";
 import {AnalyticsTabIcon} from "@/app/layout/AppTabBar/components/icons/AnalyticsTabIcon";
 import {HomeTabIcon} from "@/app/layout/AppTabBar/components/icons/HomeTabIcon";
-import {OperationsTabIcon} from "@/app/layout/AppTabBar/components/icons/OperationsTabIcon";
 import {ProfileTabIcon} from "@/app/layout/AppTabBar/components/icons/ProfileTabIcon";
 import type {TabIconActiveProps} from "@/app/layout/AppTabBar/components/icons/TabIcon";
+import {TransactionsTabIcon} from "@/app/layout/AppTabBar/components/icons/TransactionsTabIcon";
 import type {AppTabRoute} from "@/app/navigation/appTabs";
 import {APP_ROUTES} from "@/app/navigation/routes";
 
@@ -17,9 +17,9 @@ export const TAB_BAR_UI: Record<AppTabRoute, TabUiConfig> = {
 		label: "Home",
 		icon: HomeTabIcon,
 	},
-	[APP_ROUTES.APP_OPERATIONS]: {
-		label: "Operations",
-		icon: OperationsTabIcon,
+	[APP_ROUTES.APP_TRANSACTIONS]: {
+		label: "Transactions",
+		icon: TransactionsTabIcon,
 	},
 	[APP_ROUTES.APP_ANALYTICS]: {
 		label: "Analytics",

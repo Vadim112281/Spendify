@@ -24,7 +24,9 @@ export const formatAmountInputDisplay = (amountInput: string): string => {
 	}
 
 	const dotIndex = normalized.indexOf(".");
-	const intGrouped = formatAmountWithSpaceSeparators(Math.trunc(Math.abs(parsed)));
+	const intGrouped = formatAmountWithSpaceSeparators(
+		Math.trunc(Math.abs(parsed)),
+	);
 
 	if (dotIndex < 0) {
 		return intGrouped;

@@ -1,4 +1,5 @@
 import {
+	clearActiveWalletId,
 	clearAuthToken,
 	setAuthToken,
 } from "@/shared/services/storage/appStorage";
@@ -9,4 +10,5 @@ export const beginAuthSession = (token: string): void => {
 
 export const endAuthSession = (): void => {
 	clearAuthToken();
+	clearActiveWalletId();
 };

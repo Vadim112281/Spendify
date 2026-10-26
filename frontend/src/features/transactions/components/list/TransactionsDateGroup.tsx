@@ -1,21 +1,22 @@
+import {TransactionRow} from "@/features/transactions/components/list/TransactionRow";
+import type {TransactionDateGroup} from "@/features/transactions/services/transactionListViewService";
+import type {TransactionListViewItem} from "@/features/transactions/types/transactionListViewTypes";
 import type {CurrencyType} from "@/features/wallets/walletTypes";
-import {HomeTransactionRow} from "@/pages/home/components/dashboard/transactions/HomeTransactionRow";
-import type {HomeTransactionDateGroup} from "@/pages/home/services/homeDashboardTransactionsService";
-import type {HomeDashboardTransaction} from "@/pages/home/types/homeDashboardTypes";
 import {twx} from "@/shared/utils/twx";
 
-type HomeTransactionsDateGroupProps = {
-	group: HomeTransactionDateGroup;
+type TransactionsDateGroupProps = {
+	group: TransactionDateGroup;
 	currency: CurrencyType;
 	isFirst?: boolean;
 	showGroupLabel?: boolean;
 	openSwipeId: string | null;
 	onSwipeOpenChange: (transactionId: string, open: boolean) => void;
-	onEditTransaction: (transaction: HomeDashboardTransaction) => void;
-	onDeleteTransaction: (transaction: HomeDashboardTransaction) => void;
+	onEditTransaction: (transaction: TransactionListViewItem) => void;
+	onDeleteTransaction: (transaction: TransactionListViewItem) => void;
+	focusTransactionId?: string | null;
 };
 
-export const HomeTransactionsDateGroup = ({
+export const TransactionsDateGroup = ({
 	group,
 	currency,
 	isFirst = false,
@@ -24,7 +25,8 @@ export const HomeTransactionsDateGroup = ({
 	onSwipeOpenChange,
 	onEditTransaction,
 	onDeleteTransaction,
-}: HomeTransactionsDateGroupProps) => {
+	focusTransactionId = null,
+}: TransactionsDateGroupProps) => {
 	return (
 		<div>
 			{showGroupLabel ? (
@@ -39,7 +41,7 @@ export const HomeTransactionsDateGroup = ({
 			) : null}
 			<ul className="m-0 flex list-none flex-col gap-8 p-0">
 				{group.transactions.map((transaction) => (
-					<HomeTransactionRow
+					<TransactionRow
 						key={transaction.id}
 						transaction={transaction}
 						currency={currency}
@@ -53,6 +55,7 @@ export const HomeTransactionsDateGroup = ({
 						onDelete={() => {
 							onDeleteTransaction(transaction);
 						}}
+						isFocusPulsing={focusTransactionId === transaction.id}
 					/>
 				))}
 			</ul>

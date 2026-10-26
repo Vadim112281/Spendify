@@ -1,9 +1,9 @@
 import {useRouteNavigation} from "@/app/navigation/useRouteNavigation";
+import {WalletEmpty} from "@/features/wallets/components/WalletEmpty";
+import {WalletLoadError} from "@/features/wallets/components/WalletLoadError";
+import {WalletLoading} from "@/features/wallets/components/WalletLoading";
+import {useUserWallets} from "@/features/wallets/hooks/useUserWallets";
 import {HomeDashboard} from "@/pages/home/components/dashboard/HomeDashboard";
-import {HomeWalletEmpty} from "@/pages/home/components/wallet/HomeWalletEmpty";
-import {HomeWalletLoadError} from "@/pages/home/components/wallet/HomeWalletLoadError";
-import {HomeWalletLoading} from "@/pages/home/components/wallet/HomeWalletLoading";
-import {useUserWallets} from "@/pages/home/hooks/useUserWallets";
 
 export const HomePage = () => {
 	const navigation = useRouteNavigation();
@@ -15,7 +15,7 @@ export const HomePage = () => {
 	if (isLoading) {
 		return (
 			<div className={centeredPageClassName}>
-				<HomeWalletLoading />
+				<WalletLoading />
 			</div>
 		);
 	}
@@ -23,7 +23,7 @@ export const HomePage = () => {
 	if (error) {
 		return (
 			<div className={centeredPageClassName}>
-				<HomeWalletLoadError
+				<WalletLoadError
 					message={error}
 					onRetry={() => {
 						void refetch();
@@ -36,7 +36,7 @@ export const HomePage = () => {
 	if (!hasWallet) {
 		return (
 			<div className={centeredPageClassName}>
-				<HomeWalletEmpty onCreateWallet={navigation.goToCreateWalletPage} />
+				<WalletEmpty onCreateWallet={navigation.goToCreateWalletPage} />
 			</div>
 		);
 	}

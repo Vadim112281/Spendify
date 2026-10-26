@@ -1,28 +1,17 @@
+import {isTransactionInCalendarMonth} from "@/features/transactions/services/transactionCalendarMonthService";
 import {
-	type HomeDashboardTransaction,
-	type HomeMonthSummary,
 	TRANSACTION_KIND,
-} from "@/pages/home/types/homeDashboardTypes";
-import {parseCalendarTransactionDate} from "@/shared/utils/timeUtils";
+	type TransactionListViewItem,
+} from "@/features/transactions/types/transactionListViewTypes";
+import type {HomeMonthSummary} from "@/pages/home/types/homeDashboardTypes";
 
 type HomeWalletStats = {
 	balance: number;
 	monthSummary: HomeMonthSummary;
 };
 
-const isInCurrentCalendarMonth = (
-	transactionDate: string,
-	now: Date,
-): boolean => {
-	const date = parseCalendarTransactionDate(transactionDate);
-	return (
-		date.getFullYear() === now.getFullYear() &&
-		date.getMonth() === now.getMonth()
-	);
-};
-
 const calculateHomeWalletStats = (
-	transactions: HomeDashboardTransaction[],
+	transactions: TransactionListViewItem[],
 	now: Date = new Date(),
 ): HomeWalletStats => {
 	let balance = 0;
@@ -31,7 +20,7 @@ const calculateHomeWalletStats = (
 
 	for (const transaction of transactions) {
 		const isIncome = transaction.kind === TRANSACTION_KIND.INCOME;
-		const inCurrentMonth = isInCurrentCalendarMonth(
+		const inCurrentMonth = isTransactionInCalendarMonth(
 			transaction.transactionDate,
 			now,
 		);
