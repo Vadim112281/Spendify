@@ -40,8 +40,8 @@ export const AppField = ({
 					? "border-e-error bg-e-error/8 focus:border-e-error"
 					: "border-e-border focus:border-e-zinc/20",
 				size === "sm"
-					? "rounded-12 px-12 py-10 text-14"
-					: "rounded-14 px-14 py-13 text-15",
+					? "rounded-12 px-12 py-10 text-16"
+					: "rounded-14 px-14 py-13 text-16",
 				"placeholder:text-e-muted",
 				"transition-colors duration-150",
 				"focus:outline-none",
