@@ -8,8 +8,8 @@ import {
 } from "react";
 import {useLocation, useOutlet} from "react-router-dom";
 
-import {setPageSlideActive} from "@/app/layout/pageTransition/pageSlideActivity";
-import {PAGE_SLIDE_FALLBACK_MS} from "@/app/layout/pageTransition/pageSlideTransitionConfig";
+import {setPageSlideActive} from "@/app/layout/PageTransition/pageSlideActivity";
+import {PAGE_SLIDE_FALLBACK_MS} from "@/app/layout/PageTransition/pageSlideTransitionConfig";
 import {getSlideDirection, readSlideIntent} from "@/app/navigation/slideIntent";
 
 type PageTransition = {

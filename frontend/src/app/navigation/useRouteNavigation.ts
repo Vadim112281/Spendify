@@ -29,8 +29,19 @@ export const useRouteNavigation = () => {
 						state.focusTransactionId = options.focusTransactionId;
 					}
 
+					if (options?.loginFold) {
+						state.loginFold = options.loginFold;
+					}
+
+					if (options?.loginFoldLayout) {
+						state.loginFoldLayout = options.loginFoldLayout;
+					}
+
 					const hasState =
-						state.slide !== undefined || state.focusTransactionId !== undefined;
+						state.slide !== undefined ||
+						state.focusTransactionId !== undefined ||
+						state.loginFold !== undefined ||
+						state.loginFoldLayout !== undefined;
 
 					if (!hasState && !replace) {
 						navigate(path);

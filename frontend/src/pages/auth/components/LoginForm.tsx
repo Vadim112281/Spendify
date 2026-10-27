@@ -59,7 +59,7 @@ export const LoginForm = ({
 					className="mt-4"
 					disabled={isSubmitting}
 				>
-					{isSubmitting ? "Signing in…" : "Log in"}
+					{isSubmitting ? "Logging in…" : "Log in"}
 				</AppButton>
 			</form>
 

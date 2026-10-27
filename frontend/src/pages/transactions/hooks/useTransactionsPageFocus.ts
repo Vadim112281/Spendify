@@ -3,7 +3,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {
 	getPageSlideActive,
 	subscribePageSlideIdle,
-} from "@/app/layout/pageTransition/pageSlideActivity";
+} from "@/app/layout/PageTransition/pageSlideActivity";
 import {
 	readFocusTransactionId,
 	stripFocusTransactionId,

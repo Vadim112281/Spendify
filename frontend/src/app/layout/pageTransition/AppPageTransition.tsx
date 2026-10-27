@@ -5,9 +5,9 @@ import {useLocation} from "react-router-dom";
 import {
 	buildPagePanelClassNames,
 	shouldIncludeTabBarPageInset,
-} from "@/app/layout/pageTransition/pagePanelLayout";
-import {pageSlideTransition} from "@/app/layout/pageTransition/pageSlideTransitionConfig";
-import {usePageSlideTransition} from "@/app/layout/pageTransition/usePageSlideTransition";
+} from "@/app/layout/PageTransition/pagePanelLayout";
+import {pageSlideTransition} from "@/app/layout/PageTransition/pageSlideTransitionConfig";
+import {usePageSlideTransition} from "@/app/layout/PageTransition/usePageSlideTransition";
 import {twx} from "@/shared/utils/twx";
 
 const restingTranslateX = (panel: "primary" | "secondary") =>

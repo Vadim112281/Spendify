@@ -1,7 +1,13 @@
+import {useReducedMotion} from "motion/react";
 import type {SubmitEventHandler} from "react";
 import {useState} from "react";
 import {isApiError} from "@/app/api/httpClient";
 import {beginAuthSession} from "@/app/auth/authSession";
+import {captureLoginFoldLayout} from "@/app/layout/LoginFold/captureLoginFoldLayout";
+import {
+	LOGIN_FOLD_SIGNAL,
+	LOGIN_SUBMIT_ACK_MS,
+} from "@/app/navigation/types/loginFoldTypes";
 import {useRouteNavigation} from "@/app/navigation/useRouteNavigation";
 import {loginUser} from "@/pages/auth/api/authApi";
 import {
@@ -20,8 +26,14 @@ const parseLoginFormValues = (formData: FormData): LoginFormValues => ({
 	password: String(formData.get("password") ?? ""),
 });
 
+const wait = (ms: number) =>
+	new Promise<void>((resolve) => {
+		window.setTimeout(resolve, ms);
+	});
+
 export const useLoginForm = () => {
 	const navigation = useRouteNavigation();
+	const reducedMotion = useReducedMotion();
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [fieldErrors, setFieldErrors] = useState<LoginFieldErrors>({});
 	const [formError, setFormError] = useState<string | undefined>();
@@ -47,7 +59,20 @@ export const useLoginForm = () => {
 				password: values.password.trim(),
 			});
 			beginAuthSession(session.token);
-			navigation.goToHomePage({replace: true});
+
+			if (reducedMotion) {
+				navigation.goToHomePage({replace: true});
+				return;
+			}
+
+			await wait(LOGIN_SUBMIT_ACK_MS);
+
+			const loginFoldLayout = captureLoginFoldLayout();
+			navigation.goToHomePage({
+				replace: true,
+				loginFold: LOGIN_FOLD_SIGNAL,
+				loginFoldLayout,
+			});
 		} catch (error) {
 			const apiErrors = isApiError(error)
 				? mapLoginApiError(error)

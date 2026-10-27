@@ -94,8 +94,8 @@
 	--spacing-inset-top-sheet: max(16px, env(safe-area-inset-top));
 	--spacing-inset-bottom-lg: max(28px, env(safe-area-inset-bottom));
 	--spacing-inset-bottom-tab: max(
-		28px,
-		calc(env(safe-area-inset-bottom, 0px) + 16px)
+		12px,
+		calc(env(safe-area-inset-bottom, 0px) + 6px)
 	);
 	--spacing-inset-bottom-sheet: max(8px, env(safe-area-inset-bottom));
 	--spacing-inset-bottom-float: max(20px, env(safe-area-inset-bottom));

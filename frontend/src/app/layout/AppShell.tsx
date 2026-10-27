@@ -1,5 +1,6 @@
 import {AppTabBar} from "@/app/layout/AppTabBar/AppTabBar";
-import {AppPageTransition} from "@/app/layout/pageTransition/AppPageTransition";
+import {LoginFoldHost} from "@/app/layout/LoginFold/LoginFoldHost";
+import {AppPageTransition} from "@/app/layout/PageTransition/AppPageTransition";
 
 export const AppShell = () => (
 	<div
@@ -8,6 +9,7 @@ export const AppShell = () => (
 	>
 		<main className="relative min-h-0 flex-1 overflow-hidden">
 			<AppPageTransition />
+			<LoginFoldHost />
 			<AppTabBar />
 		</main>
 	</div>
