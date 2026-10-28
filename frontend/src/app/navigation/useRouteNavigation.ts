@@ -37,11 +37,16 @@ export const useRouteNavigation = () => {
 						state.loginFoldLayout = options.loginFoldLayout;
 					}
 
+					if (options?.walletCreateReturnPath) {
+						state.walletCreateReturnPath = options.walletCreateReturnPath;
+					}
+
 					const hasState =
 						state.slide !== undefined ||
 						state.focusTransactionId !== undefined ||
 						state.loginFold !== undefined ||
-						state.loginFoldLayout !== undefined;
+						state.loginFoldLayout !== undefined ||
+						state.walletCreateReturnPath !== undefined;
 
 					if (!hasState && !replace) {
 						navigate(path);

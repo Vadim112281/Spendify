@@ -1,10 +1,12 @@
 import {useMemo} from "react";
+import {APP_ROUTES} from "@/app/navigation/routes";
 import {useRouteNavigation} from "@/app/navigation/useRouteNavigation";
 import {filterTransactionsInCalendarMonth} from "@/features/transactions/services/transactionCalendarMonthService";
 import {
 	RECENT_MONTH_TRANSACTIONS_LIMIT,
 	selectRecentMonthTransactions,
 } from "@/features/transactions/services/transactionRecentService";
+import {useWalletEmptyCreateAction} from "@/features/wallets/hooks/useWalletEmptyCreateAction";
 import type {Wallet} from "@/features/wallets/walletTypes";
 import {HomeBalanceCard} from "@/pages/home/components/dashboard/balance/HomeBalanceCard";
 import {HomeWalletSwitcher} from "@/pages/home/components/dashboard/header/HomeWalletSwitcher";
@@ -22,6 +24,7 @@ type HomeDashboardProps = {
 
 export const HomeDashboard = ({wallets}: HomeDashboardProps) => {
 	const navigation = useRouteNavigation();
+	const handleAddWallet = useWalletEmptyCreateAction(APP_ROUTES.APP_HOME);
 	const monthLabel = formatLongMonth();
 	const {
 		activeWallet,
@@ -67,6 +70,7 @@ export const HomeDashboard = ({wallets}: HomeDashboardProps) => {
 							wallets={dashboardWallets}
 							activeWallet={activeWallet}
 							onSelectWallet={selectWallet}
+							onAddWallet={handleAddWallet}
 						/>
 					}
 				/>

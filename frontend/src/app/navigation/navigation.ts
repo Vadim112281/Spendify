@@ -34,6 +34,7 @@ export const createNavigation = ({auth, route}: NavigationHandlers) => ({
 		route?.(APP_ROUTES.APP_ANALYTICS, options),
 	goToProfilePage: (options?: RouteNavigateOptions) =>
 		route?.(APP_ROUTES.APP_PROFILE, options),
+	// walletCreateReturnPath in options → route state for Back / post-create return (readWalletCreateReturnPath).
 	goToCreateWalletPage: (options?: RouteNavigateOptions) =>
 		route?.(APP_ROUTES.APP_CREATE_WALLET, {
 			slide: SLIDE_INTENT.FORWARD,

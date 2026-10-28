@@ -13,7 +13,7 @@ const shellClassName = twx(
 
 type HomeWalletSwitcherTriggerProps = {
 	wallet: HomeDashboardWallet;
-	canSwitch: boolean;
+	canOpenMenu: boolean;
 	isOpen: boolean;
 	menuId: string;
 	onToggle: () => void;
@@ -21,7 +21,7 @@ type HomeWalletSwitcherTriggerProps = {
 
 export const HomeWalletSwitcherTrigger = ({
 	wallet,
-	canSwitch,
+	canOpenMenu,
 	isOpen,
 	menuId,
 	onToggle,
@@ -34,7 +34,7 @@ export const HomeWalletSwitcherTrigger = ({
 		/>
 	);
 
-	if (!canSwitch) {
+	if (!canOpenMenu) {
 		return <div className={shellClassName}>{summary}</div>;
 	}
 

@@ -31,12 +31,20 @@ export const AppSwipeRow = ({
 	const openOffset = -getAppSwipeRowRevealWidth(actions.length);
 	const canSwipe = actions.length > 0;
 
-	const {x, showActions, onDragStart, onDragEnd, requestClose} =
-		useAppSwipeRowPanel({
-			isOpen,
-			onOpenChange,
-			openOffset,
-		});
+	const {
+		x,
+		showActions,
+		onPointerDown,
+		onPointerMove,
+		onPointerUp,
+		onPointerCancel,
+		requestClose,
+	} = useAppSwipeRowPanel({
+		isOpen,
+		onOpenChange,
+		openOffset,
+		enabled: canSwipe,
+	});
 
 	const cardLift = useTransform(x, (offsetX) =>
 		getSwipeRowCardLift(offsetX, openOffset),
@@ -71,13 +79,11 @@ export const AppSwipeRow = ({
 
 			<motion.div
 				className="relative z-10 w-full touch-pan-y"
-				style={{x}}
-				drag={canSwipe ? "x" : false}
-				dragDirectionLock={canSwipe}
-				dragConstraints={{left: openOffset, right: 0}}
-				dragElastic={{left: 0.03, right: 0.008}}
-				onDragStart={canSwipe ? onDragStart : undefined}
-				onDragEnd={canSwipe ? onDragEnd : undefined}
+				style={{x, touchAction: "pan-y"}}
+				onPointerDown={canSwipe ? onPointerDown : undefined}
+				onPointerMove={canSwipe ? onPointerMove : undefined}
+				onPointerUp={canSwipe ? onPointerUp : undefined}
+				onPointerCancel={canSwipe ? onPointerCancel : undefined}
 			>
 				<motion.div
 					className={twx(

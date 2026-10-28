@@ -1,3 +1,4 @@
+import type {AppRoute} from "@/app/navigation/routes";
 import type {
 	LoginFoldLayout,
 	LoginFoldSignal,
@@ -15,6 +16,8 @@ export type RouteLocationState = {
 	focusTransactionId?: string;
 	loginFold?: LoginFoldSignal;
 	loginFoldLayout?: LoginFoldLayout;
+	// Tab to restore after CreateWalletPage Back or successful submit (see readWalletCreateReturnPath).
+	walletCreateReturnPath?: AppRoute;
 };
 
 export type RouteNavigateOptions = {
@@ -23,4 +26,5 @@ export type RouteNavigateOptions = {
 	focusTransactionId?: string;
 	loginFold?: LoginFoldSignal;
 	loginFoldLayout?: LoginFoldLayout;
+	walletCreateReturnPath?: AppRoute;
 };

@@ -3,8 +3,7 @@ import {useLayoutEffect, useMemo} from "react";
 import {useLocation} from "react-router-dom";
 
 import {
-	buildPagePanelClassNames,
-	shouldIncludeTabBarPageInset,
+	buildPagePanelClassNamesForPath,
 } from "@/app/layout/PageTransition/pagePanelLayout";
 import {pageSlideTransition} from "@/app/layout/PageTransition/pageSlideTransitionConfig";
 import {usePageSlideTransition} from "@/app/layout/PageTransition/usePageSlideTransition";
@@ -25,7 +24,7 @@ export const AppPageTransition = () => {
 	const slideControls = useAnimationControls();
 	const {panelFullClassName, panelHalfClassName, panelSpacerClassName} =
 		useMemo(
-			() => buildPagePanelClassNames(shouldIncludeTabBarPageInset(pathname)),
+			() => buildPagePanelClassNamesForPath(pathname),
 			[pathname],
 		);
 	const isSliding = transition !== null;
@@ -44,6 +43,29 @@ export const AppPageTransition = () => {
 				? transition.toOutlet
 				: transition.fromOutlet
 			: null;
+
+	const {leftPanelClassName, rightPanelClassName} = useMemo(() => {
+		if (!isSliding || !transition) {
+			return {
+				leftPanelClassName: panelHalfClassName,
+				rightPanelClassName: panelHalfClassName,
+			};
+		}
+
+		const leftPathname = slideForward
+			? transition.fromPathname
+			: transition.toPathname;
+		const rightPathname = slideForward
+			? transition.toPathname
+			: transition.fromPathname;
+
+		return {
+			leftPanelClassName:
+				buildPagePanelClassNamesForPath(leftPathname).panelHalfClassName,
+			rightPanelClassName:
+				buildPagePanelClassNamesForPath(rightPathname).panelHalfClassName,
+		};
+	}, [isSliding, transition, slideForward, panelHalfClassName]);
 
 	useLayoutEffect(() => {
 		if (!transition) {
@@ -95,14 +117,14 @@ export const AppPageTransition = () => {
 						<div
 							key="primary"
 							data-app-page-scroll
-							className={panelHalfClassName}
+							className={leftPanelClassName}
 						>
 							{leftOutlet}
 						</div>
 						<div
 							key="secondary"
 							data-app-page-scroll
-							className={panelHalfClassName}
+							className={rightPanelClassName}
 						>
 							{rightOutlet}
 						</div>
