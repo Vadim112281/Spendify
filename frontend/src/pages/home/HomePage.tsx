@@ -1,13 +1,14 @@
-import {useRouteNavigation} from "@/app/navigation/useRouteNavigation";
+import {APP_ROUTES} from "@/app/navigation/routes";
 import {WalletEmpty} from "@/features/wallets/components/WalletEmpty";
 import {WalletLoadError} from "@/features/wallets/components/WalletLoadError";
 import {WalletLoading} from "@/features/wallets/components/WalletLoading";
 import {useUserWallets} from "@/features/wallets/hooks/useUserWallets";
+import {useWalletEmptyCreateAction} from "@/features/wallets/hooks/useWalletEmptyCreateAction";
 import {HomeDashboard} from "@/pages/home/components/dashboard/HomeDashboard";
 
 export const HomePage = () => {
-	const navigation = useRouteNavigation();
 	const {wallets, isLoading, error, hasWallet, refetch} = useUserWallets();
+	const handleCreateWallet = useWalletEmptyCreateAction(APP_ROUTES.APP_HOME);
 
 	const centeredPageClassName =
 		"flex min-h-app-page w-full items-center justify-center";
@@ -36,7 +37,7 @@ export const HomePage = () => {
 	if (!hasWallet) {
 		return (
 			<div className={centeredPageClassName}>
-				<WalletEmpty onCreateWallet={navigation.goToCreateWalletPage} />
+				<WalletEmpty onCreateWallet={handleCreateWallet} />
 			</div>
 		);
 	}

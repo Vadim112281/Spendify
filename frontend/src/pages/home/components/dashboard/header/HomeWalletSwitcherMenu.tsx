@@ -1,3 +1,4 @@
+import {HomeWalletSwitcherAddRow} from "@/pages/home/components/dashboard/header/HomeWalletSwitcherAddRow";
 import {HomeWalletSwitcherSummary} from "@/pages/home/components/dashboard/header/HomeWalletSwitcherSummary";
 import type {HomeDashboardWallet} from "@/pages/home/types/homeDashboardTypes";
 import {twx} from "@/shared/utils/twx";
@@ -7,6 +8,7 @@ type HomeWalletSwitcherMenuProps = {
 	wallets: HomeDashboardWallet[];
 	activeWalletId: string;
 	onPick: (walletId: string) => void;
+	onAddWallet: () => void;
 };
 
 export const HomeWalletSwitcherMenu = ({
@@ -14,12 +16,12 @@ export const HomeWalletSwitcherMenu = ({
 	wallets,
 	activeWalletId,
 	onPick,
+	onAddWallet,
 }: HomeWalletSwitcherMenuProps) => (
 	<div
 		id={id}
 		className={twx(
-			"absolute top-full right-0 z-20 mt-8 min-w-full",
-			"rounded-14 border border-white/10 bg-e-surface-solid p-6 shadow-e-card",
+			"min-w-full rounded-14 bg-e-surface p-6 e-home-stat-surface backdrop-blur-sm",
 		)}
 		role="menu"
 		aria-label="Wallets"
@@ -49,6 +51,9 @@ export const HomeWalletSwitcherMenu = ({
 					</li>
 				);
 			})}
+			<li className="mt-6 border-t border-white/10 pt-6">
+				<HomeWalletSwitcherAddRow onAddWallet={onAddWallet} />
+			</li>
 		</ul>
 	</div>
 );

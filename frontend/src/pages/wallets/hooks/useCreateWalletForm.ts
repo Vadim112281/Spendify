@@ -2,11 +2,10 @@ import type {SubmitEventHandler} from "react";
 import {useState} from "react";
 
 import {isApiError} from "@/app/api/httpClient";
-import {SLIDE_INTENT} from "@/app/navigation/types/slideIntentTypes";
-import {useRouteNavigation} from "@/app/navigation/useRouteNavigation";
 import {createWallet} from "@/features/wallets/api/walletsApi";
 import {walletDisplayService} from "@/features/wallets/walletDisplayService";
 import type {CurrencyType, WalletType} from "@/features/wallets/walletTypes";
+import {useWalletCreateReturnNavigation} from "@/pages/wallets/hooks/useWalletCreateReturnNavigation";
 import {
 	getCreateWalletUnknownError,
 	mapCreateWalletApiError,
@@ -25,7 +24,7 @@ const initialValues: CreateWalletFormValues = {
 };
 
 export const useCreateWalletForm = () => {
-	const navigation = useRouteNavigation();
+	const {completeAfterWalletCreate} = useWalletCreateReturnNavigation();
 	const [values, setValues] = useState<CreateWalletFormValues>(initialValues);
 	const [fieldErrors, setFieldErrors] = useState<CreateWalletFieldErrors>({});
 	const [formError, setFormError] = useState<string | undefined>();
@@ -71,7 +70,7 @@ export const useCreateWalletForm = () => {
 		}
 
 		try {
-			await createWallet({
+			const wallet = await createWallet({
 				walletType: values.walletType,
 				currencyType: values.currencyType,
 				walletName: walletDisplayService.getWalletDisplayName(
@@ -79,10 +78,7 @@ export const useCreateWalletForm = () => {
 					values.walletType,
 				),
 			});
-			navigation.goToHomePage({
-				replace: true,
-				slide: SLIDE_INTENT.BACK,
-			});
+			completeAfterWalletCreate(wallet);
 		} catch (error) {
 			const apiErrors = isApiError(error)
 				? mapCreateWalletApiError(error)
@@ -90,6 +86,7 @@ export const useCreateWalletForm = () => {
 
 			setFieldErrors(apiErrors.fieldErrors);
 			setFormError(apiErrors.formError);
+		} finally {
 			setIsSubmitting(false);
 		}
 	};

@@ -89,9 +89,10 @@
 	--spacing-44: 44px;
 	--spacing-54: 54px;
 	--spacing-118: 118px;
-	/* Safe area — pt-inset-top-page, pb-inset-bottom-tab, bottom-inset-bottom-float, … */
+	/* Safe area — pt-inset-top-page, pt-inset-top-toolbar, pb-inset-bottom-tab, … */
 	--spacing-inset-top-page: max(20px, env(safe-area-inset-top));
 	--spacing-inset-top-sheet: max(16px, env(safe-area-inset-top));
+	--spacing-inset-top-toolbar: env(safe-area-inset-top, 0px);
 	--spacing-inset-bottom-lg: max(28px, env(safe-area-inset-bottom));
 	--spacing-inset-bottom-tab: max(
 		12px,

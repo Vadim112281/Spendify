@@ -4,15 +4,32 @@ import {twx} from "@/shared/utils/twx";
 const PANEL_TAB_BAR_INSET_EXCLUDED = new Set<string>([
 	APP_ROUTES.APP_HOME,
 	APP_ROUTES.APP_TRANSACTIONS,
+	APP_ROUTES.APP_CREATE_WALLET,
+]);
+
+const PANEL_TOP_INSET_EXCLUDED = new Set<string>([
+	APP_ROUTES.APP_CREATE_WALLET,
 ]);
 
 export const shouldIncludeTabBarPageInset = (pathname: string) =>
 	!PANEL_TAB_BAR_INSET_EXCLUDED.has(pathname);
 
-export const buildPagePanelClassNames = (includeTabBarPageInset: boolean) => {
+export const shouldIncludeTopPageInset = (pathname: string) =>
+	!PANEL_TOP_INSET_EXCLUDED.has(pathname);
+
+export const buildPagePanelClassNamesForPath = (pathname: string) =>
+	buildPagePanelClassNames(
+		shouldIncludeTabBarPageInset(pathname),
+		shouldIncludeTopPageInset(pathname),
+	);
+
+export const buildPagePanelClassNames = (
+	includeTabBarPageInset: boolean,
+	includeTopPageInset: boolean,
+) => {
 	const pageLayoutClassName = twx(
 		"min-h-0 bg-e-bg px-20",
-		"pt-inset-top-page",
+		includeTopPageInset && "pt-inset-top-page",
 		includeTabBarPageInset && "pb-tab-bar-layout",
 	);
 

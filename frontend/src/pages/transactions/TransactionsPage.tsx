@@ -1,5 +1,5 @@
 import {useCallback, useMemo, useState} from "react";
-import {useRouteNavigation} from "@/app/navigation/useRouteNavigation";
+import {APP_ROUTES} from "@/app/navigation/routes";
 import {TransactionsInsightsCard} from "@/features/transactions/components/insights/TransactionsInsightsCard";
 import {MonthTransactionsEmptyState} from "@/features/transactions/components/MonthTransactionsEmptyState";
 import {TransactionsTypeFilter} from "@/features/transactions/components/TransactionsTypeFilter";
@@ -18,6 +18,7 @@ import {WalletLoadError} from "@/features/wallets/components/WalletLoadError";
 import {WalletLoading} from "@/features/wallets/components/WalletLoading";
 import {useActiveWalletId} from "@/features/wallets/hooks/useActiveWalletId";
 import {useUserWallets} from "@/features/wallets/hooks/useUserWallets";
+import {useWalletEmptyCreateAction} from "@/features/wallets/hooks/useWalletEmptyCreateAction";
 import {CURRENCY_TYPE_DISPLAY} from "@/features/wallets/walletDisplayService";
 import {TransactionsMonthList} from "@/pages/transactions/components/TransactionsMonthList";
 import {useTransactionsPageFocus} from "@/pages/transactions/hooks/useTransactionsPageFocus";
@@ -29,8 +30,10 @@ import {twx} from "@/shared/utils/twx";
 const TRANSACTIONS_LOAD_ERROR_MESSAGE =
 	"Could not load transactions. Please try again.";
 
+const ACTIVE_WALLET_MISMATCH_MESSAGE =
+	"Could not match your wallet. Please try again.";
+
 export const TransactionsPage = () => {
-	const navigation = useRouteNavigation();
 	const monthLabel = formatLongMonth();
 	const [viewFilter, setViewFilter] = useState<TransactionsViewFilter>(
 		TRANSACTIONS_VIEW_FILTER.ALL,
@@ -76,6 +79,10 @@ export const TransactionsPage = () => {
 		onFocusReceived: handleFocusNavigate,
 	});
 
+	const handleCreateWallet = useWalletEmptyCreateAction(
+		APP_ROUTES.APP_TRANSACTIONS,
+	);
+
 	const centeredPageClassName =
 		"flex min-h-app-page w-full items-center justify-center";
 
@@ -100,10 +107,23 @@ export const TransactionsPage = () => {
 		);
 	}
 
-	if (!hasWallet || !activeWallet) {
+	if (!hasWallet) {
 		return (
 			<div className={centeredPageClassName}>
-				<WalletEmpty onCreateWallet={navigation.goToCreateWalletPage} />
+				<WalletEmpty onCreateWallet={handleCreateWallet} />
+			</div>
+		);
+	}
+
+	if (!activeWallet) {
+		return (
+			<div className={centeredPageClassName}>
+				<WalletLoadError
+					message={ACTIVE_WALLET_MISMATCH_MESSAGE}
+					onRetry={() => {
+						void refetch();
+					}}
+				/>
 			</div>
 		);
 	}

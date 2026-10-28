@@ -15,6 +15,8 @@ import {getSlideDirection, readSlideIntent} from "@/app/navigation/slideIntent";
 type PageTransition = {
 	id: number;
 	direction: number;
+	fromPathname: string;
+	toPathname: string;
 	fromOutlet: ReactElement;
 	toOutlet: ReactElement;
 };
@@ -64,11 +66,12 @@ export const usePageSlideTransition = () => {
 	}
 
 	if (pathnameChanged && outlet) {
+		const fromPathname = committed.pathname;
 		const fromOutlet = committed.outlet;
-		const toPath = location.pathname;
+		const toPathname = location.pathname;
 		const slideIntent = readSlideIntent(location.state);
 
-		navigation.committed = {pathname: toPath, outlet};
+		navigation.committed = {pathname: toPathname, outlet};
 
 		if (!reducedMotion && fromOutlet && slideIntent) {
 			navigation.nextTransitionId += 1;
@@ -77,6 +80,8 @@ export const usePageSlideTransition = () => {
 				transition: {
 					id: navigation.nextTransitionId,
 					direction: getSlideDirection(slideIntent),
+					fromPathname,
+					toPathname,
 					fromOutlet,
 					toOutlet: outlet,
 				},
