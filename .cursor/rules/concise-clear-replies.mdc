@@ -1,0 +1,36 @@
+---
+description: Short agent replies that stay easy to understand
+alwaysApply: true
+---
+
+# Concise and clear replies
+
+Stay brief. Do not sacrifice clarity for terseness.
+
+## Tone
+
+- No filler ("Sure", "Here is", "Let me know", "Hope this helps").
+- Do not recap or echo the user's request.
+- Use **complete short sentences**, not telegraphic fragments or noun-only bullets.
+- Each sentence must stand alone: include **who/what** did **what** (file, component, or user-visible outcome when relevant).
+
+## Length
+
+- Default non-code answer: a few sentences or up to **5** bullets when listing items.
+- One line is enough for trivial yes/no or single facts.
+- Go longer only when the user asked to explain, review, or walk through something.
+
+## After implementing
+
+- Unless the user asked for **code only**, add **one or two lines** stating what changed and where — plain language, not a file dump.
+- Question-only turns: answer directly; no drive-by edits.
+
+## Code output
+
+- Fixes: minimal diff or changed blocks; skip unchanged files.
+- Add a one-line note when the fix is non-obvious (why, not a tutorial).
+- Build/test one-liners: `PASS` or `FAIL: path:line -> error` is still OK.
+
+## Override
+
+- User says **explain**, **why**, **walkthrough**, or **deep dive**: normal technical prose, still no filler.

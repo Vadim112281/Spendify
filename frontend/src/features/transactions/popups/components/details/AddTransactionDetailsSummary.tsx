@@ -1,4 +1,3 @@
-import {AddTransactionSummaryCard} from "@/features/transactions/popups/components/details/AddTransactionSummaryCard";
 import {addTransactionPopupService} from "@/features/transactions/popups/services/addTransactionPopupService";
 import {CURRENCY_TYPE_DISPLAY} from "@/features/wallets/walletDisplayService";
 import type {CurrencyType} from "@/features/wallets/walletTypes";
@@ -27,46 +26,36 @@ export const AddTransactionDetailsSummary = ({
 		CURRENCY_TYPE_DISPLAY[currency].symbol,
 		{signed: true},
 	);
-
 	return (
-		<AddTransactionSummaryCard
-			className="px-16 py-14"
-			aria-label="Transaction summary"
-		>
+		<div className="rounded-14 border border-white/10 bg-white/4 px-16 py-14">
 			<div className="flex items-center justify-between gap-14">
-				<div className="min-w-0">
-					<p className="m-0 text-11 font-medium tracking-label text-e-muted uppercase">
-						{walletLabel ? "Adding to" : "Transaction"}
-					</p>
-					{walletLabel ? (
-						<p className="m-0 mt-6 truncate text-15 font-semibold tracking-tight-03 text-e-heading">
-							{walletLabel}
-						</p>
-					) : null}
-					<p
-						className={twx(
-							"m-0 font-medium",
-							walletLabel ? "mt-4 text-12" : "mt-6 text-13",
-							isIncome ? "text-e-positive" : "text-e-error",
-						)}
-					>
-						{typeLabel}
-					</p>
-				</div>
-
 				<p
 					className={twx(
-						"m-0 shrink-0 rounded-full px-12 py-8 text-15 font-semibold tabular-nums tracking-tight-03",
-						isIncome
-							? "bg-e-positive/14 text-e-positive"
-							: "bg-e-error/14 text-e-error",
+						"m-0 min-w-0 text-24 font-semibold tabular-nums tracking-tight-03 leading-none",
+						isIncome ? "text-e-positive" : "text-e-error",
 					)}
 					aria-live="polite"
 					aria-atomic="true"
 				>
 					{amountLabel}
 				</p>
+
+				<span
+					className={twx(
+						"inline-flex shrink-0 items-center justify-center rounded-full px-10 py-6",
+						"text-12 font-semibold leading-none tracking-wide uppercase",
+						isIncome
+							? "bg-e-positive/14 text-e-positive"
+							: "bg-e-error/14 text-e-error",
+					)}
+				>
+					{typeLabel}
+				</span>
 			</div>
-		</AddTransactionSummaryCard>
+			
+			{walletLabel ? (
+				<p className="m-0 mt-8 truncate text-14 text-e-muted">{walletLabel}</p>
+			) : null}
+		</div>
 	);
 };

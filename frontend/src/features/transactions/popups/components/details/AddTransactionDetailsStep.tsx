@@ -24,7 +24,6 @@ type AddTransactionDetailsStepProps = Pick<
 	| "selectedWallet"
 	| "setFormValue"
 	| "goToAmount"
-	| "onSubmit"
 > & {
 	formId?: string;
 	lockWallet?: boolean;
@@ -70,30 +69,35 @@ export const AddTransactionDetailsStep = ({
 					<p className="m-0 text-14 text-e-muted">Loading wallets…</p>
 				) : (
 					<>
-						{showWalletPicker ? (
-							<AddTransactionWalletPicker
-								wallets={form.wallets}
-								value={form.values.walletId}
-								onChange={(walletId) =>
+						<div className="flex flex-col gap-10">
+							{showWalletPicker ? (
+								<AddTransactionWalletPicker
+									wallets={form.wallets}
+									value={form.values.walletId}
+									onChange={(walletId) =>
+										form.setFormValue(
+											ADD_TRANSACTION_FORM_FIELD.WALLET_ID,
+											walletId,
+										)
+									}
+									error={form.fieldErrors.walletId}
+								/>
+							) : null}
+
+							<TransactionCategoryPicker
+								value={form.values.category}
+								onChange={(category) =>
 									form.setFormValue(
-										ADD_TRANSACTION_FORM_FIELD.WALLET_ID,
-										walletId,
+										ADD_TRANSACTION_FORM_FIELD.CATEGORY,
+										category,
 									)
 								}
-								error={form.fieldErrors.walletId}
+								error={form.fieldErrors.category}
 							/>
-						) : null}
-
-						<TransactionCategoryPicker
-							value={form.values.category}
-							onChange={(category) =>
-								form.setFormValue(ADD_TRANSACTION_FORM_FIELD.CATEGORY, category)
-							}
-							error={form.fieldErrors.category}
-						/>
+						</div>
 
 						<AddTransactionDetailsGroup
-							compact
+							className="mt-16"
 							note={form.values.note}
 							transactionDate={form.values.transactionDate}
 							onNoteChange={(note) =>

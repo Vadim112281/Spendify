@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
-# Reinstall BMAD into this repo when gitignored install files are missing (e.g. after git clean -fdX).
+# Reinstall BMAD core when gitignored install files are missing (e.g. after git clean -fdX).
+# Planning skills live under .cursor/skills/ — run sync-planning-skills.sh after a full BMAD install.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-MARKER="$ROOT/.agents/skills/bmad-help/SKILL.md"
+CORE_MARKER="$ROOT/_bmad/scripts/memlog.py"
 
-if [[ -f "$MARKER" ]]; then
+if [[ -f "$CORE_MARKER" ]]; then
   exit 0
 fi
 
-echo "BMAD install missing under $ROOT — running local reinstall (not committed to git)."
+echo "BMAD core missing under $ROOT — running local reinstall (not committed to git)."
 cd "$ROOT"
-exec npx bmad-method install -y --action update --tools cursor --modules bmm
+npx bmad-method install -y --action update --tools cursor --modules bmm
+"$ROOT/scripts/sync-planning-skills.sh"
