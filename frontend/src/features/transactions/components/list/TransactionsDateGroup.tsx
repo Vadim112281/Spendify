@@ -1,4 +1,5 @@
 import {TransactionRow} from "@/features/transactions/components/list/TransactionRow";
+import type {UserCategory} from "@/features/categories/types/categoryTypes";
 import type {TransactionDateGroup} from "@/features/transactions/services/transactionListViewService";
 import type {TransactionListViewItem} from "@/features/transactions/types/transactionListViewTypes";
 import type {CurrencyType} from "@/features/wallets/walletTypes";
@@ -7,6 +8,7 @@ import {twx} from "@/shared/utils/twx";
 type TransactionsDateGroupProps = {
 	group: TransactionDateGroup;
 	currency: CurrencyType;
+	categories: UserCategory[];
 	isFirst?: boolean;
 	showGroupLabel?: boolean;
 	openSwipeId: string | null;
@@ -19,6 +21,7 @@ type TransactionsDateGroupProps = {
 export const TransactionsDateGroup = ({
 	group,
 	currency,
+	categories,
 	isFirst = false,
 	showGroupLabel = true,
 	openSwipeId,
@@ -45,6 +48,7 @@ export const TransactionsDateGroup = ({
 						key={transaction.id}
 						transaction={transaction}
 						currency={currency}
+						categories={categories}
 						isSwipeOpen={openSwipeId === transaction.id}
 						onSwipeOpenChange={(open) => {
 							onSwipeOpenChange(transaction.id, open);

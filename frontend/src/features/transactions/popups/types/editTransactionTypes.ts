@@ -5,7 +5,7 @@ export type EditTransactionTarget = {
 	transactionId: string;
 	walletId: string;
 	type: TransactionType;
-	category: AddTransactionFormValues["category"];
+	categoryId: AddTransactionFormValues["categoryId"];
 	amount: number;
 	note: string;
 	transactionDate: string;

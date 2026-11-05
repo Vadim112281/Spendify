@@ -1,12 +1,14 @@
+import {resolveCategoryName} from "@/features/categories/services/categoryDisplayService";
+import type {UserCategory} from "@/features/categories/types/categoryTypes";
 import {
 	CHART_TYPE_EXPENSE_COLOR,
 	CHART_TYPE_INCOME_COLOR,
+	categoryChartColorFromId,
 	EXPENSE_CATEGORY_CHART_COLORS,
 	EXPENSE_CATEGORY_OTHER_COLOR,
 	INCOME_CATEGORY_CHART_COLORS,
 	INCOME_CATEGORY_OTHER_COLOR,
 } from "@/features/transactions/config/categoryChartColors";
-import type {TransactionCategory} from "@/features/transactions/types/transactionCategory";
 import {
 	TRANSACTIONS_VIEW_FILTER,
 	type TransactionsViewFilter,
@@ -59,16 +61,18 @@ const filterByType = (
 
 const buildCategorySegments = (
 	transactions: Transaction[],
+	categories: UserCategory[],
 	colors: readonly string[],
 	otherColor: string,
 ): TransactionInsightsSegment[] => {
-	const totalsByCategory = new Map<TransactionCategory, number>();
+	const totalsByCategory = new Map<string, number>();
 
 	// Sum transaction amounts per category.
 	for (const transaction of transactions) {
+		const id = transaction.category.categoryId;
 		totalsByCategory.set(
-			transaction.category,
-			(totalsByCategory.get(transaction.category) ?? 0) + transaction.amount,
+			id,
+			(totalsByCategory.get(id) ?? 0) + transaction.amount,
 		);
 	}
 
@@ -88,19 +92,40 @@ const buildCategorySegments = (
 		.reduce((total, [, amount]) => total + amount, 0);
 
 	const segments: TransactionInsightsSegment[] = topCategories.map(
-		([category, amount], index) => ({
-			id: category,
-			label: category,
-			amount,
-			sharePercent: toSharePercent(amount, monthTotal),
-			color: colors[index] ?? otherColor,
-		}),
+		([categoryId, amount]) => {
+			const categoryFromTransaction = transactions.find(
+				(t) => t.category.categoryId === categoryId,
+			)?.category;
+
+			const label = categoryFromTransaction
+				? resolveCategoryName(categories, categoryFromTransaction)
+				: "Category";
+
+			return {
+				id: categoryId,
+				label,
+				amount,
+				sharePercent: toSharePercent(amount, monthTotal),
+				color: categoryChartColorFromId(categoryId, colors),
+			};
+		},
 	);
 
 	if (otherAmount > 0) {
+		const otherIds = sorted.slice(MAX_CATEGORY_SEGMENTS).map(([id]) => id);
+
+		const otherCategory = transactions.find(
+			(t) => t.category.categoryId === otherIds[0],
+		)?.category;
+
+		const otherLabel =
+			otherIds.length === 1 && otherCategory
+				? resolveCategoryName(categories, otherCategory)
+				: "Other";
+				
 		segments.push({
 			id: "other",
-			label: "Other",
+			label: otherLabel,
 			amount: otherAmount,
 			sharePercent: toSharePercent(otherAmount, monthTotal),
 			color: otherColor,
@@ -112,6 +137,7 @@ const buildCategorySegments = (
 
 const buildCategoryInsights = (
 	transactions: Transaction[],
+	categories: UserCategory[],
 	isExpense: boolean,
 	cardLabel: string,
 	shareContextLabel: string,
@@ -122,6 +148,7 @@ const buildCategoryInsights = (
 		? []
 		: buildCategorySegments(
 				transactions,
+				categories,
 				isExpense
 					? EXPENSE_CATEGORY_CHART_COLORS
 					: INCOME_CATEGORY_CHART_COLORS,
@@ -204,12 +231,14 @@ export const filterTransactionsByView = (
 export const buildTransactionInsights = (
 	monthTransactions: Transaction[],
 	filter: TransactionsViewFilter,
+	categories: UserCategory[],
 ): TransactionInsightsModel => {
 	const filtered = filterTransactionsByView(monthTransactions, filter);
 
 	if (filter === TRANSACTIONS_VIEW_FILTER.EXPENSES) {
 		return buildCategoryInsights(
 			filtered,
+			categories,
 			true,
 			"Category split",
 			"of expenses",
@@ -220,6 +249,7 @@ export const buildTransactionInsights = (
 	if (filter === TRANSACTIONS_VIEW_FILTER.INCOME) {
 		return buildCategoryInsights(
 			filtered,
+			categories,
 			false,
 			"Category split",
 			"of income",

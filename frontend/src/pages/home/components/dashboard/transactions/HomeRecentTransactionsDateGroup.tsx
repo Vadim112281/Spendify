@@ -1,3 +1,4 @@
+import type {UserCategory} from "@/features/categories/types/categoryTypes";
 import type {TransactionDateGroup} from "@/features/transactions/services/transactionListViewService";
 import type {CurrencyType} from "@/features/wallets/walletTypes";
 import {HomeRecentTransactionRow} from "@/pages/home/components/dashboard/transactions/HomeRecentTransactionRow";
@@ -6,6 +7,7 @@ import {twx} from "@/shared/utils/twx";
 type HomeRecentTransactionsDateGroupProps = {
 	group: TransactionDateGroup;
 	currency: CurrencyType;
+	categories: UserCategory[];
 	isFirst?: boolean;
 	showGroupLabel?: boolean;
 	onRowPress: (transactionId: string) => void;
@@ -14,6 +16,7 @@ type HomeRecentTransactionsDateGroupProps = {
 export const HomeRecentTransactionsDateGroup = ({
 	group,
 	currency,
+	categories,
 	isFirst = false,
 	showGroupLabel = true,
 	onRowPress,
@@ -35,6 +38,7 @@ export const HomeRecentTransactionsDateGroup = ({
 					key={transaction.id}
 					transaction={transaction}
 					currency={currency}
+					categories={categories}
 					onPress={() => {
 						onRowPress(transaction.id);
 					}}

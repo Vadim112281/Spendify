@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Spendify.Application.Categories;
 using Spendify.Application.Common.Results;
 using Spendify.Application.Transactions;
 using Spendify.Application.Transactions.Contracts;
 using Spendify.Application.Transactions.Interfaces;
+using Spendify.Domain.Enums;
 using Spendify.Domain.Models;
 using Spendify.Infrastructure.Data;
 
@@ -19,12 +21,22 @@ public class TransactionService(AppDbContext _dbContext): ITransactionService
         if (!await WalletExistsForUserAsync(userId, walletId, cancellationToken))
             return AppResult<TransactionResult>.Failure(TransactionErrors.WalletNotFound);
 
+        var categoryResult = await GetOwnedCategoryMatchingTypeAsync(
+            userId,
+            request.CategoryId,
+            request.Type,
+            cancellationToken);
+        if (categoryResult.IsFailure)
+            return AppResult<TransactionResult>.Failure(categoryResult.Error!);
+
+        var category = categoryResult.Value!;
+
         var transaction = new Transaction
         {
             TransactionId = Guid.NewGuid(),
             WalletId = walletId,
             Type = request.Type,
-            Category = request.Category,
+            CategoryId = request.CategoryId,
             Amount = request.Amount,
             Note = NormalizeNote(request.Note),
             TransactionDate = request.TransactionDate,
@@ -34,7 +46,7 @@ public class TransactionService(AppDbContext _dbContext): ITransactionService
         _dbContext.Transactions.Add(transaction);
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return AppResult<TransactionResult>.Success(MapToResult(transaction));
+        return AppResult<TransactionResult>.Success(MapToResult(transaction, category));
     }
 
     public async Task<AppResult<PagedResult<TransactionResult>>> GetByWalletIdAsync(
@@ -62,7 +74,11 @@ public class TransactionService(AppDbContext _dbContext): ITransactionService
                 transaction.TransactionId,
                 transaction.WalletId,
                 transaction.Type,
-                transaction.Category,
+                new TransactionCategory(
+                    transaction.Category!.UserCategoryId,
+                    transaction.Category.Name,
+                    transaction.Category.IconKey,
+                    transaction.Category.Kind),
                 transaction.Amount,
                 transaction.Note,
                 transaction.TransactionDate,
@@ -89,12 +105,23 @@ public class TransactionService(AppDbContext _dbContext): ITransactionService
             return AppResult<TransactionResult>.Failure(transactionResult.Error!);
 
         var transaction = transactionResult.Value!;
+        UserCategory? categoryForSnapshot = null;
 
         if (request.Type.HasValue)
             transaction.Type = request.Type.Value;
 
-        if (request.Category.HasValue)
-            transaction.Category = request.Category.Value;
+        if (request.CategoryId.HasValue)
+            transaction.CategoryId = request.CategoryId.Value;
+
+        var categoryResult = await GetOwnedCategoryMatchingTypeAsync(
+            userId,
+            transaction.CategoryId,
+            transaction.Type,
+            cancellationToken);
+        if (categoryResult.IsFailure)
+            return AppResult<TransactionResult>.Failure(categoryResult.Error!);
+
+        categoryForSnapshot = categoryResult.Value!;
 
         if (request.Amount.HasValue)
             transaction.Amount = request.Amount.Value;
@@ -107,7 +134,8 @@ public class TransactionService(AppDbContext _dbContext): ITransactionService
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return AppResult<TransactionResult>.Success(MapToResult(transaction));
+        return AppResult<TransactionResult>.Success(
+            MapToResult(transaction, categoryForSnapshot!));
     }
 
     public async Task<AppResult<bool>> DeleteAsync(
@@ -162,16 +190,52 @@ public class TransactionService(AppDbContext _dbContext): ITransactionService
         return AppResult<Transaction>.Failure(TransactionErrors.NotFound);
     }
 
-    private static TransactionResult MapToResult(Transaction transaction) =>
+    private static TransactionResult MapToResult(Transaction transaction, UserCategory category) =>
         new(
             transaction.TransactionId,
             transaction.WalletId,
             transaction.Type,
-            transaction.Category,
+            MapTransactionCategory(category),
             transaction.Amount,
             transaction.Note,
             transaction.TransactionDate,
             transaction.CreatedAtUtc);
+
+    private static TransactionCategory MapTransactionCategory(UserCategory category) =>
+        new(category.UserCategoryId, category.Name, category.IconKey, category.Kind);
+
+    private async Task<AppResult<UserCategory>> GetOwnedCategoryMatchingTypeAsync(
+        Guid userId,
+        Guid categoryId,
+        TransactionType transactionType,
+        CancellationToken cancellationToken)
+    {
+        var category = await _dbContext.UserCategories
+            .AsNoTracking()
+            .FirstOrDefaultAsync(
+                item =>
+                    item.UserCategoryId == categoryId
+                    && item.UserId == userId,
+                cancellationToken);
+
+        if (category is null)
+            return AppResult<UserCategory>.Failure(CategoryErrors.NotFound);
+
+        if (!CategoryKindMatchesTransactionType(category.Kind, transactionType))
+            return AppResult<UserCategory>.Failure(TransactionErrors.CategoryKindMismatch);
+
+        return AppResult<UserCategory>.Success(category);
+    }
+
+    private static bool CategoryKindMatchesTransactionType(
+        CategoryKind categoryKind,
+        TransactionType transactionType) =>
+        categoryKind switch
+        {
+            CategoryKind.Expense => transactionType == TransactionType.Expense,
+            CategoryKind.Income => transactionType == TransactionType.Income,
+            _ => false,
+        };
 
     private static string? NormalizeNote(string? note) =>
         string.IsNullOrWhiteSpace(note) ? null : note.Trim();

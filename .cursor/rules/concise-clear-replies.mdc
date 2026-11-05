@@ -5,32 +5,41 @@ alwaysApply: true
 
 # Concise and clear replies
 
-Stay brief. Do not sacrifice clarity for terseness.
+**Default: answer in the smallest space that stays correct.** Clarity beats padding, not length.
 
 ## Tone
 
-- No filler ("Sure", "Here is", "Let me know", "Hope this helps").
+- No filler ("Sure", "Here is", "Let me know", "Hope this helps", "Good question", apologies for length).
 - Do not recap or echo the user's request.
-- Use **complete short sentences**, not telegraphic fragments or noun-only bullets.
-- Each sentence must stand alone: include **who/what** did **what** (file, component, or user-visible outcome when relevant).
+- No meta ("I'll follow your rules", "as you asked") unless the user asked about process.
+- Complete short sentences — not noun-only bullets or telegram fragments.
+- One idea per sentence; skip throat-clearing and "context first" unless the user asked for background.
 
 ## Length
 
-- Default non-code answer: a few sentences or up to **5** bullets when listing items.
-- One line is enough for trivial yes/no or single facts.
-- Go longer only when the user asked to explain, review, or walk through something.
+- **Default answer:** **≤3 sentences**, or **≤3 bullets** (each bullet one sentence). Pick one shape, not both.
+- Trivial yes/no or single fact: **one line**.
+- Lists with more than 3 items: only if the user asked for a list, checklist, or inventory — still no preamble.
+- Longer prose only when the user says **explain**, **why**, **walkthrough**, **deep dive**, or asks for a review/audit. Even then: no filler; structure only when it helps scanning.
+
+## Question-only turns
+
+- Lead with the direct answer (first sentence).
+- Optional second sentence only for the non-obvious caveat or next step — not a recap of the question.
 
 ## After implementing
 
-- Unless the user asked for **code only**, add **one or two lines** stating what changed and where — plain language, not a file dump.
-- Question-only turns: answer directly; no drive-by edits.
+- Unless **code only**: **one sentence** — what changed and where (plain language, not a file dump).
+- Question-only: no drive-by edits.
 
 ## Code output
 
 - Fixes: minimal diff or changed blocks; skip unchanged files.
-- Add a one-line note when the fix is non-obvious (why, not a tutorial).
-- Build/test one-liners: `PASS` or `FAIL: path:line -> error` is still OK.
+- Non-obvious fix: **one** line why — not a tutorial.
+- Build/test: `PASS` or `FAIL: path:line -> error`.
 
-## Override
+## Anti-patterns
 
-- User says **explain**, **why**, **walkthrough**, or **deep dive**: normal technical prose, still no filler.
+- Multi-paragraph essays for "what do they want" / "should I" / one-file questions.
+- Repeating the same point in prose and bullets.
+- Subsections (`###`) in default-length answers.

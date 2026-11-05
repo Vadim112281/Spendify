@@ -20,3 +20,15 @@ export const CHART_TYPE_EXPENSE_COLOR = "#dc2626";
 export const CHART_TYPE_INCOME_COLOR = "#16a34a";
 
 export const CHART_DONUT_TRACK_COLOR = "rgb(255 255 255 / 0.08)";
+
+// Stable segment color per category id (NFR5).
+export const categoryChartColorFromId = (
+	categoryId: string,
+	palette: readonly string[],
+): string => {
+	let hash = 0;
+	for (let i = 0; i < categoryId.length; i += 1) {
+		hash = (hash * 31 + categoryId.charCodeAt(i)) >>> 0;
+	}
+	return palette[hash % palette.length] ?? palette[0];
+};

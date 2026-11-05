@@ -27,7 +27,7 @@ const todayDateOnly = (): string => {
 const addInitialValues = (): AddTransactionFormValues => ({
 	amountInput: "0",
 	type: TRANSACTION_TYPE.EXPENSE,
-	category: null,
+	categoryId: null,
 	walletId: null,
 	note: "",
 	transactionDate: todayDateOnly(),
@@ -37,7 +37,7 @@ const emptyEditTarget = (): EditTransactionTarget => ({
 	transactionId: "",
 	walletId: "",
 	type: TRANSACTION_TYPE.EXPENSE,
-	category: null,
+	categoryId: null,
 	amount: 0,
 	note: "",
 	transactionDate: "",
@@ -50,7 +50,7 @@ const valuesFromTarget = (
 		target.amount,
 	),
 	type: target.type,
-	category: target.category,
+	categoryId: target.categoryId,
 	walletId: target.walletId,
 	note: target.note,
 	transactionDate: target.transactionDate,
@@ -130,7 +130,7 @@ export const useTransactionPopupForm = (
 	const submitValidPayload = useCallback(
 		async ({values, amount, trimmedNote}: TransactionFormValidatedPayload) => {
 			if (isAdd) {
-				if (!values.walletId || !values.category) {
+				if (!values.walletId || !values.categoryId) {
 					return false;
 				}
 
@@ -138,7 +138,7 @@ export const useTransactionPopupForm = (
 					walletId: values.walletId,
 					body: {
 						type: values.type,
-						category: values.category,
+						categoryId: values.categoryId,
 						amount,
 						transactionDate: values.transactionDate,
 						...(trimmedNote ? {note: trimmedNote} : {}),
@@ -148,7 +148,7 @@ export const useTransactionPopupForm = (
 			}
 
 			const target = targetRef.current;
-			if (!target || !values.category) {
+			if (!target || !values.categoryId) {
 				return false;
 			}
 
@@ -157,7 +157,7 @@ export const useTransactionPopupForm = (
 				transactionId: target.transactionId,
 				body: {
 					type: values.type,
-					category: values.category,
+					categoryId: values.categoryId,
 					amount,
 					transactionDate: values.transactionDate,
 					note: trimmedNote,

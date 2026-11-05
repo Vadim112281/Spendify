@@ -8,7 +8,7 @@ public class CreateTransactionCommand: IRequest<AppResult<TransactionResult>>
 {
     public Guid WalletId { get; set; }
     public TransactionType? Type { get; set; }
-    public TransactionCategory? Category { get; set; }
+    public Guid? CategoryId { get; set; }
     public decimal? Amount { get; set; }
     public string? Note { get; set; }
     public DateOnly? TransactionDate { get; set; }

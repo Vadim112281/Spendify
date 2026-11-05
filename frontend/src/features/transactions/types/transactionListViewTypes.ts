@@ -1,4 +1,7 @@
-import type {TransactionCategory} from "@/features/transactions/types/transactionCategory";
+import type {
+	TransactionCategory,
+	TransactionType,
+} from "@/features/transactions/types/transactionTypes";
 
 export const TRANSACTION_KIND = {
 	INCOME: "income",
@@ -10,7 +13,6 @@ export type TransactionKind =
 
 export type TransactionListViewItem = {
 	id: string;
-	title: string;
 	category: TransactionCategory;
 	kind: TransactionKind;
 	amount: number;
@@ -18,4 +20,13 @@ export type TransactionListViewItem = {
 	transactionDate: string;
 	dateGroupLabel: string;
 	createdAtUtc: string;
+};
+
+export type TransactionListActionTarget = {
+	id: string;
+	type: TransactionType;
+	category: TransactionCategory;
+	amount: number;
+	note: string;
+	transactionDate: string;
 };

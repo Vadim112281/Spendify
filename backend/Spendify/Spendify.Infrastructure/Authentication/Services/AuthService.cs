@@ -1,12 +1,18 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Spendify.Application.Auth.Errors;
 using Spendify.Application.Auth.Interfaces;
 using Spendify.Application.Common.Results;
 using Spendify.Infrastructure.Authentication.ErrorMapping;
+using Spendify.Infrastructure.Categories;
+using Spendify.Infrastructure.Data;
 
 namespace Spendify.Infrastructure.Authentication;
 
-public class AuthService(UserManager<AppUser> _userManager): IAuthService
+public class AuthService(
+    AppDbContext _dbContext,
+    UserManager<AppUser> _userManager
+): IAuthService
 {
     public async Task<AppResult<(Guid UserId, string Email)>> RegisterAsync(
         string firstName,
@@ -15,25 +21,39 @@ public class AuthService(UserManager<AppUser> _userManager): IAuthService
         string password,
         CancellationToken cancellationToken = default)
     {
-        var user = new AppUser()
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+
+        var user = new AppUser
         {
             Id = Guid.NewGuid(),
             FirstName = firstName,
             LastName = lastName,
             Email = email,
             UserName = email,
-            CreatedAtUtc = DateTime.UtcNow
+            CreatedAtUtc = DateTime.UtcNow,
         };
 
         // TODO: Pass cancellationToken to CreateAsync.
         // TODO: On duplicate-email race, return 409 instead of 500.
-        var result = await _userManager.CreateAsync(user, password);
-        if (!result.Succeeded)
+        var identityResult = await _userManager.CreateAsync(user, password);
+        if (!identityResult.Succeeded)
         {
-            // TODO: Log unknown Identity registration errors server-side (codes + descriptions);
-            // keep generic REGISTRATION_FAILED for the client.
+            await transaction.RollbackAsync(cancellationToken);
             return AppResult<(Guid UserId, string Email)>.Failure(
-                IdentityRegistrationErrorMapper.Map(result.Errors));
+                IdentityRegistrationErrorMapper.Map(identityResult.Errors));
+        }
+
+        UserCategorySeedHelper.StageDefaultSystemCategoriesForNewUser(_dbContext, user.Id);
+
+        try
+        {
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+        }
+        catch (DbUpdateException)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            return AppResult<(Guid UserId, string Email)>.Failure(RegistrationErrors.RegistrationSetupFailed);
         }
 
         return AppResult<(Guid UserId, string Email)>.Success((user.Id, user.Email!));

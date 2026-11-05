@@ -85,14 +85,15 @@ export const AddTransactionDetailsStep = ({
 							) : null}
 
 							<TransactionCategoryPicker
-								value={form.values.category}
-								onChange={(category) =>
+								transactionType={form.values.type}
+								value={form.values.categoryId}
+								onChange={(categoryId) =>
 									form.setFormValue(
-										ADD_TRANSACTION_FORM_FIELD.CATEGORY,
-										category,
+										ADD_TRANSACTION_FORM_FIELD.CATEGORY_ID,
+										categoryId,
 									)
 								}
-								error={form.fieldErrors.category}
+								error={form.fieldErrors.categoryId}
 							/>
 						</div>
 

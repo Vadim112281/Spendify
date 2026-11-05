@@ -133,7 +133,7 @@ export const useTransactionFormState = ({
 		const amount = addTransactionPopupService.parseAmountInput(
 			values.amountInput,
 		);
-		if (amount === null || !values.category || !values.walletId) {
+		if (amount === null || !values.categoryId || !values.walletId) {
 			return;
 		}
 

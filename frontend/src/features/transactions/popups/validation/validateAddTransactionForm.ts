@@ -18,8 +18,8 @@ export const validateAddTransactionForm = (
 		errors.amountInput = amountInputError;
 	}
 
-	if (!values.category) {
-		errors.category =
+	if (!values.categoryId) {
+		errors.categoryId =
 			CREATE_TRANSACTION_ERROR_CODE.TRANSACTION_CATEGORY_REQUIRED;
 	}
 
