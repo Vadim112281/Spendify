@@ -1,4 +1,5 @@
 import {useMemo} from "react";
+import type {UserCategory} from "@/features/categories/types/categoryTypes";
 import {TransactionsDateGroup} from "@/features/transactions/components/list/TransactionsDateGroup";
 import {useTransactionListActions} from "@/features/transactions/hooks/useTransactionListActions";
 import {EditTransactionPopup} from "@/features/transactions/popups/EditTransactionPopup";
@@ -14,12 +15,14 @@ import {AppFormError} from "@/shared/ui/AppFormError/AppFormError";
 type TransactionsMonthListProps = {
 	wallet: Wallet;
 	transactions: Transaction[];
+	categories: UserCategory[];
 	focusTransactionId?: string | null;
 };
 
 export const TransactionsMonthList = ({
 	wallet,
 	transactions,
+	categories,
 	focusTransactionId = null,
 }: TransactionsMonthListProps) => {
 	const listViewTransactions = useMemo(
@@ -57,6 +60,7 @@ export const TransactionsMonthList = ({
 					key={group.dateKey}
 					group={group}
 					currency={wallet.currencyType}
+					categories={categories}
 					isFirst={index === 0}
 					showGroupLabel={!hideGroupLabels}
 					openSwipeId={openSwipeId}

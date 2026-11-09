@@ -18,7 +18,7 @@ public class UpdateTransactionCommandValidator: AbstractValidator<UpdateTransact
         RuleFor(x => x)
             .Must(command =>
                 command.Type.HasValue
-                || command.Category.HasValue
+                || command.CategoryId.HasValue
                 || command.Amount.HasValue
                 || command.Note is not null
                 || command.TransactionDate.HasValue)
@@ -29,10 +29,10 @@ public class UpdateTransactionCommandValidator: AbstractValidator<UpdateTransact
             .IsInEnum().WithErrorCode(ValidationErrors.InvalidTransactionType)
             .When(command => command.Type.HasValue);
 
-        RuleFor(x => x.Category)
+        RuleFor(x => x.CategoryId)
             .Cascade(CascadeMode.Stop)
-            .IsInEnum().WithErrorCode(ValidationErrors.InvalidTransactionCategory)
-            .When(command => command.Category.HasValue);
+            .NotEmpty().WithErrorCode(ValidationErrors.TransactionCategoryRequired)
+            .When(command => command.CategoryId.HasValue);
 
         RuleFor(x => x.Amount)
             .Cascade(CascadeMode.Stop)

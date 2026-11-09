@@ -5,11 +5,13 @@ import {useScrollLock} from "@/shared/hooks/useScrollLock";
 import {AppCloseButton} from "@/shared/ui/AppCloseButton/AppCloseButton";
 import {twx} from "@/shared/utils/twx";
 
-type AppPopupSize = "default" | "tall";
+type AppPopupSize = "default" | "tall" | "nested";
 
 const overlayClassNameBySize: Record<AppPopupSize, string> = {
 	default: "fixed inset-0 z-100 bg-e-bg/82 backdrop-blur-sm",
 	tall: "fixed inset-0 z-110 bg-e-bg/82 backdrop-blur-sm",
+	// Above tall (e.g. category form opened from add-transaction sheet).
+	nested: "fixed inset-0 z-120 bg-e-bg/82 backdrop-blur-sm",
 };
 
 const contentClassNameBySize: Record<AppPopupSize, string> = {
@@ -25,6 +27,12 @@ const contentClassNameBySize: Record<AppPopupSize, string> = {
 		"pb-inset-bottom-sheet",
 		"outline-none focus:outline-none",
 	),
+	nested: twx(
+		"fixed inset-x-0 bottom-0 z-120 flex max-h-[min(84dvh,620px)] flex-col",
+		"rounded-t-18 border border-b-0 border-white/10 bg-e-bg shadow-e-card",
+		"pb-inset-bottom-sheet",
+		"outline-none focus:outline-none",
+	),
 };
 
 type AppPopupProps = {
@@ -35,6 +43,8 @@ type AppPopupProps = {
 	showCloseButton?: boolean;
 	showHandle?: boolean;
 	size?: AppPopupSize;
+	// Shrink sheet height to content instead of stretching the body (short forms).
+	hugContent?: boolean;
 	header?: ReactNode;
 	children: ReactNode;
 };
@@ -65,6 +75,7 @@ export const AppPopup = ({
 	showCloseButton = true,
 	showHandle = true,
 	size = "default",
+	hugContent = false,
 	header,
 	children,
 }: AppPopupProps) => {
@@ -81,13 +92,20 @@ export const AppPopup = ({
 			onOpenChange={onOpenChange}
 			shouldScaleBackground={false}
 			noBodyStyles
-			handleOnly
+			handleOnly={showHandle}
 		>
 			<Drawer.Portal>
 				<Drawer.Overlay className={overlayClassNameBySize[size]} />
-				<Drawer.Content className={contentClassNameBySize[size]}>
+				<Drawer.Content
+					className={twx(contentClassNameBySize[size], hugContent && "h-auto")}
+				>
 					{useDefaultHeader ? (
-						<div className="flex shrink-0 flex-col px-20">
+						<div
+							className={twx(
+								"flex shrink-0 flex-col px-20",
+								!showHandle && "pt-14",
+							)}
+						>
 							{showHandle ? (
 								<Drawer.Handle
 									className={twx(
@@ -101,7 +119,12 @@ export const AppPopup = ({
 									/>
 								</Drawer.Handle>
 							) : null}
-							<div className="flex items-start justify-between gap-12 pb-14">
+							<div
+								className={twx(
+									"flex items-start justify-between gap-12",
+									showCloseButton ? "pb-14" : "pb-20",
+								)}
+							>
 								<div className="min-w-0 pt-2">
 									{title ? <AppPopupTitle>{title}</AppPopupTitle> : null}
 									{description ? (
@@ -116,7 +139,14 @@ export const AppPopup = ({
 					) : header !== null ? (
 						<div className="flex shrink-0 flex-col">{header}</div>
 					) : null}
-					<div className="flex min-h-0 flex-1 flex-col">{children}</div>
+					<div
+						className={twx(
+							"flex flex-col",
+							hugContent ? "shrink-0" : "min-h-0 flex-1",
+						)}
+					>
+						{children}
+					</div>
 				</Drawer.Content>
 			</Drawer.Portal>
 		</Drawer.Root>

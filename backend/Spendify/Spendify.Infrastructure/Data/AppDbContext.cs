@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Spendify.Application.Categories.Policies;
 using Spendify.Domain.Models;
 using Spendify.Infrastructure.Authentication;
 
@@ -12,6 +13,7 @@ public class AppDbContext: IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 
     public DbSet<Wallet> Wallets { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<UserCategory> UserCategories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -42,6 +44,34 @@ public class AppDbContext: IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 
             entity.Property(transaction => transaction.Amount)
                 .HasPrecision(11, 2);
+
+            entity.HasOne(transaction => transaction.Category)
+                .WithMany()
+                .HasForeignKey(transaction => transaction.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
+        });
+
+        modelBuilder.Entity<UserCategory>(entity =>
+        {
+            entity.Property(category => category.Name)
+                .HasMaxLength(CategoryPolicy.NameMaxLength);
+
+            entity.Property(category => category.NormalizedName)
+                .HasMaxLength(CategoryPolicy.NormalizedNameMaxLength);
+
+            entity.Property(category => category.IconKey)
+                .HasMaxLength(CategoryPolicy.IconKeyMaxLength);
+
+            entity.HasOne<AppUser>()
+                .WithMany()
+                .HasForeignKey(category => category.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+
+            entity.HasIndex(category => new { category.UserId, category.Kind, category.NormalizedName })
+                .IsUnique()
+                .HasDatabaseName("IX_UserCategories_UserId_Kind_NormalizedName");
         });
     }
 }

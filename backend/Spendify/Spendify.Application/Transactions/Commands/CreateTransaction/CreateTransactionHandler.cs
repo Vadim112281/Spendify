@@ -20,7 +20,7 @@ public class CreateTransactionHandler(
 
         var createRequest = new CreateTransactionRequest(
             request.Type!.Value,
-            request.Category!.Value,
+            request.CategoryId!.Value,
             request.Amount!.Value,
             request.Note,
             request.TransactionDate!.Value);

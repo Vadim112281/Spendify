@@ -9,4 +9,12 @@ public static class TransactionErrors
     public static readonly AppError WalletNotFound = new("WALLET_NOT_FOUND", statusCode: 404);
 
     public static readonly AppError NotFound = new("TRANSACTION_NOT_FOUND", statusCode: 404);
+
+    public static readonly AppError CategoryKindMismatch = new(
+        ValidationErrors.TransactionCategoryKindMismatch,
+        statusCode: ValidationErrors.StatusCode,
+        fieldErrors: new Dictionary<string, string>
+        {
+            ["categoryId"] = ValidationErrors.TransactionCategoryKindMismatch,
+        });
 }

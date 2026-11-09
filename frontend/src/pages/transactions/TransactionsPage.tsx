@@ -1,5 +1,6 @@
 import {useCallback, useMemo, useState} from "react";
 import {APP_ROUTES} from "@/app/navigation/routes";
+import {useUserCategories} from "@/features/categories/hooks/useUserCategories";
 import {TransactionsInsightsCard} from "@/features/transactions/components/insights/TransactionsInsightsCard";
 import {MonthTransactionsEmptyState} from "@/features/transactions/components/MonthTransactionsEmptyState";
 import {TransactionsTypeFilter} from "@/features/transactions/components/TransactionsTypeFilter";
@@ -46,6 +47,7 @@ export const TransactionsPage = () => {
 		isError: transactionsError,
 		refetch: refetchTransactions,
 	} = useWalletTransactionsQuery(activeWalletId);
+	const {categories} = useUserCategories();
 
 	const monthTransactions = useMemo(
 		() => filterTransactionsInCalendarMonth(transactions),
@@ -58,8 +60,8 @@ export const TransactionsPage = () => {
 	);
 
 	const insights = useMemo(
-		() => buildTransactionInsights(monthTransactions, viewFilter),
-		[monthTransactions, viewFilter],
+		() => buildTransactionInsights(monthTransactions, viewFilter, categories),
+		[monthTransactions, viewFilter, categories],
 	);
 
 	const currencySymbol = activeWallet
@@ -180,6 +182,7 @@ export const TransactionsPage = () => {
 						<TransactionsMonthList
 							wallet={activeWallet}
 							transactions={filteredTransactions}
+							categories={categories}
 							focusTransactionId={pulsingTransactionId}
 						/>
 					</div>

@@ -7,4 +7,6 @@ public static class RegistrationErrors
     public static readonly AppError EmailAlreadyExists = new("EMAIL_ALREADY_EXISTS", statusCode: 409);
 
     public static readonly AppError RegistrationFailed = new("REGISTRATION_FAILED", statusCode: 400);
+
+    public static readonly AppError RegistrationSetupFailed = new("REGISTRATION_SETUP_FAILED", statusCode: 500);
 }

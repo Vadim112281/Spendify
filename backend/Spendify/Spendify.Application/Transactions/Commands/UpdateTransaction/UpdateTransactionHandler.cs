@@ -20,7 +20,7 @@ public class UpdateTransactionHandler(
 
         var updateRequest = new UpdateTransactionRequest(
             request.Type,
-            request.Category,
+            request.CategoryId,
             request.Amount,
             request.Note,
             request.TransactionDate);

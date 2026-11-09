@@ -3,7 +3,7 @@ import {isApiError} from "@/app/api/httpClient";
 import {addTransactionMessagesService} from "@/features/transactions/popups/services/addTransactionMessagesService";
 import type {EditTransactionTarget} from "@/features/transactions/popups/types/editTransactionTypes";
 import {useDeleteTransactionMutation} from "@/features/transactions/transactionsQuery";
-import type {TransactionListActionTarget} from "@/features/transactions/types/transactionListActionsTypes";
+import type {TransactionListActionTarget} from "@/features/transactions/types/transactionListViewTypes";
 
 const DELETE_TRANSACTION_ERROR_MESSAGE =
 	"Could not delete this transaction. Please try again.";
@@ -15,7 +15,7 @@ const toEditTransactionTarget = (
 	transactionId: item.id,
 	walletId,
 	type: item.type,
-	category: item.category,
+	categoryId: item.category.categoryId,
 	amount: item.amount,
 	note: item.note,
 	transactionDate: item.transactionDate,

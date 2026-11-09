@@ -1,4 +1,4 @@
-import type {TransactionCategory} from "@/features/transactions/types/transactionCategory";
+import type {CategoryKind} from "@/features/categories/types/categoryTypes";
 
 export const TRANSACTION_TYPE = {
 	INCOME: "Income",
@@ -7,6 +7,14 @@ export const TRANSACTION_TYPE = {
 
 export type TransactionType =
 	(typeof TRANSACTION_TYPE)[keyof typeof TRANSACTION_TYPE];
+
+// Category id, name, icon, and kind as included on each transaction from the API.
+export type TransactionCategory = {
+	categoryId: string;
+	name: string;
+	iconKey: string;
+	kind: CategoryKind;
+};
 
 export type Transaction = {
 	transactionId: string;
@@ -21,7 +29,7 @@ export type Transaction = {
 
 export type CreateTransactionRequest = {
 	type: TransactionType;
-	category: TransactionCategory;
+	categoryId: string;
 	amount: number;
 	note?: string;
 	transactionDate: string;
@@ -29,7 +37,7 @@ export type CreateTransactionRequest = {
 
 export type UpdateTransactionRequest = {
 	type: TransactionType;
-	category: TransactionCategory;
+	categoryId: string;
 	amount: number;
 	note?: string;
 	transactionDate: string;

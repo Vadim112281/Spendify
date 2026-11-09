@@ -4,7 +4,7 @@ namespace Spendify.Application.Transactions.Contracts;
 
 public record CreateTransactionRequest(
     TransactionType Type,
-    TransactionCategory Category,
+    Guid CategoryId,
     decimal Amount,
     string? Note,
     DateOnly TransactionDate);

@@ -26,7 +26,12 @@ export const AddTransactionAmountStep = ({
 		<div className="flex min-h-0 flex-1 flex-col px-20 pt-16 pb-16">
 			<TransactionTypeSwitcher
 				value={values.type}
-				onChange={(type) => setFormValue(ADD_TRANSACTION_FORM_FIELD.TYPE, type)}
+				onChange={(type) => {
+					if (type !== values.type) {
+						setFormValue(ADD_TRANSACTION_FORM_FIELD.CATEGORY_ID, null);
+					}
+					setFormValue(ADD_TRANSACTION_FORM_FIELD.TYPE, type);
+				}}
 			/>
 
 			<div className="mt-16 flex min-h-0 flex-1 flex-col">

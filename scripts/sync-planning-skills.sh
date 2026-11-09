@@ -5,6 +5,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 AGENTS="$ROOT/.agents/skills"
 CURSOR="$ROOT/.cursor/skills"
+OVERRIDES="$ROOT/scripts/planning-skills-overrides"
 
 # source_dir:dest_name
 PAIRS=(
@@ -48,6 +49,12 @@ for pair in "${PAIRS[@]}"; do
         sed -i '' "1,/^---$/ s|^description:.*|description: 'Spendify planning — epics and stories (@plan-stories). Triggers: plan-stories, create epics and stories.'|" "$skill_md"
         ;;
     esac
+  fi
+  override="$OVERRIDES/${dest_name}.toml"
+  customize="$dest/customize.toml"
+  if [[ -f "$override" && -f "$customize" ]]; then
+    python3 "$ROOT/scripts/merge-planning-skill-customize.py" "$customize" "$override"
+    echo "  merge $dest_name ← planning-skills-overrides"
   fi
   echo "  ok $dest_name"
 done

@@ -1,4 +1,5 @@
 import {useMemo} from "react";
+import {useUserCategories} from "@/features/categories/hooks/useUserCategories";
 import {MonthTransactionsEmptyState} from "@/features/transactions/components/MonthTransactionsEmptyState";
 import {groupTransactionsByDate} from "@/features/transactions/services/transactionListViewService";
 import type {TransactionListViewItem} from "@/features/transactions/types/transactionListViewTypes";
@@ -27,6 +28,7 @@ export const HomeTransactionsPreview = ({
 	onRetry,
 	onRecentRowPress,
 }: HomeTransactionsPreviewProps) => {
+	const {categories} = useUserCategories();
 	const groups = useMemo(
 		() => groupTransactionsByDate(transactions),
 		[transactions],
@@ -72,6 +74,7 @@ export const HomeTransactionsPreview = ({
 						key={group.dateKey}
 						group={group}
 						currency={currency}
+						categories={categories}
 						isFirst={index === 0}
 						showGroupLabel={!hideGroupLabels}
 						onRowPress={(transactionId) => {

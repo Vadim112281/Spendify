@@ -1,11 +1,10 @@
 import type {CreateTransactionErrorCode} from "@/features/transactions/popups/types/addTransactionErrorCodes";
-import type {TransactionCategory} from "@/features/transactions/types/transactionCategory";
 import type {TransactionType} from "@/features/transactions/types/transactionTypes";
 
 export type AddTransactionFormValues = {
 	amountInput: string;
 	type: TransactionType;
-	category: TransactionCategory | null;
+	categoryId: string | null;
 	walletId: string | null;
 	note: string;
 	transactionDate: string;
@@ -14,7 +13,7 @@ export type AddTransactionFormValues = {
 export const ADD_TRANSACTION_FORM_FIELD = {
 	AMOUNT_INPUT: "amountInput",
 	TYPE: "type",
-	CATEGORY: "category",
+	CATEGORY_ID: "categoryId",
 	WALLET_ID: "walletId",
 	NOTE: "note",
 	TRANSACTION_DATE: "transactionDate",

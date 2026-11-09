@@ -1,7 +1,6 @@
-import type {TransactionCategory} from "@/features/transactions/types/transactionCategory";
-import type {TransactionListActionTarget} from "@/features/transactions/types/transactionListActionsTypes";
 import {
 	TRANSACTION_KIND,
+	type TransactionListActionTarget,
 	type TransactionListViewItem,
 } from "@/features/transactions/types/transactionListViewTypes";
 import {
@@ -10,19 +9,10 @@ import {
 } from "@/features/transactions/types/transactionTypes";
 import {formatTransactionDateGroupLabel} from "@/shared/utils/timeUtils";
 
-const getTransactionTitle = (
-	category: TransactionCategory,
-	note: string | null,
-): string => {
-	const trimmedNote = note?.trim();
-	return trimmedNote && trimmedNote.length > 0 ? trimmedNote : category;
-};
-
 export const mapTransactionToListView = (
 	transaction: Transaction,
 ): TransactionListViewItem => ({
 	id: transaction.transactionId,
-	title: getTransactionTitle(transaction.category, transaction.note),
 	category: transaction.category,
 	kind:
 		transaction.type === TRANSACTION_TYPE.INCOME

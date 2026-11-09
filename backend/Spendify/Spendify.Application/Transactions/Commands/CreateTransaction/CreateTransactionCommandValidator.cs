@@ -17,10 +17,10 @@ public class CreateTransactionCommandValidator: AbstractValidator<CreateTransact
             .NotNull().WithErrorCode(ValidationErrors.TransactionTypeRequired)
             .IsInEnum().WithErrorCode(ValidationErrors.InvalidTransactionType);
 
-        RuleFor(x => x.Category)
+        RuleFor(x => x.CategoryId)
             .Cascade(CascadeMode.Stop)
             .NotNull().WithErrorCode(ValidationErrors.TransactionCategoryRequired)
-            .IsInEnum().WithErrorCode(ValidationErrors.InvalidTransactionCategory);
+            .NotEmpty().WithErrorCode(ValidationErrors.TransactionCategoryRequired);
 
         RuleFor(x => x.Amount)
             .Cascade(CascadeMode.Stop)

@@ -91,6 +91,43 @@ aria-label="Головне меню"
 - **Mobile-first** — skip click-outside, Escape handlers, hover-only flows, etc. unless explicitly requested.
 - **Minimal diff** — do not add unrelated code when fixing or extending something.
 
+## File granularity and placement
+
+- **No micro-files** — do not add a new file for one small helper with a **single** call site. Put it in an existing `*Service.ts`, `config/*.ts`, file-local helpers at the bottom of the consumer, or merge related helpers into one domain service (e.g. `transactionCategoryService.ts` instead of two five-line files).
+- **No one-off `features/<domain>/utils/`** — do not create a `utils/` folder under a feature for a lone function. Colocate with `config/`, `services/`, or the component that owns the behavior. Reserve `shared/utils/` for helpers reused across domains.
+- **Config modules own their helpers** — constants and the pure functions that only serve them (palettes, stable color from id, label maps) live in the same `config/` file when small; do not split into a separate util file.
+
+## Shared API list order
+
+When a spec or API contract defines sort order (e.g. categories A→Z, system rows last):
+
+- **Filter only** on the client — `filter` by kind/type; **preserve** the array order from `GET`.
+- **Do not re-sort** on the client to “match” the server unless the product explicitly requires client-side ordering.
+- After **POST/PATCH**, **invalidate/refetch** the list query; do not maintain a parallel sort algorithm.
+
+## Cross-feature boundaries
+
+- **Glue stays in the consumer feature** — mapping between two domains (e.g. `TransactionType` → `CategoryKind`, picker rules for transactions) lives in the feature that owns the screen/flow (`features/transactions/`), not in the shared domain module (`features/categories/`).
+- **`features/<a>/` must not import `features/<b>/` types or UI** when `<b>` is the wrong direction (e.g. `categories` must not import `transactions`). The dependent feature imports the shared one.
+- **Shared domain UI takes minimal props** — e.g. `CategoryIcon` accepts `iconKey` (+ `size`), not a full category row or transaction snapshot. If call sites want ergonomics (`category={…}`), add a **thin wrapper in the owning feature**, not a wider API on the shared component.
+
+## Feature `types/` layout
+
+- **Split API vs view models** — keep backend-shaped types (`Transaction`, request bodies, embedded nested objects) in a core types file; keep list/UI projections (`*ListViewItem`, action targets, filters) in a sibling file when the shape differs.
+- **Merge only the same layer** — e.g. nested API object types belong with API types; swipe/edit targets can live with list view types. Do **not** dump view models, filters, and API DTOs into one mega file.
+- **Names match the API/product** — use the name the API uses when unambiguous (e.g. `TransactionCategory` on a transaction payload), not `*Snapshot` / `*Embed` unless a second type with the same name already exists.
+- **Type comments** — one short `//` line in plain English: what the type represents in the product/API. Avoid jargon (“embedded snapshot”, “camelCase from server”) when a plain sentence works.
+
+```ts
+// ✅
+// Category id, name, icon, and kind as included on each transaction from the API.
+export type TransactionCategory = { … };
+
+// ❌
+// Embedded category snapshot DTO (camelCase).
+export type TransactionCategorySnapshot = { … };
+```
+
 ## Imports and structure
 
 - **No barrel `index.ts`** — import files directly: `@/pages/entry/EntryPage`, `@/shared/utils/twx`, `@/shared/services/storage/storageService`.

@@ -162,8 +162,8 @@ namespace Spendify.Infrastructure.Migrations
                         .HasPrecision(11, 2)
                         .HasColumnType("numeric(11,2)");
 
-                    b.Property<int>("Category")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("timestamp with time zone");
@@ -183,9 +183,53 @@ namespace Spendify.Infrastructure.Migrations
 
                     b.HasKey("TransactionId");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("WalletId");
 
                     b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("Spendify.Domain.Models.UserCategory", b =>
+                {
+                    b.Property<Guid>("UserCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("IconKey")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<bool>("IsSystemSeed")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Kind")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("UserCategoryId");
+
+                    b.HasIndex("UserId", "Kind", "NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("IX_UserCategories_UserId_Kind_NormalizedName");
+
+                    b.ToTable("UserCategories");
                 });
 
             modelBuilder.Entity("Spendify.Domain.Models.Wallet", b =>
@@ -350,13 +394,30 @@ namespace Spendify.Infrastructure.Migrations
 
             modelBuilder.Entity("Spendify.Domain.Models.Transaction", b =>
                 {
+                    b.HasOne("Spendify.Domain.Models.UserCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Spendify.Domain.Models.Wallet", "Wallet")
                         .WithMany("Transactions")
                         .HasForeignKey("WalletId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Category");
+
                     b.Navigation("Wallet");
+                });
+
+            modelBuilder.Entity("Spendify.Domain.Models.UserCategory", b =>
+                {
+                    b.HasOne("Spendify.Infrastructure.Authentication.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Spendify.Domain.Models.Wallet", b =>

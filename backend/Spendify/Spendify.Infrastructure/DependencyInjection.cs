@@ -9,7 +9,9 @@ using Spendify.Application.Common.Options;
 using Spendify.Infrastructure.Authentication;
 using Spendify.Infrastructure.Authentication.DependencyInjection;
 using Spendify.Infrastructure.Data;
+using Spendify.Application.Categories.Interfaces;
 using Spendify.Application.Transactions.Interfaces;
+using Spendify.Infrastructure.Categories;
 using Spendify.Infrastructure.Transactions;
 using Spendify.Infrastructure.Wallets;
 
@@ -58,6 +60,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IWalletService, WalletService>();
+        services.AddScoped<IUserCategoryService, UserCategoryService>();
         services.AddScoped<ITransactionService, TransactionService>();
         services.AddSpendifyIdentity();
 

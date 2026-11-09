@@ -14,7 +14,7 @@ const UNKNOWN_ERROR_MESSAGE = "Something went wrong. Please try again";
 const API_FIELD_ERROR_KEYS: Exclude<
 	AddTransactionFieldErrorKey,
 	"amountInput"
->[] = ["category", "walletId", "note", "transactionDate"];
+>[] = ["categoryId", "walletId", "note", "transactionDate"];
 
 const TRANSACTION_API_ERROR_MESSAGES: Record<TransactionApiErrorCode, string> =
 	{
@@ -26,6 +26,8 @@ const TRANSACTION_API_ERROR_MESSAGES: Record<TransactionApiErrorCode, string> =
 			"Choose a category",
 		[TRANSACTION_API_ERROR_CODE.INVALID_TRANSACTION_CATEGORY]:
 			"Invalid category",
+		[TRANSACTION_API_ERROR_CODE.TRANSACTION_CATEGORY_KIND_MISMATCH]:
+			"Category does not match income or expense",
 		[TRANSACTION_API_ERROR_CODE.TRANSACTION_AMOUNT_REQUIRED]: "Enter an amount",
 		[TRANSACTION_API_ERROR_CODE.TRANSACTION_AMOUNT_TOO_SMALL]:
 			"Minimum amount is 0.01",

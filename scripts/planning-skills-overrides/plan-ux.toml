@@ -1,0 +1,5 @@
+# Spendify overrides for plan-ux customize.toml — merged after scripts/sync-planning-skills.sh copies BMAD skills.
+# Edit this file, not customize.toml (BMAD refresh overwrites customize.toml).
+
+[workflow]
+run_folder_pattern = "{slug}"

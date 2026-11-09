@@ -44,6 +44,7 @@ public static class ValidationErrors
 
     public const string TransactionCategoryRequired = "TRANSACTION_CATEGORY_REQUIRED";
     public const string InvalidTransactionCategory = "INVALID_TRANSACTION_CATEGORY";
+    public const string TransactionCategoryKindMismatch = "TRANSACTION_CATEGORY_KIND_MISMATCH";
 
     public const string TransactionAmountRequired = "TRANSACTION_AMOUNT_REQUIRED";
     public const string TransactionAmountTooSmall = "TRANSACTION_AMOUNT_TOO_SMALL";
@@ -59,6 +60,20 @@ public static class ValidationErrors
     public const string PageTooLarge = "PAGE_TOO_LARGE";
     public const string PageSizeTooSmall = "PAGE_SIZE_TOO_SMALL";
     public const string PageSizeTooLarge = "PAGE_SIZE_TOO_LARGE";
+
+    public const string CategoryNameRequired = "CATEGORY_NAME_REQUIRED";
+    public const string CategoryNameTooLong = "CATEGORY_NAME_TOO_LONG";
+
+    public const string CategoryIconKeyRequired = "CATEGORY_ICON_KEY_REQUIRED";
+    public const string CategoryIconKeyTooLong = "CATEGORY_ICON_KEY_TOO_LONG";
+    public const string InvalidCategoryIconKey = "INVALID_CATEGORY_ICON_KEY";
+
+    public const string CategoryKindRequired = "CATEGORY_KIND_REQUIRED";
+    public const string InvalidCategoryKind = "INVALID_CATEGORY_KIND";
+
+    public const string CategoryIdRequired = "CATEGORY_ID_REQUIRED";
+
+    public const string CategoryUpdateFieldsRequired = "CATEGORY_UPDATE_FIELDS_REQUIRED";
 
     public static AppError FromFieldErrors(IReadOnlyDictionary<string, string> fieldErrors) =>
         new(Failed, StatusCode, fieldErrors);
